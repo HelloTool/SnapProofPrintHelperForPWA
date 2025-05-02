@@ -1,0 +1,45 @@
+{
+  "name": "snap-proof-print-helper",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
+  "type": "module",
+  "scripts": {
+    "build:web": "rsbuild build --environment web",
+    "build:ghPages": "rsbuild build --environment ghPages",
+    "build:tauri:fortend": "rsbuild build --environment tauri",
+    "build:tauri": "tauri build",
+    "dev:web": "rsbuild dev --environment web",
+    "dev:ghPages": "rsbuild dev --environment ghPages",
+    "dev:tauri:fortend": "rsbuild dev --environment tauri",
+    "dev:tauri": "tauri dev",
+    "preview": "rsbuild preview",
+    "check": "biome check --write",
+    "format": "biome format --write"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/material": "^7.0.2",
+    "@tanstack/react-router": "^1.117.1",
+    "@tanstack/react-router-devtools": "^1.117.1",
+    "i18next": "^25.0.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-i18next": "^15.5.1",
+    "react-to-print": "^3.1.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@rsbuild/core": "^1.3.12",
+    "@rsbuild/plugin-react": "^1.3.0",
+    "@rsbuild/plugin-sass": "^1.3.1",
+    "@tanstack/router-plugin": "^1.117.2",
+    "@tauri-apps/cli": "^2.5.0",
+    "@types/node": "^22.15.2",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "typescript": "^5.8.3"
+  }
+}
