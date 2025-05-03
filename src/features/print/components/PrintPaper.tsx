@@ -1,9 +1,9 @@
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 
-interface PrinterPaperProps {
+interface PrintPaperProps {
   children: React.ReactNode;
 }
-export default function PrinterPaper({ children }: PrinterPaperProps) {
+export default function PrintPaper({ children }: PrintPaperProps) {
   return (
     <Box
       sx={{

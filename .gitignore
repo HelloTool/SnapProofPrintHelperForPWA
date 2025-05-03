@@ -13,5 +13,4 @@ dist/
 !.vscode/settings.json
 .idea
 
-# Routes
-./src/routeTree.gen.ts
+*.gen.ts

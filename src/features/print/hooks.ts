@@ -6,6 +6,7 @@ export default function usePrint() {
 
   useEffect(() => {
     function handleBeforePrint() {
+      // 在打印时，确保状态更新同步到视图
       flushSync(() => {
         setIsPrinting(true);
       });

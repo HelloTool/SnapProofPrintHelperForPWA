@@ -6,8 +6,8 @@ import { ThemeProvider } from '@mui/material/styles';
 export const Route = createRootRoute({
   component: () => (
     <>
-      <CSSBaseline enableColorScheme />
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme} noSsr>
+        <CSSBaseline enableColorScheme />
         <Outlet />
       </ThemeProvider>
     </>

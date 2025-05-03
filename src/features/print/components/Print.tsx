@@ -1,22 +1,20 @@
 import { GlobalStyles } from '@mui/material';
 import { createPortal } from 'react-dom';
 
-interface PrinterProps {
+interface PrintProps {
   children: React.ReactNode;
-  size?: string;
-  marginLeft?: string;
-  marginTop?: string;
-  marginRight?: string;
-  marginBottom?: string;
+  page?: {
+    size?: string;
+    marginLeft?: string;
+    marginTop?: string;
+    marginRight?: string;
+    marginBottom?: string;
+  };
 }
-export default function Printer({
+export default function Print({
   children,
-  size = 'A4 landscape',
-  marginLeft,
-  marginTop,
-  marginRight,
-  marginBottom,
-}: PrinterProps) {
+  page: { size = 'A4 landscape', marginLeft, marginTop, marginRight, marginBottom } = {},
+}: PrintProps) {
   return (
     <>
       <GlobalStyles
@@ -25,20 +23,20 @@ export default function Printer({
             size: size,
             margin: `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}`,
           },
-          'body > .printer': {
+          'body > .print': {
             display: 'none',
           },
           '@media print': {
-            'body > *:not(.printer)': {
+            'body > *:not(.print)': {
               display: 'none',
             },
-            'body > .printer': {
+            'body > .print': {
               display: 'block',
             },
           },
         }}
       />
-      {createPortal(<div className="printer">{children}</div>, document.body)}
+      {createPortal(<div className="print">{children}</div>, document.body)}
     </>
   );
 }

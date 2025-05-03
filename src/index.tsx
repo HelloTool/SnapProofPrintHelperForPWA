@@ -4,7 +4,11 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import './styles/index.scss';
 // Import the generated route tree
-import { routeTree } from './routeTree.gen.ts';
+import { routeTree } from './configs/routeTree.gen.ts';
+
+if (IS_TAURI) {
+  document.documentElement.classList.add('tauri');
+}
 
 const router = createRouter({
   routeTree,
@@ -31,4 +35,3 @@ if (rootEl) {
     </React.StrictMode>,
   );
 }
-

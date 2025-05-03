@@ -1,4 +1,5 @@
-import { InsetsContext, useInsets } from './InsetsContext';
+import { InsetsContext } from '../contexts';
+import useInsets from '../hooks';
 
 interface ProvideInsetsProps {
   left?: number;
@@ -7,6 +8,7 @@ interface ProvideInsetsProps {
   bottom?: number;
   children: React.ReactNode;
 }
+
 export default function ProvideInsets({ left, top, right, bottom, children }: ProvideInsetsProps) {
   const insets = useInsets();
   return (

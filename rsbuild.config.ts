@@ -4,12 +4,12 @@ import { TanStackRouterRspack } from '@tanstack/router-plugin/rspack';
 import { pluginSass } from '@rsbuild/plugin-sass';
 
 export default defineConfig({
-  plugins: [pluginReact(),pluginSass()],
+  plugins: [pluginReact(), pluginSass()],
   html: {
     title: '快照凭证打印助手',
     meta: {
-      description:
-        '快照凭证打印助手，将多个转账记录图、电商订单图等以凭证样式打印到纸中，并添加裁切线。',
+      description: '快照凭证打印助手，将多个转账记录图、电商订单图等以凭证样式打印到纸中，并添加裁切线。',
+      keywords: '快照凭证打印助手, 快照凭证打印, 快照凭证, 截图凭证, 截图打印',
     },
   },
   server: {
@@ -18,8 +18,17 @@ export default defineConfig({
   tools: {
     rspack: {
       plugins: [
-        TanStackRouterRspack({ target: 'react', autoCodeSplitting: true }),
+        TanStackRouterRspack({
+          target: 'react',
+          autoCodeSplitting: true,
+          generatedRouteTree: './src/configs/routeTree.gen.ts',
+        }),
       ],
+    },
+  },
+  source: {
+    define: {
+      IS_TAURI: false,
     },
   },
   environments: {
@@ -44,6 +53,11 @@ export default defineConfig({
         assetPrefix: '/',
         distPath: {
           root: 'dist/tauri',
+        },
+      },
+      source: {
+        define: {
+          IS_TAURI: true,
         },
       },
     },

@@ -5,7 +5,7 @@
   "identifier": "io.gitee.jesse205.snap-proof-print-helper",
   "build": {
     "beforeDevCommand": "pnpm dev:tauri:fortend",
-    "devUrl": "http://localhost:1420",
+    "devUrl": "http://localhost:3000",
     "beforeBuildCommand": "pnpm build:tauri:fortend",
     "frontendDist": "../dist/tauri"
   },

@@ -4,8 +4,16 @@
     "enabled": true
   },
   "files": {
-    "include": ["scripts/**/*.js", "src/**/*", "src-tauri/**/*"],
-    "ignore": ["node_modules/**/*", "src/routeTree.gen.ts"]
+    "include": [
+      "scripts/**/*",
+      "src/**/*",
+      "src-tauri/**/*",
+      "./*"
+    ],
+    "ignore": [
+      "node_modules/**/*",
+      "src/configs/*.gen.ts"
+    ]
   },
   "vcs": {
     "enabled": true,
