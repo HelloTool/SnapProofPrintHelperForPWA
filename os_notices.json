@@ -1,0 +1,6 @@
+{
+    "template": "./docs/legal/os_notices_template.ts",
+    "output": "./docs/legal/os_notices.md",
+    "includeDependencies": true,
+    "noties": []
+}

@@ -13,9 +13,10 @@
   "app": {
     "windows": [
       {
-        "title": "snap-proof-print-helper",
+        "title": "快照凭证打印助手",
         "width": 1200,
-        "height": 900
+        "height": 900,
+        "center": true
       }
     ],
     "security": {

@@ -14,6 +14,7 @@
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
         "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .oxlint*, oxlint*, .prettier*, prettier*, biome.json, .editorconfig,.markdownlint.json",
+        "rsbuild.config.ts": "os_notices.json",
         "*": "${basename}.*.${extname}",
     },
     "i18n-ally.localesPaths": [

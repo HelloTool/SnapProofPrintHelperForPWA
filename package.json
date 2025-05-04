@@ -4,18 +4,25 @@
   "private": true,
   "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
   "type": "module",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "https://opensource.org/license/apache-2-0"
+    }
+  ],
   "scripts": {
     "build:web": "rsbuild build --environment web",
     "build:ghPages": "rsbuild build --environment ghPages",
-    "build:tauri:fortend": "rsbuild build --environment tauri",
+    "build:tauri:frotend": "rsbuild build --environment tauri",
     "build:tauri": "tauri build",
     "dev:web": "rsbuild dev --environment web",
     "dev:ghPages": "rsbuild dev --environment ghPages",
-    "dev:tauri:fortend": "rsbuild dev --environment tauri",
+    "dev:tauri:frotend": "rsbuild dev --environment tauri",
     "dev:tauri": "tauri dev",
     "preview": "rsbuild preview",
     "check": "biome check --write",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "docs:generate_os_notices": "tsx ./scripts/docs/generate_os_notices.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -37,9 +44,12 @@
     "@rsbuild/plugin-sass": "^1.3.1",
     "@tanstack/router-plugin": "^1.117.2",
     "@tauri-apps/cli": "^2.5.0",
+    "@types/license-checker": "^25.0.6",
     "@types/node": "^22.15.2",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "license-checker": "^25.0.1",
+    "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   }
 }
