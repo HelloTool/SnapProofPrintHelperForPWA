@@ -1,50 +1,36 @@
-import { createFileRoute } from '@tanstack/react-router';
-import Fab from '@mui/material/Fab';
 import PrintIcon from '@mui/icons-material/Print';
+
 import Box from '@mui/material/Box';
-import { useEffect, useState } from 'react';
-import { chunkArray } from '@/utils/list';
-import { ProvideInsets } from '@/features/insets/components';
-import type { PaperLayout, Image } from '@/types/snap-proof-print';
-import AppBar from './-components/AppBar';
+import Fab from '@mui/material/Fab';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
 import AdjustSheets from './-components/AdjustSheets';
-import usePrint from '@/features/print/hooks';
-import ImageSheets from './-components/image-sheets/ImageSheets';
-import SnapProofPrint from './-components/SnapProofPrint';
+import AppBar from './-components/AppBar';
 import Main from './-components/Main';
+import SnapProofPrint from './-components/SnapProofPrint';
+import ImageSheets from './-components/image-sheets/ImageSheets';
+import usePrint from '@/features/print/hooks/usePrint';
+import ProvideInsets from '@/features/insets/components/ProvideInsets';
+import { useAtom } from 'jotai';
+import { isImagesAddedAtom } from '@/atoms/snapProofPrint';
 
 export const Route = createFileRoute('/')({
   component: Index,
 });
 
 function Index() {
-  const [paperLayout, setPaperLayout] = useState<PaperLayout>({
-    columns: 3,
-    rows: 1,
-    orientation: 'landscape',
-  });
-  const [paperLayoutAfterChunk, setPaperLayoutAfterChunk] = useState<PaperLayout>(paperLayout);
+  const theme = useTheme();
+  const isSmAndUp = useMediaQuery(theme.breakpoints.up('sm'));
+
   const [isImageSheetsOpened, setImageSheetsOpened] = useState(true);
-  const [isAdjustSheetsOpened, setAdjustSheetsOpened] = useState(true);
-  const [isGrayPreview, setGrayPreview] = useState(true);
+  const [isAdjustSheetsOpened, setAdjustSheetsOpened] = useState(isSmAndUp);
 
   const bottomSheetsHeight = 320;
   const sideSheetsWidth = 320;
 
-  const [images, setImages] = useState<Image[]>([]);
-  const [papers, setPapers] = useState<Image[][]>([]);
-
-  useEffect(() => {
-    const newPapers: Image[][] = chunkArray(images, paperLayout.rows * paperLayout.columns);
-    setPapers(newPapers);
-    setPaperLayoutAfterChunk(paperLayout);
-  }, [images, paperLayout]);
-  function handleAddImage(image: Image) {
-    setImages((prev) => [...prev, image]);
-  }
-  function handleClearImages() {
-    setImages([]);
-  }
+  const [isAddedImages] = useAtom(isImagesAddedAtom);
   const isPrinting = usePrint();
   function handlePrint() {
     window.print();
@@ -60,27 +46,23 @@ function Index() {
           isSidebarOpened={isAdjustSheetsOpened}
           onSidebarClick={() => setAdjustSheetsOpened(!isAdjustSheetsOpened)}
         />
-        <ProvideInsets right={isAdjustSheetsOpened ? sideSheetsWidth : 0}>
+        <ProvideInsets right={isSmAndUp && isAdjustSheetsOpened ? sideSheetsWidth : 0}>
           <ProvideInsets bottom={isImageSheetsOpened ? bottomSheetsHeight : 0}>
-            <Main papers={papers} paperLayout={paperLayoutAfterChunk} grayPreview={isGrayPreview} />
+            <Main />
           </ProvideInsets>
           <ImageSheets
             height={bottomSheetsHeight}
             open={isImageSheetsOpened}
             onOpen={() => setImageSheetsOpened(true)}
             onClose={() => setImageSheetsOpened(false)}
-            images={images}
-            onAddImage={handleAddImage}
-            onClearImages={handleClearImages}
           />
         </ProvideInsets>
         <AdjustSheets
-          paperLayout={paperLayout}
-          onLayoutChange={setPaperLayout}
           open={isAdjustSheetsOpened}
-          width={sideSheetsWidth}
-          grayPreview={isGrayPreview}
-          onGrayPreviewChange={setGrayPreview}
+          variant={isSmAndUp ? 'persistent' : 'temporary'}
+          width={isSmAndUp ? sideSheetsWidth : '100%'}
+          onClose={() => setAdjustSheetsOpened(false)}
+          onOpen={() => setAdjustSheetsOpened(true)}
         />
         <Fab
           variant="extended"
@@ -90,12 +72,13 @@ function Index() {
             right: 16,
           }}
           onClick={handlePrint}
+          disabled={!isAddedImages}
         >
           <PrintIcon sx={{ mr: 1 }} />
           打印
         </Fab>
       </Box>
-      {isPrinting ? <SnapProofPrint papers={papers} paperLayout={paperLayout} /> : null}
+      {isPrinting ? <SnapProofPrint /> : null}
     </>
   );
 }

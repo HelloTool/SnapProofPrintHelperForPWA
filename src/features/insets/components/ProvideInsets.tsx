@@ -1,5 +1,5 @@
-import { InsetsContext } from '../contexts';
-import useInsets from '../hooks';
+import InsetsContext from "../contexts/InsetsContext";
+import useInsets from "../hooks/useInsets";
 
 interface ProvideInsetsProps {
   left?: number;

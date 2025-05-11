@@ -4,16 +4,8 @@
     "enabled": true
   },
   "files": {
-    "include": [
-      "scripts/**/*",
-      "src/**/*",
-      "src-tauri/**/*",
-      "./*"
-    ],
-    "ignore": [
-      "node_modules/**/*",
-      "src/configs/*.gen.ts"
-    ]
+    "include": ["scripts/**/*", "src/**/*", "src-tauri/**/*", "./*"],
+    "ignore": ["node_modules/**/*", "src/configs/*.gen.ts", "src-tauri/gen/**/*", "src-tauri/target/**/*"]
   },
   "vcs": {
     "enabled": true,

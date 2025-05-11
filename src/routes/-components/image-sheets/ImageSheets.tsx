@@ -1,32 +1,45 @@
-import useInsets from '@/features/insets/hooks';
+import useInsets from '@/features/insets/hooks/useInsets';
+import type { SnapImage } from '@/types/snapProofPrint';
 import { readFileAsDataURL } from '@/utils/file';
-import { SwipeableDrawer, ImageList, ImageListItem, type Theme, Box, Paper, Typography } from '@mui/material';
+import { Box, CircularProgress, Paper, SwipeableDrawer, type Theme, Typography } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { useRef } from 'react';
-import type { Image } from '@/types/snap-proof-print';
 import Toolbar from './Toolbar';
+import { useAtom } from 'jotai';
+import { imagesAtom } from '@/atoms/snapProofPrint';
+
 interface ImageSheetsProps {
   height: number;
   open: boolean;
   onClose: () => void;
   onOpen: () => void;
-  images: Image[];
-  onAddImage: (image: Image) => void;
-  onClearImages: () => void;
 }
 
-export default function ImageSheets({
-  open,
-  onClose,
-  onOpen,
-  height,
-  images,
-  onAddImage,
-  onClearImages,
-}: ImageSheetsProps) {
+export default function ImageSheets({ open, onClose, onOpen, height }: ImageSheetsProps) {
   const sheetsBleeding = 56;
   const insets = useInsets();
+  const [images, setImages] = useAtom(imagesAtom);
   const imageInputRef = useRef<HTMLInputElement>(null);
+
+  function clearImages() {
+    setImages(() => []);
+  }
+
+  function updateImages(newImages: SnapImage[]) {
+    setImages((draft) => {
+      for (const newImage of newImages) {
+        const index = draft.findIndex((image) => image.key === newImage.key);
+        if (index >= 0) {
+          draft[index] = newImage;
+        }
+      }
+    });
+  }
+  function pushImages(newImages: SnapImage[]) {
+    setImages((draft) => {
+      draft.push(...newImages);
+    });
+  }
 
   function handleAddImagesClick() {
     imageInputRef.current?.click();
@@ -34,18 +47,49 @@ export default function ImageSheets({
   function handleImageInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { files } = event.target;
     if (files) {
-      for (let index = 0; index < files.length; index += 1) {
-        const file = files[index];
-        readFileAsDataURL(file).then((result) => {
-          onAddImage({
-            key: nanoid(),
-            url: result,
-            name: file.name,
-          });
+      const imageProcessTasks = Array.from(files).map((file) => ({
+        key: nanoid(),
+        url: readFileAsDataURL(file),
+        file,
+      }));
+      const loadingImages: SnapImage[] = imageProcessTasks.map((task) => ({
+        key: task.key,
+        status: 'loading',
+        name: task.file.name,
+      }));
+      pushImages(loadingImages);
+
+      const asyncImages = imageProcessTasks.map(async (task): Promise<SnapImage> => {
+        try {
+          const awaitedUrl = await task.url;
+          return {
+            key: task.key,
+            status: 'loaded',
+            name: task.file.name,
+            url: awaitedUrl,
+          };
+        } catch (e) {
+          return {
+            key: task.key,
+            status: 'error',
+            name: task.file.name,
+            reason: String(e),
+          };
+        }
+      });
+      Promise.all(asyncImages)
+        .then((images) => {
+          updateImages(images);
+        })
+        .catch((e) => {
+          console.error(e);
         });
-      }
     }
     event.target.value = '';
+  }
+
+  function handleClearImagesClick() {
+    clearImages();
   }
 
   return (
@@ -71,7 +115,11 @@ export default function ImageSheets({
         },
       }}
     >
-      <Toolbar imagesCount={images.length} onAddImageClick={handleAddImagesClick} onClearImagesClick={onClearImages} />
+      <Toolbar
+        imagesCount={images.length}
+        onAddImageClick={handleAddImagesClick}
+        onClearImagesClick={handleClearImagesClick}
+      />
       <input
         ref={imageInputRef}
         type="file"
@@ -81,14 +129,19 @@ export default function ImageSheets({
         onChange={handleImageInputChange}
       />
       <Box
-        sx={{
+        sx={(theme) => ({
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, 90px)',
+          width: '100%',
           gap: 1,
           padding: 1,
           margin: 0,
-          overflow: 'auto',
-        }}
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+          [theme.breakpoints.up('sm')]: {
+            gridTemplateColumns: 'repeat(auto-fill, 120px)',
+          },
+        })}
       >
         {images.map((item) => (
           <Box key={item.key} sx={{ width: '100%' }} title={item.name}>
@@ -97,21 +150,26 @@ export default function ImageSheets({
               sx={{
                 width: '100%',
                 aspectRatio: 1,
-                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              <Box
-                component="img"
-                src={item.url}
-                alt={item.name}
-                loading="lazy"
-                sx={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  display: 'block',
-                }}
-              />
+              {item.status === 'loaded' ? (
+                <Box
+                  component="img"
+                  src={item.url}
+                  alt={item.name}
+                  loading="lazy"
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              ) : (
+                <CircularProgress />
+              )}
             </Paper>
             <Typography
               variant="caption"

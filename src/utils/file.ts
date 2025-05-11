@@ -2,7 +2,7 @@ export function readFileAsDataURL(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
-      resolve(reader.result as string);
+      setTimeout(() => resolve(reader.result as string), 1000);
     };
     reader.onerror = () => {
       reject(reader.error);
@@ -10,3 +10,5 @@ export function readFileAsDataURL(file: File): Promise<string> {
     reader.readAsDataURL(file);
   });
 }
+
+function pickFiles() {}

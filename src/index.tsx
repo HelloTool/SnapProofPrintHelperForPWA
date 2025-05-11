@@ -1,14 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import './styles/index.scss';
-// Import the generated route tree
-import { routeTree } from './configs/routeTree.gen.ts';
+
+import { routeTree } from './configs/router/route-tree.gen';
 
 if (IS_TAURI) {
   document.documentElement.classList.add('tauri');
 }
+document.documentElement.lang = 'zh-CN';
 
 const router = createRouter({
   routeTree,

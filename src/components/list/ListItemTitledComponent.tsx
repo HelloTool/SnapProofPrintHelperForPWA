@@ -1,24 +1,13 @@
-import { Box, ListItemText, type SxProps, type Theme } from '@mui/material';
+import { Box, ListItemText } from '@mui/material';
+
+import type { SxProps, Theme } from '@mui/material/styles';
 
 interface SecondarySlotProps {
   children: React.ReactNode;
   sx?: SxProps<Theme>;
 }
 function SecondarySlot({ children, sx }: SecondarySlotProps) {
-  return (
-    <Box
-      sx={[
-        {
-          '& > *': {
-            display: 'block',
-          },
-        },
-        ...(Array.isArray(sx) ? sx : [sx]),
-      ]}
-    >
-      {children}
-    </Box>
-  );
+  return <Box sx={sx}>{children}</Box>;
 }
 interface ListItemTitledComponentProps {
   title?: React.ReactNode;

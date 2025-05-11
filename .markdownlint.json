@@ -2,19 +2,11 @@
   "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/refs/heads/main/schema/markdownlint-config-schema.json",
   "line-length": false,
   "no-inline-html": {
-    "allowed_elements": [
-      "img",
-      "div",
-      "small",
-      "details",
-      "summary"
-    ]
+    "allowed_elements": ["img", "div", "small", "details", "summary"]
   },
   "first-line-heading": false,
   "no-hard-tabs": {
-    "ignore_code_languages": [
-      "text"
-    ]
+    "ignore_code_languages": ["text"]
   },
   "blanks-around-fences": {
     "list_items": false

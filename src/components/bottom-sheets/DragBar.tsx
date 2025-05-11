@@ -1,5 +1,5 @@
-import Box from '@mui/material/Box';
-import { styled, type SxProps, type Theme } from '@mui/material/styles';
+import { Box } from '@mui/material';
+import { type SxProps, type Theme, styled } from '@mui/material/styles';
 
 const DragIcon = styled('div')(({ theme }) => ({
   width: 30,

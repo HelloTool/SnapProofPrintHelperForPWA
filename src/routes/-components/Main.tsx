@@ -1,17 +1,19 @@
-import useInsets from '@/features/insets/hooks';
-import PrintPaperSimulator from '@/features/print/components/PrintPaperSimulator';
-import type { PaperLayout, Image } from '@/types/snap-proof-print';
-import { Box, Grid, Toolbar } from '@mui/material';
+import PrintPreviewPaper from '@/features/print/components/PrintPreviewPaper';
+
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import SnapProofPrintPageContent from './SnapProofPrintPageContent';
+import useInsets from '@/features/insets/hooks/useInsets';
+import { useAtom } from 'jotai';
+import { printConfigAtom, paperImagesAtom, printPreviewConfigAtom } from '@/atoms/snapProofPrint';
+import PrintPreview from '@/features/print/components/PrintPreview';
 
-interface MainProps {
-  papers: Image[][];
-  paperLayout: PaperLayout;
-  grayPreview: boolean;
-}
-
-export default function Main({ papers, paperLayout, grayPreview }: MainProps) {
+export default function Main() {
   const insets = useInsets();
+  const [paperImages] = useAtom(paperImagesAtom);
+  const [printConfig] = useAtom(printConfigAtom);
+  const [printPreviewConfig] = useAtom(printPreviewConfigAtom);
   return (
     <Box
       component="main"
@@ -32,40 +34,79 @@ export default function Main({ papers, paperLayout, grayPreview }: MainProps) {
       }}
     >
       <Toolbar />
-      <Box
-        sx={{
-          padding: 2,
-          flexGrow: 1,
-          flexBasis: 0,
-          overflow: 'auto',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignContent: 'flex-start',
-          justifyContent: 'center',
-          gap: 2,
-        }}
-      >
-        {papers.map((paperImages, index) => (
-          <PrintPaperSimulator
-            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-            key={index}
-            page={{
-              marginLeft: 0.5,
-              marginTop: 1,
-              marginRight: 0.5,
-              marginBottom: 1,
-              orientation: paperLayout.orientation,
-              gray: grayPreview,
-            }}
+
+      {paperImages.length > 0 ? (
+        // 直接设置alignContent: 'center'会导致图片错位，因此需要一层Box，将外层Box设置为可滚动，将子Box设置为最低高100%，最大无限高。
+        <Box
+          sx={{
+            padding: 2,
+            flexGrow: 1,
+            flexBasis: 0,
+            overflow: 'auto',
+          }}
+        >
+          <PrintPreview
             sx={{
-              width: '360px',
-              maxWidth: '100%',
+              minHeight: '100%',
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignContent: 'center',
+              justifyContent: 'center',
+              gap: 2,
             }}
+            paperSizeCm={typeof printConfig.size !== 'string' ? printConfig.size : [21, 29.7]}
+            paperOrientation={printConfig.orientation}
+            contentMarginLeftCm={printConfig.contentMarginLeftCm}
+            contentMarginTopCm={printConfig.contentMarginTopCm}
+            contentMarginRightCm={printConfig.contentMarginRightCm}
+            contentMarginBottomCm={printConfig.contentMarginBottomCm}
+            colorMode={printPreviewConfig.colorMode}
           >
-            <SnapProofPrintPageContent images={paperImages} paperLayout={paperLayout} />
-          </PrintPaperSimulator>
-        ))}
-      </Box>
+            {paperImages.map((images, index) => (
+              <Box
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                key={index}
+                sx={{
+                  width: '480px',
+                  maxWidth: '100%',
+                }}
+              >
+                <PrintPreviewPaper
+                  sx={{
+                    width: '100%',
+                  }}
+                >
+                  <SnapProofPrintPageContent images={images} />
+                </PrintPreviewPaper>
+                <Typography
+                  variant="subtitle1"
+                  color="textPrimary"
+                  align="center"
+                  sx={{
+                    userSelect: 'text',
+                  }}
+                >
+                  第 {index + 1} 页
+                </Typography>
+              </Box>
+            ))}
+          </PrintPreview>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            flexGrow: 1,
+            flexBasis: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography variant="body2" color="textPrimary">
+            暂无预览，请先添加图片 。
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 }

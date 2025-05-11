@@ -1,8 +1,8 @@
-import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
-import { Toolbar as MuiToolbar } from '@mui/material';
-import ClearAllOutlinedIcon from '@mui/icons-material/ClearAllOutlined';
-import AddIcon from '@mui/icons-material/Add';
 import { ToolbarIconButton } from '@/components/toolbar/ToolbarIconButton';
+import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
+import AddIcon from '@mui/icons-material/Add';
+import ClearAllOutlinedIcon from '@mui/icons-material/ClearAllOutlined';
+import { Toolbar as MuiToolbar } from '@mui/material';
 
 interface ToolbarProps {
   imagesCount: number;
@@ -19,13 +19,7 @@ export default function Toolbar({ imagesCount, onAddImageClick, onClearImagesCli
         onClick={onClearImagesClick}
         disabled={imagesCount === 0}
       />
-      <ToolbarIconButton
-        icon={<AddIcon />}
-        label={'添加图片'}
-        onClick={onAddImageClick}
-        disabled={imagesCount === 0}
-        edge="end"
-      />
+      <ToolbarIconButton icon={<AddIcon />} label={'添加图片'} onClick={onAddImageClick} edge="end" />
     </MuiToolbar>
   );
 }

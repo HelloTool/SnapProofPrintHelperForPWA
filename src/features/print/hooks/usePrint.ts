@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { flushSync } from 'react-dom';
 
 export default function usePrint() {

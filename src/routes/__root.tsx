@@ -1,7 +1,7 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router';
-import CSSBaseline from '@mui/material/CssBaseline';
 import { theme } from '@/themes/theme';
+import CSSBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
+import { Outlet, createRootRoute } from '@tanstack/react-router';
 
 export const Route = createRootRoute({
   component: () => (

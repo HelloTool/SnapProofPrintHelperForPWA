@@ -1,32 +1,23 @@
 {
-    "[typescript]": {
-        "editor.defaultFormatter": "biomejs.biome"
-    },
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "biomejs.biome"
-    },
-    "[javascript]": {
-        "editor.defaultFormatter": "biomejs.biome"
-    },
-    "[javascriptreact]": {
-        "editor.defaultFormatter": "biomejs.biome"
-    },
-    "explorer.fileNesting.enabled": true,
-    "explorer.fileNesting.patterns": {
-        "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .oxlint*, oxlint*, .prettier*, prettier*, biome.json, .editorconfig,.markdownlint.json",
-        "rsbuild.config.ts": "os_notices.json",
-        "*": "${basename}.*.${extname}",
-    },
-    "i18n-ally.localesPaths": [
-        "src/locales"
-    ],
-    "files.readonlyInclude": {
-        "**/routeTree.gen.ts": true
-    },
-    "files.watcherExclude": {
-        "**/routeTree.gen.ts": true
-    },
-    "search.exclude": {
-        "**/routeTree.gen.ts": true
-    }
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .oxlint*, oxlint*, .prettier*, prettier*, biome.json, .editorconfig,.markdownlint.json",
+    "rsbuild.config.ts": "os_notices.json",
+    "*": "${basename}.*.${extname}"
+  },
+  "i18n-ally.localesPaths": [
+    "src/locales"
+  ]
 }

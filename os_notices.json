@@ -1,6 +1,13 @@
 {
-    "template": "./docs/legal/os_notices_template.ts",
-    "output": "./docs/legal/os_notices.md",
-    "includeDependencies": true,
-    "noties": []
+  "template": "./docs/legal/os_notices_template.ts",
+  "output": "./docs/legal/os_notices.md",
+  "includeDependencies": true,
+  "notices": [
+    {
+      "name": "Chromium",
+      "license": "BSD-3-Clause",
+      "repository": "https://github.com/chromium/chromium",
+      "copyrights": ["Copyright 2015 The Chromium Authors"]
+    }
+  ]
 }

@@ -2,9 +2,43 @@ import { createTheme } from '@mui/material/styles';
 
 export const theme = createTheme({
   colorSchemes: {
-    dark: true,
+    light: {
+      palette: {
+        mode: 'light',
+        primary: {
+          main: '#1a73e8', // Google Blue 600
+        },
+        secondary: {
+          main: '#1a73e8',
+        },
+      },
+    },
+    dark: {
+      palette: {
+        mode: 'dark',
+        primary: {
+          main: '#aecbfa', // Google Blue 200
+        },
+        secondary: {
+          main: '#aecbfa',
+        },
+      },
+    },
   },
   components: {
+    MuiAppBar: {
+      defaultProps: {
+        elevation: 0,
+        color: 'inherit',
+      },
+      styleOverrides: {
+        root: ({ theme }) =>
+          theme.unstable_sx({
+            borderBottom: 1,
+            borderColor: 'divider',
+          }),
+      },
+    },
     MuiFab: {
       defaultProps: {
         color: 'secondary',
@@ -25,6 +59,33 @@ export const theme = createTheme({
         },
         rail: {
           marginLeft: '2px',
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          variants: [
+            {
+              props: { variant: 'temporary' },
+              style: {
+                width: '100%',
+                maxWidth: 'calc(100% - 56px)',
+              },
+            },
+            {
+              props: { variant: 'permanent' },
+              style: {
+                zIndex: 1,
+              },
+            },
+            {
+              props: { variant: 'persistent' },
+              style: {
+                zIndex: 1,
+              },
+            },
+          ],
         },
       },
     },

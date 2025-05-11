@@ -1,5 +1,5 @@
-import path from 'node:path';
 import fs from 'node:fs/promises';
+import path from 'node:path';
 import checker, { type ModuleInfos } from 'license-checker';
 import { tsImport } from 'tsx/esm/api';
 
@@ -52,8 +52,10 @@ async function generateNotices(config: NoticesConfig) {
       let license: string;
       if (typeof packageInfo.licenses === 'string') {
         license = packageInfo.licenses;
-      } else {
+      } else if (Array.isArray(packageInfo.licenses)) {
         license = packageInfo.licenses.join(' ');
+      } else {
+        license = '';
       }
       let copyrights: string[];
       if (packageInfo.copyright) {
@@ -71,7 +73,8 @@ async function generateNotices(config: NoticesConfig) {
       });
     }
   }
-  if (config.notices) {
+
+  if (config.notices?.length > 0) {
     notices.push(...config.notices);
   }
   return notices;

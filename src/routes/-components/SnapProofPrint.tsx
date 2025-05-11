@@ -1,27 +1,37 @@
-import { Print, PrintPaper } from '@/features/print/components';
-import type { PaperLayout, Image } from '@/types/snap-proof-print';
+import Print from '@/features/print/components/Print';
 import SnapProofPageContent from './SnapProofPrintPageContent';
+import { useAtom } from 'jotai';
+import { printConfigAtom, paperImagesAtom } from '@/atoms/snapProofPrint';
+import PrintPaper from '@/features/print/components/PrintPaper';
 
-interface SnapProofPrintProps {
-  papers: Image[][];
-  paperLayout: PaperLayout;
-}
-
-export default function SnapProofPrint({ papers, paperLayout }: SnapProofPrintProps) {
+export default function SnapProofPrint() {
+  const [
+    {
+      contentMarginLeftCm,
+      contentMarginTopCm,
+      contentMarginRightCm,
+      contentMarginBottomCm,
+      orientation,
+      size,
+      aspectRatioFixed,
+    },
+  ] = useAtom(printConfigAtom);
+  const [paperImages] = useAtom(paperImagesAtom);
   return (
     <Print
-      page={{
-        marginLeft: '0.5cm',
-        marginTop: '1cm',
-        marginRight: '0.5cm',
-        marginBottom: '1cm',
-        size: `A4 ${paperLayout.orientation}`,
-      }}
+      paperSizeCm={typeof size !== 'string' ? size : [21, 29.7]}
+      paperSizeName={typeof size === 'string' ? size : undefined}
+      paperOrientation={orientation}
+      contentMarginLeftCm={contentMarginLeftCm}
+      contentMarginTopCm={contentMarginTopCm}
+      contentMarginRightCm={contentMarginRightCm}
+      contentMarginBottomCm={contentMarginBottomCm}
+      contentAspectRatioFixed={aspectRatioFixed}
     >
-      {papers.map((paperImages, index) => (
+      {paperImages.map((images, index) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
         <PrintPaper key={index}>
-          <SnapProofPageContent images={paperImages} paperLayout={paperLayout} />
+          <SnapProofPageContent images={images} />
         </PrintPaper>
       ))}
     </Print>

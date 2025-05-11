@@ -1,4 +1,5 @@
-import { Tooltip, IconButton, type SxProps, type Theme, type IconButtonOwnProps } from '@mui/material';
+import { IconButton, type IconButtonOwnProps, Tooltip } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 interface ToolbarIconButtonProps {
   icon: React.ReactNode;
@@ -10,12 +11,24 @@ interface ToolbarIconButtonProps {
   sx?: SxProps<Theme>;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
-export function ToolbarIconButton({ icon, tooltip, label, color = 'inherit', edge, onClick }: ToolbarIconButtonProps) {
+export function ToolbarIconButton({
+  icon,
+  tooltip,
+  label,
+  color = 'inherit',
+  edge,
+  onClick,
+  disabled,
+  sx,
+}: ToolbarIconButtonProps) {
   return (
-    <Tooltip title={tooltip ?? label} placement="bottom">
-      <IconButton edge={edge} color={color} aria-label={label} onClick={onClick}>
-        {icon}
-      </IconButton>
+    <Tooltip sx={sx} title={tooltip ?? label} placement="bottom" describeChild={false}>
+      {/* 添加span元素，允许禁用时显示tooltip */}
+      <span>
+        <IconButton edge={edge} color={color} aria-label={label} onClick={onClick} disabled={disabled}>
+          {icon}
+        </IconButton>
+      </span>
     </Tooltip>
   );
 }
