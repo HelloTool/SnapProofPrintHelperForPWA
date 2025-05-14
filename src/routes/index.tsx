@@ -23,9 +23,10 @@ export const Route = createFileRoute('/')({
 function Index() {
   const theme = useTheme();
   const isSmAndUp = useMediaQuery(theme.breakpoints.up('sm'));
+  const isMdAndUp = useMediaQuery(theme.breakpoints.up('md'));
 
   const [isImageSheetsOpened, setImageSheetsOpened] = useState(true);
-  const [isAdjustSheetsOpened, setAdjustSheetsOpened] = useState(isSmAndUp);
+  const [isAdjustSheetsOpened, setAdjustSheetsOpened] = useState(isMdAndUp);
 
   const bottomSheetsHeight = 320;
   const sideSheetsWidth = 320;
@@ -46,7 +47,7 @@ function Index() {
           isSidebarOpened={isAdjustSheetsOpened}
           onSidebarClick={() => setAdjustSheetsOpened(!isAdjustSheetsOpened)}
         />
-        <ProvideInsets right={isSmAndUp && isAdjustSheetsOpened ? sideSheetsWidth : 0}>
+        <ProvideInsets right={isMdAndUp && isAdjustSheetsOpened ? sideSheetsWidth : 0}>
           <ProvideInsets bottom={isImageSheetsOpened ? bottomSheetsHeight : 0}>
             <Main />
           </ProvideInsets>
@@ -59,7 +60,7 @@ function Index() {
         </ProvideInsets>
         <AdjustSheets
           open={isAdjustSheetsOpened}
-          variant={isSmAndUp ? 'persistent' : 'temporary'}
+          variant={isMdAndUp ? 'persistent' : 'temporary'}
           width={isSmAndUp ? sideSheetsWidth : '100%'}
           onClose={() => setAdjustSheetsOpened(false)}
           onOpen={() => setAdjustSheetsOpened(true)}

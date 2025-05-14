@@ -1,5 +1,7 @@
 import { printConfigAtom, paperLayoutAtom, printPreviewConfigAtom } from '@/atoms/snapProofPrint';
 import ListItemTitledComponent from '@/components/list/ListItemTitledComponent';
+import ListSliderItem from '@/components/list/ListSliderItem';
+import ListSwitchItem from '@/components/list/ListSwitchItem';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import type { SnapProofPrintConfig } from '@/types/snapProofPrint';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
@@ -10,16 +12,12 @@ import {
   FormControlLabel,
   List,
   ListItem,
-  ListItemButton,
-  ListItemIcon,
   ListItemText,
   ListSubheader,
   Radio,
   RadioGroup,
-  Slider,
   SwipeableDrawer,
   type SwipeableDrawerProps,
-  Switch,
   Toolbar,
 } from '@mui/material';
 import { useAtom } from 'jotai';
@@ -86,53 +84,31 @@ export default function AdjustSheets({ open, onOpen, onClose, variant, width }: 
         {/* 页面布局 */}
         <List>
           <ListSubheader>页面布局</ListSubheader>
-          <ListItem>
-            <ListItemTitledComponent
-              title="列数"
-              slotSx={{
-                paddingInline: 1,
-              }}
-            >
-              <Slider
-                aria-label="列数"
-                defaultValue={paperLayout.columns}
-                onChangeCommitted={handleColumnsChange}
-                valueLabelDisplay="auto"
-                step={1}
-                marks
-                min={1}
-                max={5}
-                sx={{
-                  display: 'block',
-                }}
-              />
-            </ListItemTitledComponent>
-          </ListItem>
-          <ListItem>
-            <ListItemTitledComponent
-              title="行数"
-              slotSx={{
-                paddingInline: 1,
-              }}
-            >
-              <Slider
-                aria-label="行数"
-                defaultValue={paperLayout.rows}
-                onChangeCommitted={handleRowsChange}
-                valueLabelDisplay="auto"
-                step={1}
-                marks
-                min={1}
-                max={5}
-                sx={{
-                  display: 'block',
-                }}
-              />
-            </ListItemTitledComponent>
-          </ListItem>
+          <ListSliderItem
+            title="列数"
+            value={paperLayout.columns}
+            onChange={handleColumnsChange}
+            sliderProps={{
+              step: 1,
+              marks: true,
+              min: 1,
+              max: 5,
+            }}
+          />
+          <ListSliderItem
+            title="行数"
+            value={paperLayout.rows}
+            onChange={handleRowsChange}
+            sliderProps={{
+              step: 1,
+              marks: true,
+              min: 1,
+              max: 5,
+            }}
+          />
           <ListItem>
             <ListItemTitledComponent title="方向">
-              <RadioGroup row value={printConfig.orientation} onChange={handleOrientationChange} content="span">
+              <RadioGroup row value={printConfig.orientation} onChange={handleOrientationChange}>
                 <FormControlLabel value="landscape" control={<Radio />} label="横向" />
                 <FormControlLabel value="portrait" control={<Radio />} label="纵向" />
               </RadioGroup>
@@ -143,40 +119,24 @@ export default function AdjustSheets({ open, onOpen, onClose, variant, width }: 
         {/* 打印配置 */}
         <List>
           <ListSubheader>打印</ListSubheader>
-          <ListItemButton onClick={handleAspectRatioFixedToggle}>
-            <ListItemIcon>
-              <ArticleOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="固定页面比例"
-              secondary="在打印时使用固定的比例，而非动态测量。FireFox 需要打开此项才能正确显示页面。"
-            />
-            <Switch
-              checked={printConfig.aspectRatioFixed}
-              edge="end"
-              tabIndex={-1}
-              aria-hidden
-              sx={{ pointerEvents: 'none' }}
-            />
-          </ListItemButton>
+          <ListSwitchItem
+            icon={<ArticleOutlinedIcon />}
+            title="固定页面比例"
+            summary="在打印时使用固定的比例，而非动态测量。FireFox 需要打开此项才能正确显示页面。"
+            checked={printConfig.aspectRatioFixed}
+            onClick={handleAspectRatioFixedToggle}
+          />
         </List>
         <Divider />
         {/* 预览配置 */}
         <List>
           <ListSubheader>预览</ListSubheader>
-          <ListItemButton onClick={handleGrayPreviewToggle}>
-            <ListItemIcon>
-              <ContrastOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="彩色打印" />
-            <Switch
-              checked={previewConfig.colorMode === 'colorful'}
-              edge="end"
-              tabIndex={-1}
-              aria-hidden
-              sx={{ pointerEvents: 'none' }}
-            />
-          </ListItemButton>
+          <ListSwitchItem
+            icon={<ContrastOutlinedIcon />}
+            title="彩色打印"
+            checked={previewConfig.colorMode === 'colorful'}
+            onClick={handleGrayPreviewToggle}
+          />
           <ListItem>
             <ListItemText secondary="预览选项不会影响最终打印效果" />
           </ListItem>

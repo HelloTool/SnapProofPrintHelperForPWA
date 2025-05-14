@@ -6,11 +6,7 @@ import { TanStackRouterRspack } from '@tanstack/router-plugin/rspack';
 export default defineConfig({
   plugins: [pluginReact(), pluginSass()],
   html: {
-    title: '快照凭证打印助手',
-    meta: {
-      description: '快照凭证打印助手，将多个转账记录图、电商订单图等以凭证样式打印到纸中，并添加裁切线。',
-      keywords: '快照凭证打印助手, 快照凭证打印, 快照凭证, 截图凭证, 截图打印',
-    },
+    template: './src/index.browser.html',
   },
   output: {
     polyfill: 'usage',
@@ -28,6 +24,7 @@ export default defineConfig({
   },
   server: {
     port: process.env.NODE_ENV === 'development' ? 3000 : 8080,
+    publicDir: false,
   },
   tools: {
     rspack: {
@@ -56,33 +53,29 @@ export default defineConfig({
     removeConsole: ['log'],
   },
   environments: {
-    web: {
+    browser: {
       output: {
-        assetPrefix: '/',
         distPath: {
-          root: 'dist/web',
+          root: 'dist/browser',
         },
-      },
-    },
-    ghPages: {
-      output: {
-        assetPrefix: '/SnapProofPrintHelperForTauri/',
-        distPath: {
-          root: 'dist/gh-pages',
-        },
+        copy: [{ from: './public', to: '.' }],
       },
     },
     tauri: {
       output: {
-        assetPrefix: '/',
         distPath: {
           root: 'dist/tauri',
         },
+        copy: [],
       },
       source: {
         define: {
           IS_TAURI: true,
         },
+      },
+      html: {
+        template: './src/index.tauri.html',
+        title: '',
       },
     },
   },

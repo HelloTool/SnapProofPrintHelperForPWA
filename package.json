@@ -11,18 +11,16 @@
     }
   ],
   "scripts": {
-    "build:web": "rsbuild build --environment web",
-    "build:ghPages": "rsbuild build --environment ghPages",
+    "build:browser": "rsbuild build --environment browser",
     "build:tauri:frotend": "rsbuild build --environment tauri",
     "build:tauri": "tauri build",
-    "dev:web": "rsbuild dev --environment web",
-    "dev:ghPages": "rsbuild dev --environment ghPages",
+    "dev:browser": "rsbuild dev --environment browser",
     "dev:tauri:frotend": "rsbuild dev --environment tauri",
     "dev:tauri": "tauri dev",
-    "preview": "rsbuild preview",
+    "preview:browser": "rsbuild preview  --environment browser",
     "check": "biome check --write",
     "format": "biome format --write",
-    "docs:generate_os_notices": "tsx ./scripts/docs/generate_os_notices.ts"
+    "docs:generateOsNotices": "tsx ./scripts/docs/generate_os_notices.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

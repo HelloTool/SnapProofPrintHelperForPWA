@@ -144,7 +144,10 @@ export default function ImageSheets({ open, onClose, onOpen, height }: ImageShee
         })}
       >
         {images.map((item) => (
-          <Box key={item.key} sx={{ width: '100%' }} title={item.name}>
+          <Box key={item.key} sx={{ width: '100%' ,transition: (theme: Theme) =>
+            theme.transitions.create(['width'], {
+              duration: theme.transitions.duration.enteringScreen,
+            }),}} title={item.name}>
             <Paper
               variant="outlined"
               sx={{

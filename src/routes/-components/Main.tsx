@@ -66,10 +66,17 @@ export default function Main() {
               <Box
                 // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 key={index}
-                sx={{
-                  width: '480px',
+                sx={(theme) => ({
+                  width: '360px',
                   maxWidth: '100%',
-                }}
+                  [theme.breakpoints.up('lg')]: {
+                    width: '480px',
+                  },
+                  transition: theme.transitions.create(['width'], {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.leavingScreen,
+                  }),
+                })}
               >
                 <PrintPreviewPaper
                   sx={{
