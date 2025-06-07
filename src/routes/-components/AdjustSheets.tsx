@@ -1,9 +1,3 @@
-import { printConfigAtom, paperLayoutAtom, printPreviewConfigAtom } from '@/atoms/snapProofPrint';
-import ListItemTitledComponent from '@/components/list/ListItemTitledComponent';
-import ListSliderItem from '@/components/list/ListSliderItem';
-import ListSwitchItem from '@/components/list/ListSwitchItem';
-import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
-import type { SnapProofPrintConfig } from '@/types/snapProofPrint';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import ContrastOutlinedIcon from '@mui/icons-material/ContrastOutlined';
 import {
@@ -21,6 +15,12 @@ import {
   Toolbar,
 } from '@mui/material';
 import { useAtom } from 'jotai';
+import { paperLayoutAtom, printConfigAtom, printPreviewConfigAtom } from '@/atoms/snapProofPrint';
+import ListItemTitledComponent from '@/components/list/ListItemTitledComponent';
+import ListSliderItem from '@/components/list/ListSliderItem';
+import ListSwitchItem from '@/components/list/ListSwitchItem';
+import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
+import type { SnapProofPrintConfig } from '@/types/snapProofPrint';
 
 interface AdjustSheetsProps {
   open: SwipeableDrawerProps['open'];
@@ -64,11 +64,10 @@ export default function AdjustSheets({ open, onOpen, onClose, variant, width }: 
 
   return (
     <SwipeableDrawer
-      variant={variant}
       anchor="right"
-      open={open}
-      onOpen={onOpen}
       onClose={onClose}
+      onOpen={onOpen}
+      open={open}
       slotProps={{
         paper: {
           sx: {
@@ -76,6 +75,7 @@ export default function AdjustSheets({ open, onOpen, onClose, variant, width }: 
           },
         },
       }}
+      variant={variant}
     >
       <Toolbar>
         <ToolbarTitle>调整</ToolbarTitle>
@@ -85,8 +85,6 @@ export default function AdjustSheets({ open, onOpen, onClose, variant, width }: 
         <List>
           <ListSubheader>页面布局</ListSubheader>
           <ListSliderItem
-            title="列数"
-            value={paperLayout.columns}
             onChange={handleColumnsChange}
             sliderProps={{
               step: 1,
@@ -94,10 +92,10 @@ export default function AdjustSheets({ open, onOpen, onClose, variant, width }: 
               min: 1,
               max: 5,
             }}
+            title="列数"
+            value={paperLayout.columns}
           />
           <ListSliderItem
-            title="行数"
-            value={paperLayout.rows}
             onChange={handleRowsChange}
             sliderProps={{
               step: 1,
@@ -105,12 +103,14 @@ export default function AdjustSheets({ open, onOpen, onClose, variant, width }: 
               min: 1,
               max: 5,
             }}
+            title="行数"
+            value={paperLayout.rows}
           />
           <ListItem>
             <ListItemTitledComponent title="方向">
-              <RadioGroup row value={printConfig.orientation} onChange={handleOrientationChange}>
-                <FormControlLabel value="landscape" control={<Radio />} label="横向" />
-                <FormControlLabel value="portrait" control={<Radio />} label="纵向" />
+              <RadioGroup onChange={handleOrientationChange} row value={printConfig.orientation}>
+                <FormControlLabel control={<Radio />} label="横向" value="landscape" />
+                <FormControlLabel control={<Radio />} label="纵向" value="portrait" />
               </RadioGroup>
             </ListItemTitledComponent>
           </ListItem>
@@ -120,11 +120,11 @@ export default function AdjustSheets({ open, onOpen, onClose, variant, width }: 
         <List>
           <ListSubheader>打印</ListSubheader>
           <ListSwitchItem
-            icon={<ArticleOutlinedIcon />}
-            title="固定页面比例"
-            summary="在打印时使用固定的比例，而非动态测量。FireFox 需要打开此项才能正确显示页面。"
             checked={printConfig.aspectRatioFixed}
+            icon={<ArticleOutlinedIcon />}
             onClick={handleAspectRatioFixedToggle}
+            summary="在打印时使用固定的比例，而非动态测量。FireFox 需要打开此项才能正确显示页面。"
+            title="固定页面比例"
           />
         </List>
         <Divider />
@@ -132,10 +132,10 @@ export default function AdjustSheets({ open, onOpen, onClose, variant, width }: 
         <List>
           <ListSubheader>预览</ListSubheader>
           <ListSwitchItem
-            icon={<ContrastOutlinedIcon />}
-            title="彩色打印"
             checked={previewConfig.colorMode === 'colorful'}
+            icon={<ContrastOutlinedIcon />}
             onClick={handleGrayPreviewToggle}
+            title="彩色打印"
           />
           <ListItem>
             <ListItemText secondary="预览选项不会影响最终打印效果" />

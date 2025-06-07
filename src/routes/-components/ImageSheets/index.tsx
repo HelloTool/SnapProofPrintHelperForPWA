@@ -1,12 +1,12 @@
+import { Box, CircularProgress, Paper, SwipeableDrawer, type Theme, Typography } from '@mui/material';
+import { useAtom } from 'jotai';
+import { nanoid } from 'nanoid';
+import { useRef } from 'react';
+import { imagesAtom } from '@/atoms/snapProofPrint';
 import useInsets from '@/features/insets/hooks/useInsets';
 import type { SnapImage } from '@/types/snapProofPrint';
 import { readFileAsDataURL } from '@/utils/file';
-import { Box, CircularProgress, Paper, SwipeableDrawer, type Theme, Typography } from '@mui/material';
-import { nanoid } from 'nanoid';
-import { useRef } from 'react';
 import Toolbar from './Toolbar';
-import { useAtom } from 'jotai';
-import { imagesAtom } from '@/atoms/snapProofPrint';
 
 interface ImageSheetsProps {
   height: number;
@@ -94,13 +94,12 @@ export default function ImageSheets({ open, onClose, onOpen, height }: ImageShee
 
   return (
     <SwipeableDrawer
-      variant="permanent"
       anchor="bottom"
-      open={open}
+      disableSwipeToOpen={false}
       onClose={onClose}
       onOpen={onOpen}
+      open={open}
       swipeAreaWidth={sheetsBleeding}
-      disableSwipeToOpen={false}
       sx={{
         '& .MuiDrawer-paper': {
           zIndex: 0,
@@ -114,6 +113,7 @@ export default function ImageSheets({ open, onClose, onOpen, height }: ImageShee
             }),
         },
       }}
+      variant="permanent"
     >
       <Toolbar
         imagesCount={images.length}
@@ -121,12 +121,12 @@ export default function ImageSheets({ open, onClose, onOpen, height }: ImageShee
         onClearImagesClick={handleClearImagesClick}
       />
       <input
-        ref={imageInputRef}
-        type="file"
-        style={{ display: 'none' }}
         accept="image/*"
         multiple
         onChange={handleImageInputChange}
+        ref={imageInputRef}
+        style={{ display: 'none' }}
+        type="file"
       />
       <Box
         sx={(theme) => ({
@@ -144,12 +144,18 @@ export default function ImageSheets({ open, onClose, onOpen, height }: ImageShee
         })}
       >
         {images.map((item) => (
-          <Box key={item.key} sx={{ width: '100%' ,transition: (theme: Theme) =>
-            theme.transitions.create(['width'], {
-              duration: theme.transitions.duration.enteringScreen,
-            }),}} title={item.name}>
+          <Box
+            key={item.key}
+            sx={{
+              width: '100%',
+              transition: (theme: Theme) =>
+                theme.transitions.create(['width'], {
+                  duration: theme.transitions.duration.enteringScreen,
+                }),
+            }}
+            title={item.name}
+          >
             <Paper
-              variant="outlined"
               sx={{
                 width: '100%',
                 aspectRatio: 1,
@@ -157,13 +163,14 @@ export default function ImageSheets({ open, onClose, onOpen, height }: ImageShee
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
+              variant="outlined"
             >
               {item.status === 'loaded' ? (
                 <Box
-                  component="img"
-                  src={item.url}
                   alt={item.name}
+                  component="img"
                   loading="lazy"
+                  src={item.url}
                   sx={{
                     width: '100%',
                     height: '100%',
@@ -175,7 +182,6 @@ export default function ImageSheets({ open, onClose, onOpen, height }: ImageShee
               )}
             </Paper>
             <Typography
-              variant="caption"
               component="div"
               sx={{
                 width: '100%',
@@ -186,6 +192,7 @@ export default function ImageSheets({ open, onClose, onOpen, height }: ImageShee
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
               }}
+              variant="caption"
             >
               {item.name}
             </Typography>

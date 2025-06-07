@@ -1,44 +1,53 @@
-import { Box, type SxProps, type Theme } from '@mui/material';
-import { getSizeBasedOnOrientation } from '../utils/print';
-import PrintPreviewPaperConfigContext from '../contexts/PrintPreviewPaperConfigContext';
+import { Box, type Theme } from '@suid/material';
+import type { SxProps } from '@suid/system';
+import { createMemo, mergeProps } from 'solid-js';
+import type { JSX } from 'solid-js';
+import { getOrientationBasedSize } from '../utils/print';
+import { PrintPreviewPaperConfigProvider } from '../contexts/PrintPreviewPaperConfigContext';
+import type { DataType } from 'csstype';
+import { pageSizeNameToCm } from '../utils/paperSize';
 
 interface PrintPreviewProps {
-  children: React.ReactNode;
+  children: JSX.Element;
   sx?: SxProps<Theme>;
-  paperSizeCm: [number, number];
+  paperSize?: DataType.PageSize | [number, number];
   paperOrientation?: 'landscape' | 'portrait';
-  contentMarginLeftCm?: number;
-  contentMarginTopCm?: number;
-  contentMarginRightCm?: number;
-  contentMarginBottomCm?: number;
+  contentAspectRatioFixed?: boolean;
+  contentMarginLeft?: number;
+  contentMarginTop?: number;
+  contentMarginRight?: number;
+  contentMarginBottom?: number;
   colorMode?: 'colorful' | 'gray';
 }
-export default function PrintPreview({
-  children,
-  sx,
-  paperOrientation = 'portrait',
-  paperSizeCm,
-  contentMarginLeftCm = 2.25,
-  contentMarginTopCm = 2.25,
-  contentMarginRightCm = 2.25,
-  contentMarginBottomCm = 2.25,
-  colorMode,
-}: PrintPreviewProps) {
-  const { width, height } = getSizeBasedOnOrientation(paperSizeCm, paperOrientation);
+const DEFAULT_PROPS = {
+  paperSize: 'A4',
+  paperOrientation: 'portrait',
+  contentMarginLeft: 2.25,
+  contentMarginTop: 2.25,
+  contentMarginRight: 2.25,
+  contentMarginBottom: 2.25,
+  colorMode: 'colorful',
+} as const satisfies Partial<PrintPreviewProps>;
+export default function PrintPreview(props: PrintPreviewProps) {
+  const finalProps = mergeProps(DEFAULT_PROPS, props);
+  const finalPaperSize = createMemo(() => {
+    const paperSize = Array.isArray(finalProps.paperSize)
+      ? finalProps.paperSize
+      : pageSizeNameToCm(finalProps.paperSize);
+    return getOrientationBasedSize(paperSize, finalProps.paperOrientation);
+  });
   return (
-    <Box className="print-simulator" sx={sx}>
-      <PrintPreviewPaperConfigContext.Provider
-        value={{
-          paperAspectRatio: width / height,
-          paperPaddingLeftPercent: (contentMarginLeftCm / width) * 100,
-          paperPaddingTopPercent: (contentMarginTopCm / width) * 100,
-          paperPaddingRightPercent: (contentMarginRightCm / width) * 100,
-          paperPaddingBottomPercent: (contentMarginBottomCm / width) * 100,
-          colorMode: colorMode,
-        }}
+    <Box class="PrintPreview" sx={finalProps.sx}>
+      <PrintPreviewPaperConfigProvider
+        paperAspectRatio={finalPaperSize().width / finalPaperSize().height}
+        paperPaddingLeftPercent={(finalProps.contentMarginLeft / finalPaperSize().width) * 100}
+        paperPaddingTopPercent={(finalProps.contentMarginTop / finalPaperSize().width) * 100}
+        paperPaddingRightPercent={(finalProps.contentMarginRight / finalPaperSize().width) * 100}
+        paperPaddingBottomPercent={(finalProps.contentMarginBottom / finalPaperSize().width) * 100}
+        colorMode={finalProps.colorMode}
       >
-        {children}
-      </PrintPreviewPaperConfigContext.Provider>
+        {finalProps.children}
+      </PrintPreviewPaperConfigProvider>
     </Box>
   );
 }

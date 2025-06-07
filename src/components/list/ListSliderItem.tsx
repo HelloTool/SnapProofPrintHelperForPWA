@@ -2,13 +2,13 @@ import {
   Box,
   ListItem,
   Slider,
-  type SxProps,
-  type Theme,
   type SliderComponent,
   type SliderOwnProps,
+  type SxProps,
+  type Theme,
 } from '@mui/material';
-import ListItemTitledComponent from './ListItemTitledComponent';
 import { useEffect, useState } from 'react';
+import ListItemTitledComponent from './ListItemTitledComponent';
 
 interface ListSliderItemProps<Value extends number | number[]> {
   title?: string;
@@ -61,14 +61,14 @@ export default function ListSliderItem<Value extends number | number[]>({
         <Box sx={{ paddingInline: 1 }}>
           <TypedSlider
             aria-label={title}
-            valueLabelDisplay="auto"
-            value={value}
+            disabled={disabled}
             onChange={handleChange}
             onChangeCommitted={handleChangeCommitted}
-            disabled={disabled}
             sx={{
               display: 'block',
             }}
+            value={value}
+            valueLabelDisplay="auto"
             {...sliderProps}
           />
         </Box>

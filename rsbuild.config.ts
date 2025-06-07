@@ -1,10 +1,16 @@
 import { defineConfig } from '@rsbuild/core';
-import { pluginReact } from '@rsbuild/plugin-react';
+import { pluginBabel } from '@rsbuild/plugin-babel';
 import { pluginSass } from '@rsbuild/plugin-sass';
-import { TanStackRouterRspack } from '@tanstack/router-plugin/rspack';
+import { pluginSolid } from '@rsbuild/plugin-solid';
 
 export default defineConfig({
-  plugins: [pluginReact(), pluginSass()],
+  plugins: [
+    pluginBabel({
+      include: /\.(?:jsx|tsx)$/,
+    }),
+    pluginSolid(),
+    pluginSass(),
+  ],
   html: {
     template: './src/index.browser.html',
   },
@@ -26,24 +32,7 @@ export default defineConfig({
     port: process.env.NODE_ENV === 'development' ? 3000 : 8080,
     publicDir: false,
   },
-  tools: {
-    rspack: {
-      plugins: [
-        TanStackRouterRspack({
-          target: 'react',
-          autoCodeSplitting: true,
-          generatedRouteTree: './src/configs/router/route-tree.gen.ts',
-        }),
-      ],
-    },
-    swc: {
-      jsc: {
-        experimental: {
-          plugins: [['@swc/plugin-emotion', {}]],
-        },
-      },
-    },
-  },
+  tools: {},
   source: {
     define: {
       IS_TAURI: false,

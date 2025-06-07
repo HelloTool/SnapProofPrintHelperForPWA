@@ -1,26 +1,30 @@
-import { Box, Paper, type SxProps, type Theme } from '@mui/material';
-import usePrintPreviewPaperConfigContext from '../hooks/usePrintPreviewPaperConfigContext';
+import { Box, Paper, type Theme } from '@suid/material';
+import type { SxProps } from '@suid/system';
+import type { JSX } from 'solid-js';
+import { usePrintPreviewPaperConfig } from '../contexts/PrintPreviewPaperConfigContext';
+import { mergeMulitSxProps } from '@/utils/suid';
 
 interface PrintPaperPreveiewProps {
-  children: React.ReactNode;
+  children: JSX.Element;
   sx?: SxProps<Theme>;
 }
-export default function PrintPreviewPaper({ children, sx }: PrintPaperPreveiewProps) {
-  const paperConfig = usePrintPreviewPaperConfigContext();
-  if (!paperConfig) {
-    throw new Error('PrintPreviewPaper must be used within a PrintPreviewPaperConfigProvider');
-  }
+export default function PrintPreviewPaper(props: PrintPaperPreveiewProps) {
+  const paperConfig = usePrintPreviewPaperConfig();
+
   const {
     paperAspectRatio,
-    paperPaddingLeftPercent = 0,
-    paperPaddingTopPercent = 0,
-    paperPaddingRightPercent = 0,
-    paperPaddingBottomPercent = 0,
-    colorMode = 'gray',
+    paperPaddingLeftPercent,
+    paperPaddingTopPercent,
+    paperPaddingRightPercent,
+    paperPaddingBottomPercent,
+    colorMode,
   } = paperConfig;
   return (
     <Paper
-      sx={[
+      class="print-preview-paper"
+      elevation={1}
+      square
+      sx={mergeMulitSxProps(
         {
           overflow: 'hidden',
           aspectRatio: paperAspectRatio,
@@ -28,10 +32,8 @@ export default function PrintPreviewPaper({ children, sx }: PrintPaperPreveiewPr
           pointerEvents: 'none',
           filter: colorMode === 'gray' ? 'grayscale(100%)' : undefined,
         },
-        ...(Array.isArray(sx) ? sx : [sx]),
-      ]}
-      elevation={1}
-      square
+        props.sx,
+      )}
     >
       <Box
         sx={{
@@ -43,7 +45,7 @@ export default function PrintPreviewPaper({ children, sx }: PrintPaperPreveiewPr
           height: '100%',
         }}
       >
-        {children}
+        {props.children}
       </Box>
     </Paper>
   );

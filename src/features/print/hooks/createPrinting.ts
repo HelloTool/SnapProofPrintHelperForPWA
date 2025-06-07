@@ -1,15 +1,13 @@
-import { useEffect, useState } from 'react';
-import { flushSync } from 'react-dom';
+import { createEffect, createSignal } from 'solid-js';
 
-export default function usePrint() {
-  const [isPrinting, setIsPrinting] = useState(false);
+export default function createPrinting() {
+  const [isPrinting, setIsPrinting] = createSignal(false);
 
-  useEffect(() => {
+  createEffect(() => {
     function handleBeforePrint() {
       // 在打印时，确保状态更新同步到视图
-      flushSync(() => {
-        setIsPrinting(true);
-      });
+
+      setIsPrinting(true);
     }
     function handleAfterPrint() {
       setIsPrinting(false);

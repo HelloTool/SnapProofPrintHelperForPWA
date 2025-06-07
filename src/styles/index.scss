@@ -7,9 +7,13 @@ body,
 
 html {
   user-select: none;
-  overflow: hidden;
+  touch-action: manipulation;
 }
 
 html.tauri {
   touch-action: none;
+}
+
+body {
+  overscroll-behavior: none;
 }

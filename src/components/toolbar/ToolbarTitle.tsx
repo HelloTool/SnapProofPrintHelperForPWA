@@ -6,7 +6,7 @@ interface ToolbarTitleProps {
 
 export default function ToolbarTitle({ children }: ToolbarTitleProps) {
   return (
-    <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
+    <Typography component="h1" sx={{ flexGrow: 1 }} variant="h6">
       {children}
     </Typography>
   );

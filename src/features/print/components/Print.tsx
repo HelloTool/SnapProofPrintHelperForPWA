@@ -1,49 +1,56 @@
-import { GlobalStyles } from '@mui/material';
-import { createPortal } from 'react-dom';
+import { GlobalStyles } from '@suid/material';
 import type { DataType } from 'csstype';
-import { getSizeBasedOnOrientation } from '../utils/print';
-import PrintPaperConfigContext from '../contexts/PrintPaperConfigContext';
+import { createMemo, type JSX } from 'solid-js';
+import { mergeProps, Portal } from 'solid-js/web';
+import { getOrientationBasedSize } from '../utils/print';
+import { PrintPaperConfigProvider } from '../contexts/PrintPaperConfigContext';
+import { pageSizeNameToCm } from '../utils/paperSize';
 
 export interface PrintProps {
-  children: React.ReactNode;
-  paperSizeName?: DataType.PageSize | 'auto';
-  paperSizeCm: [number, number];
+  children: JSX.Element;
+  paperSize?: DataType.PageSize | [number, number];
   paperOrientation?: 'landscape' | 'portrait';
-  contentAspectRatioFixed: boolean;
-  contentMarginLeftCm?: number;
-  contentMarginTopCm?: number;
-  contentMarginRightCm?: number;
-  contentMarginBottomCm?: number;
+  contentAspectRatioFixed?: boolean;
+  contentMarginLeft?: number;
+  contentMarginTop?: number;
+  contentMarginRight?: number;
+  contentMarginBottom?: number;
 }
 
-export default function Print({
-  children,
-  paperSizeName,
-  paperOrientation = 'portrait',
-  paperSizeCm,
-  contentAspectRatioFixed = false,
-  contentMarginLeftCm = 2.25,
-  contentMarginTopCm = 2.25,
-  contentMarginRightCm = 2.25,
-  contentMarginBottomCm = 2.25,
-}: PrintProps) {
-  const { width, height } = getSizeBasedOnOrientation(paperSizeCm, paperOrientation);
-  const contentWidth = width - contentMarginLeftCm - contentMarginRightCm;
-  const contentHeight = height - contentMarginTopCm - contentMarginBottomCm;
-  const contentAspectRatio = contentWidth / contentHeight;
+const DEFAULT_PROPS = {
+  paperSize: 'A4',
+  paperOrientation: 'portrait',
+  contentAspectRatioFixed: false,
+  contentMarginLeft: 2.25,
+  contentMarginTop: 2.25,
+  contentMarginRight: 2.25,
+  contentMarginBottom: 2.25,
+} as const satisfies Partial<PrintProps>;
+
+export default function Print(props: PrintProps) {
+  const finalProps = mergeProps(DEFAULT_PROPS, props);
+  const finalPaperSize = createMemo(() => {
+    const paperSize = Array.isArray(finalProps.paperSize)
+      ? finalProps.paperSize
+      : pageSizeNameToCm(finalProps.paperSize);
+    return getOrientationBasedSize(paperSize, finalProps.paperOrientation);
+  });
+
+  const contentAspectRatio = createMemo(() => {
+    const contentWidth = finalPaperSize().width - finalProps.contentMarginLeft - finalProps.contentMarginRight;
+    const contentHeight = finalPaperSize().height - finalProps.contentMarginTop - finalProps.contentMarginBottom;
+    return contentWidth / contentHeight;
+  });
   return (
     <>
       <GlobalStyles
         styles={{
-          '.print > *': {
-            width: contentAspectRatioFixed ? '100%' : '100vw',
-            height: contentAspectRatioFixed ? '100%' : '100vh',
-            aspectRatio: contentAspectRatioFixed ? contentWidth / contentHeight : undefined,
-          },
-
           '@page': {
-            size: paperSizeName ? `${paperSizeName} ${paperOrientation}` : `${width}cm ${height}cm`,
-            margin: `${contentMarginTopCm}cm ${contentMarginRightCm}cm ${contentMarginBottomCm}cm ${contentMarginLeftCm}cm`,
+            size: (typeof finalProps.paperSize === 'string'
+              ? `${finalProps.paperSize} ${finalProps.paperOrientation}`
+              : // biome-ignore lint/suspicious/noExplicitAny: false
+                `${finalPaperSize().width}cm ${finalPaperSize().height}cm`) as any,
+            margin: `${finalProps.contentMarginTop}cm ${finalProps.contentMarginRight}cm ${finalProps.contentMarginBottom}cm ${finalProps.contentMarginLeft}cm`,
           },
           'body > .print': {
             display: 'none',
@@ -58,14 +65,16 @@ export default function Print({
           },
         }}
       />
-      {createPortal(
-        <div className="print">
-          <PrintPaperConfigContext.Provider value={{ contentAspectRatio, contentAspectRatioFixed }}>
-            {children}
-          </PrintPaperConfigContext.Provider>
-        </div>,
-        document.body,
-      )}
+      <Portal>
+        <div class="print">
+          <PrintPaperConfigProvider
+            contentAspectRatio={contentAspectRatio()}
+            contentAspectRatioFixed={finalProps.contentAspectRatioFixed}
+          >
+            {props.children}
+          </PrintPaperConfigProvider>
+        </div>
+      </Portal>
     </>
   );
 }

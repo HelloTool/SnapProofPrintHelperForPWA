@@ -1,13 +1,13 @@
+import { atom } from 'jotai';
+import { atomWithImmer } from 'jotai-immer';
 import type {
-  SnapProofPaperLayout,
   SnapImage,
+  SnapProofPaperLayout,
   SnapProofPrintConfig,
   SnapProofPrintPreviewConfig,
 } from '@/types/snapProofPrint';
 import { chunkArray } from '@/utils/list';
 import { maybeChrome } from '@/utils/platform';
-import { atom } from 'jotai';
-import { atomWithImmer } from 'jotai-immer';
 
 export const paperLayoutAtom = atomWithImmer<SnapProofPaperLayout>({
   columns: 3,
@@ -35,3 +35,23 @@ export const imagesAtom = atomWithImmer<SnapImage[]>([]);
 export const isImagesAddedAtom = atom<boolean>((get) => get(imagesAtom).length > 0);
 
 export const paperImagesAtom = atom((get) => chunkArray(get(imagesAtom), get(itemsCountPerPageAtom)));
+
+function _clearImages() {
+  setImages(() => []);
+}
+
+function _updateImages(newImages: SnapImage[]) {
+  setImages((draft) => {
+    for (const newImage of newImages) {
+      const index = draft.findIndex((image) => image.key === newImage.key);
+      if (index >= 0) {
+        draft[index] = newImage;
+      }
+    }
+  });
+}
+function _pushImages(newImages: SnapImage[]) {
+  setImages((draft) => {
+    draft.push(...newImages);
+  });
+}

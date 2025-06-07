@@ -13,7 +13,7 @@ export default function ListSwitchItem({ icon, title, summary, checked, onClick 
       <ListItemButton onClick={onClick}>
         {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
         <ListItemText primary={title} secondary={summary} />
-        <Switch checked={checked} edge="end" tabIndex={-1} aria-hidden sx={{ pointerEvents: 'none' }} />
+        <Switch aria-hidden checked={checked} edge="end" sx={{ pointerEvents: 'none' }} tabIndex={-1} />
       </ListItemButton>
     </ListItem>
   );

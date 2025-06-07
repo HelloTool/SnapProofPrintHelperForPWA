@@ -11,4 +11,4 @@ export function readFileAsDataURL(file: File): Promise<string> {
   });
 }
 
-function pickFiles() {}
+function _pickFiles() {}

@@ -1,34 +1,39 @@
-import { IconButton, type IconButtonOwnProps, Tooltip } from '@mui/material';
-import type { SxProps, Theme } from '@mui/material/styles';
+import { IconButton } from '@suid/material';
+import type { IconButtonProps } from '@suid/material/IconButton';
+import type { Theme } from '@suid/material/styles';
+import type { SxProps } from '@suid/system';
+import type { JSX } from 'solid-js';
 
 interface ToolbarIconButtonProps {
-  icon: React.ReactNode;
+  icon: JSX.Element;
   label?: string;
   tooltip?: string;
-  color?: IconButtonOwnProps['color'];
-  edge?: IconButtonOwnProps['edge'];
+  color?: IconButtonProps['color'];
+  edge?: IconButtonProps['edge'];
   disabled?: boolean;
   sx?: SxProps<Theme>;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent, JSX.EventHandler<HTMLButtonElement, MouseEvent>>;
 }
-export function ToolbarIconButton({
-  icon,
-  tooltip,
-  label,
-  color = 'inherit',
-  edge,
-  onClick,
-  disabled,
-  sx,
-}: ToolbarIconButtonProps) {
+export function ToolbarIconButton(props: ToolbarIconButtonProps) {
   return (
-    <Tooltip sx={sx} title={tooltip ?? label} placement="bottom" describeChild={false}>
-      {/* 添加span元素，允许禁用时显示tooltip */}
-      <span>
-        <IconButton edge={edge} color={color} aria-label={label} onClick={onClick} disabled={disabled}>
-          {icon}
-        </IconButton>
-      </span>
-    </Tooltip>
+    <IconButton
+      aria-label={props.label}
+      color={props.color}
+      disabled={props.disabled}
+      edge={props.edge}
+      onClick={props.onClick}
+      sx={props.sx}
+      title={props.tooltip ?? props.label}
+    >
+      {props.icon}
+    </IconButton>
+    // <Tooltip sx={sx} title={tooltip ?? label} placement="bottom" describeChild={false}>
+    //   {/* 添加span元素，允许禁用时显示tooltip */}
+    //   <span>
+    //     <IconButton edge={edge} color={color} aria-label={label} onClick={onClick} disabled={disabled}>
+    //       {icon}
+    //     </IconButton>
+    //   </span>
+    // </Tooltip>
   );
 }

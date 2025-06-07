@@ -1,7 +1,7 @@
-import { paperLayoutAtom } from '@/atoms/snapProofPrint';
-import type { SnapImage } from '@/types/snapProofPrint';
 import { Box, CircularProgress } from '@mui/material';
 import { useAtom } from 'jotai';
+import { paperLayoutAtom } from '@/atoms/snapProofPrint';
+import type { SnapImage } from '@/types/snapProofPrint';
 
 interface SnapProofPrintPageContentProps {
   images: SnapImage[];
@@ -35,15 +35,15 @@ export default function SnapProofPrintPageContent({ images }: SnapProofPrintPage
         >
           {image.status === 'loaded' ? (
             <Box
+              alt={image.name}
+              component="img"
               key={image.key}
+              src={image.url}
               sx={{
                 width: '100%',
                 height: '100%',
                 objectFit: 'contain',
               }}
-              component="img"
-              src={image.url}
-              alt={image.name}
             />
           ) : (
             <CircularProgress />

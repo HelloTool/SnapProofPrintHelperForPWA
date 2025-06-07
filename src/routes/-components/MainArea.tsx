@@ -1,15 +1,14 @@
-import PrintPreviewPaper from '@/features/print/components/PrintPreviewPaper';
-
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import SnapProofPrintPageContent from './SnapProofPrintPageContent';
-import useInsets from '@/features/insets/hooks/useInsets';
 import { useAtom } from 'jotai';
-import { printConfigAtom, paperImagesAtom, printPreviewConfigAtom } from '@/atoms/snapProofPrint';
+import { paperImagesAtom, printConfigAtom, printPreviewConfigAtom } from '@/atoms/snapProofPrint';
+import useInsets from '@/features/insets/hooks/useInsets';
 import PrintPreview from '@/features/print/components/PrintPreview';
+import PrintPreviewPaper from '@/features/print/components/PrintPreviewPaper';
+import SnapProofPrintPageContent from './SnapProofPrintPageContent';
 
-export default function Main() {
+export default function MainArea() {
   const insets = useInsets();
   const [paperImages] = useAtom(paperImagesAtom);
   const [printConfig] = useAtom(printConfigAtom);
@@ -46,6 +45,13 @@ export default function Main() {
           }}
         >
           <PrintPreview
+            colorMode={printPreviewConfig.colorMode}
+            contentMarginBottomCm={printConfig.contentMarginBottomCm}
+            contentMarginLeftCm={printConfig.contentMarginLeftCm}
+            contentMarginRightCm={printConfig.contentMarginRightCm}
+            contentMarginTopCm={printConfig.contentMarginTopCm}
+            paperOrientation={printConfig.orientation}
+            paperSizeCm={typeof printConfig.size !== 'string' ? printConfig.size : [21, 29.7]}
             sx={{
               minHeight: '100%',
               display: 'flex',
@@ -54,13 +60,6 @@ export default function Main() {
               justifyContent: 'center',
               gap: 2,
             }}
-            paperSizeCm={typeof printConfig.size !== 'string' ? printConfig.size : [21, 29.7]}
-            paperOrientation={printConfig.orientation}
-            contentMarginLeftCm={printConfig.contentMarginLeftCm}
-            contentMarginTopCm={printConfig.contentMarginTopCm}
-            contentMarginRightCm={printConfig.contentMarginRightCm}
-            contentMarginBottomCm={printConfig.contentMarginBottomCm}
-            colorMode={printPreviewConfig.colorMode}
           >
             {paperImages.map((images, index) => (
               <Box
@@ -86,12 +85,12 @@ export default function Main() {
                   <SnapProofPrintPageContent images={images} />
                 </PrintPreviewPaper>
                 <Typography
-                  variant="subtitle1"
-                  color="textPrimary"
                   align="center"
+                  color="textPrimary"
                   sx={{
                     userSelect: 'text',
                   }}
+                  variant="subtitle1"
                 >
                   第 {index + 1} 页
                 </Typography>
@@ -109,7 +108,7 @@ export default function Main() {
             justifyContent: 'center',
           }}
         >
-          <Typography variant="body2" color="textPrimary">
+          <Typography color="textPrimary" variant="body2">
             暂无预览，请先添加图片 。
           </Typography>
         </Box>

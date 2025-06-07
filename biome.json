@@ -1,20 +1,27 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "include": ["scripts/**/*", "src/**/*", "src-tauri/**/*", "./*"],
-    "ignore": ["node_modules/**/*", "src/configs/*.gen.ts", "src-tauri/gen/**/*", "src-tauri/target/**/*"]
+    "includes": ["**", "!node_modules/**/*", "!src/configs/*.gen.ts", "!src-tauri/gen/**/*", "!src-tauri/target/**/*"]
   },
   "vcs": {
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
   },
+  "linter": {
+    "enabled": true,
+    "domains": {
+      "solid": "all",
+      "project": "recommended"
+    },
+    "rules": {
+      "recommended": true
+    }
+  },
   "formatter": {
     "indentStyle": "space",
-    "lineWidth": 120
+    "lineWidth": 120,
+    "includes": ["**"]
   },
   "javascript": {
     "formatter": {
@@ -26,10 +33,14 @@
       "cssModules": true
     }
   },
-  "linter": {
+  "assist": {
     "enabled": true,
-    "rules": {
-      "recommended": true
+    "actions": {
+      "source": {
+        "useSortedKeys": "off",
+        "useSortedAttributes": "off",
+        "organizeImports": "on"
+      }
     }
   }
 }

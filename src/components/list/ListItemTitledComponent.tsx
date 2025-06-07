@@ -1,17 +1,19 @@
-import { ListItemText } from '@mui/material';
+import { ListItemText } from '@suid/material';
 
-import type { SxProps, Theme } from '@mui/material/styles';
+import type {  Theme } from '@suid/material/styles';
+import { SxProps } from '@suid/system';
+import type { JSX } from 'solid-js';
 
 interface SecondarySlotProps {
-  children: React.ReactNode;
+  children: JSX.Element;
 }
-function SecondarySlot({ children }: SecondarySlotProps) {
-  return children;
+function SecondarySlot(props: SecondarySlotProps) {
+  return props.children;
 }
 
 interface ListItemTitledComponentProps {
-  title?: React.ReactNode;
-  children: React.ReactNode;
+  title?: JSX.Element;
+  children: JSX.Element;
   sx?: SxProps<Theme>;
 }
 
@@ -21,9 +23,6 @@ export default function ListItemTitledComponent({ title, children, sx }: ListIte
       primary={title}
       secondary={children}
       sx={sx}
-      slots={{
-        secondary: SecondarySlot,
-      }}
     />
   );
 }
