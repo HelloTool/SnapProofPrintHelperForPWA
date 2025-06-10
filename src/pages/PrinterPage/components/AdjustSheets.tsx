@@ -72,7 +72,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
   const columnsError = createMemo(() => {
     const columns = Number.parseFloat(columnsValue());
     if (Number.isNaN(columns) || !Number.isInteger(columns)) {
-      return '请输入输入整数';
+      return '请输入整数';
     } else if (!(columns > 0)) {
       return '列数必须大于0';
     }
@@ -82,7 +82,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
   const rowsError = createMemo(() => {
     const rows = Number.parseFloat(rowsValue());
     if (Number.isNaN(rows) || !Number.isInteger(rows)) {
-      return '请输入输入整数';
+      return '请输入整数';
     } else if (!(rows > 0)) {
       return '行数必须大于0';
     }

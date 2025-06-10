@@ -1,9 +1,8 @@
-import { Box, CircularProgress, Drawer, Paper, Typography, useTheme } from '@suid/material';
-
+import { Box, Drawer, Paper, Typography, useTheme } from '@suid/material';
 import { nanoid } from 'nanoid';
-import { Index, Show } from 'solid-js';
+import { Index } from 'solid-js';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
-import { pickFiles, readFileAsDataURL } from '@/utils/file';
+import { pickFiles } from '@/utils/file';
 import useImages from '../../contexts/ImagesContext';
 import type { SnapImage } from '../../types/image';
 import ISToolbar from './ISToolbar';
