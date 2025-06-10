@@ -23,6 +23,7 @@
     "docs:generateOsNotices": "tsx ./scripts/docs/generate_os_notices.ts"
   },
   "dependencies": {
+    "@material/tooltip": "^14.0.0",
     "@suid/icons-material": "^0.8.1",
     "@suid/material": "^0.18.0",
     "@suid/system": "^0.13.0",
