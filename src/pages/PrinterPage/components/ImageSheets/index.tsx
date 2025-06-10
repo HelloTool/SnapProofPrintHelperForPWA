@@ -5,8 +5,9 @@ import { Index, Show } from 'solid-js';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import { pickFiles, readFileAsDataURL } from '@/utils/file';
 import useImages from '../../contexts/ImagesContext';
-import type { LoadedSnapImage, SnapImage } from '../../types/image';
+import type { SnapImage } from '../../types/image';
 import ISToolbar from './ISToolbar';
+import { StatefulImage } from '@/components/StatefulImage';
 
 interface ImageSheetsProps {
   height: number;
@@ -23,42 +24,12 @@ export default function ImageSheets(props: ImageSheetsProps) {
 
   function loadImages(files: FileList | null) {
     if (files && files.length > 0) {
-      const imageProcessTasks = Array.from(files).map((file) => ({
+      const newImages: SnapImage[] = Array.from(files).map((file) => ({
         key: nanoid(),
-        url: readFileAsDataURL(file),
-        file,
+        url: URL.createObjectURL(file),
+        name: file.name,
       }));
-      const loadingImages: SnapImage[] = imageProcessTasks.map((task) => ({
-        key: task.key,
-        status: 'loading',
-        name: task.file.name,
-      }));
-      imagesActions.addImages(loadingImages);
-      const asyncImages = imageProcessTasks.map(async (task): Promise<SnapImage> => {
-        try {
-          const awaitedUrl = await task.url;
-          return {
-            key: task.key,
-            status: 'loaded',
-            name: task.file.name,
-            url: awaitedUrl,
-          };
-        } catch (e) {
-          return {
-            key: task.key,
-            status: 'error',
-            name: task.file.name,
-            reason: String(e),
-          };
-        }
-      });
-      Promise.all(asyncImages)
-        .then((images) => {
-          imagesActions.updateImages(images);
-        })
-        .catch((e) => {
-          console.error(e);
-        });
+      imagesActions.addImages(newImages);
     }
   }
   function handleAddImagesClick() {
@@ -131,25 +102,24 @@ export default function ImageSheets(props: ImageSheetsProps) {
                 sx={{
                   width: '100%',
                   aspectRatio: '1',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  overflow: 'hidden',
                 }}
                 variant="outlined"
               >
-                <Show when={image().status === 'loaded'} fallback={<CircularProgress />}>
-                  <Box
-                    alt={image().name}
-                    component="img"
-                    loading="lazy"
-                    src={(image() as LoadedSnapImage).url}
-                    sx={{
-                      width: '100%',
-                      height: '100%',
+                <StatefulImage
+                  src={image().url}
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                  }}
+                  imgProps={{
+                    loading: 'lazy',
+                    sx: {
                       objectFit: 'cover',
-                    }}
-                  />
-                </Show>
+                    },
+                  }}
+                  alt={image().name}
+                />
               </Paper>
               <Typography
                 component="div"

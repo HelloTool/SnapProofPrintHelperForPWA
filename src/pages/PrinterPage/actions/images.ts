@@ -6,7 +6,6 @@ import type { SnapImage } from '../types/image';
 
 export interface ImagesActions {
   addImages: (images: SnapImage[]) => void;
-  updateImages: (images: SnapImage[]) => void;
   updateChunkedImages: () => void;
   clearImages: () => void;
 }
@@ -27,23 +26,13 @@ export function createImagesActions(setState: SetStoreFunction<ImagesStore>, con
       );
       updateChunkedImages();
     },
-    updateImages: (images) => {
-      setState(
-        produce((state) => {
-          for (const newImage of images) {
-            const index = state.images.findIndex((image) => image.key === newImage.key);
-            if (index >= 0) {
-              state.images[index] = newImage;
-            }
-          }
-        }),
-      );
-      updateChunkedImages();
-    },
     updateChunkedImages,
     clearImages: () => {
       setState(
         produce((state) => {
+          for (const image of state.images) {
+            URL.revokeObjectURL(image.url);
+          }
           state.images = [];
           state.chunkedImages = [];
         }),

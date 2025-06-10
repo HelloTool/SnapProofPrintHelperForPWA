@@ -1,6 +1,7 @@
 import { Box, CircularProgress } from '@suid/material';
 import { Index, Show } from 'solid-js';
-import type { LoadedSnapImage, SnapImage } from '../types/image';
+import type { SnapImage } from '../types/image';
+import { StatefulImage } from '@/components/StatefulImage';
 
 interface SPPrintPageContentProps {
   images: SnapImage[];
@@ -33,18 +34,19 @@ export default function SPPrintPageContent(props: SPPrintPageContentProps) {
               justifyContent: 'center',
             }}
           >
-            <Show when={image().status === 'loaded'} fallback={<CircularProgress />}>
-              <Box
-                component="img"
-                alt={image().name}
-                src={(image() as LoadedSnapImage).url}
-                sx={{
-                  width: '100%',
-                  height: '100%',
+            <StatefulImage
+              sx={{
+                width: '100%',
+                height: '100%',
+              }}
+              src={image().url}
+              alt={image().name}
+              imgProps={{
+                sx: {
                   objectFit: 'contain',
-                }}
-              />
-            </Show>
+                },
+              }}
+            />
           </Box>
         )}
       </Index>
