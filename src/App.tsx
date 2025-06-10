@@ -1,10 +1,19 @@
-import { ThemeProvider } from '@suid/material';
+import { GlobalStyles, ThemeProvider } from '@suid/material';
 import PrinterPage from './pages/PrinterPage';
-import { theme } from './themes/appTheme';
+import { createAppTheme } from './themes/appTheme';
 
 export function App() {
+  const theme = createAppTheme();
   return (
     <ThemeProvider theme={theme}>
+      <GlobalStyles
+        styles={{
+          body: {
+            backgroundColor: theme.palette.background.default,
+            colorScheme: theme.palette.mode,
+          },
+        }}
+      />
       <PrinterPage />
     </ThemeProvider>
   );

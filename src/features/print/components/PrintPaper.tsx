@@ -14,7 +14,7 @@ export default function PrintPaper(props: PrintPaperProps) {
       sx={{
         width: paperConfig.contentAspectRatioFixed ? '100%' : '100vw',
         height: paperConfig.contentAspectRatioFixed ? undefined : '100vh',
-        aspectRatio: paperConfig.contentAspectRatioFixed ? paperConfig.contentAspectRatio : undefined,
+        aspectRatio: paperConfig.contentAspectRatioFixed ? `${paperConfig.contentAspectRatio}` : undefined,
       }}
     >
       {props.children}

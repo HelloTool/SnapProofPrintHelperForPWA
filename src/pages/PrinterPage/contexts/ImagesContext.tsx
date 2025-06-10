@@ -1,7 +1,7 @@
-import { createContext, createEffect, JSX, useContext } from 'solid-js';
+import { createContext, createEffect, type JSX, useContext } from 'solid-js';
+import { createImagesActions, type ImagesActions } from '../actions/images';
 import { createImagesStore, type ImagesStore } from '../stores/images';
 import { useConfig } from './ConfigContext';
-import { createImagesActions, type ImagesActions } from '../actions/images';
 
 const ImagesContext = createContext<{ state: ImagesStore; actions: ImagesActions }>();
 

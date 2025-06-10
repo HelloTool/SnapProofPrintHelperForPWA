@@ -1,12 +1,5 @@
-import {
-  Box,
-  ListItem,
-  Slider,
-  type SliderComponent,
-  type SliderOwnProps,
-  type SxProps,
-  type Theme,
-} from '@mui/material';
+import { Box, ListItem, type Theme } from '@suid/material';
+import type { SxProps } from '@suid/system';
 import { useEffect, useState } from 'react';
 import ListItemTitledComponent from './ListItemTitledComponent';
 

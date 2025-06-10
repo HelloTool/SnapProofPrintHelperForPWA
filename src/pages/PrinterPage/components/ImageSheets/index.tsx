@@ -1,52 +1,28 @@
-import { Box, CircularProgress, Paper, SwipeableDrawer, type Theme, Typography } from '@mui/material';
-import { useAtom } from 'jotai';
+import { Box, CircularProgress, Drawer, Paper, Typography, useTheme } from '@suid/material';
+
 import { nanoid } from 'nanoid';
-import { useRef } from 'react';
-import { imagesAtom } from '@/atoms/snapProofPrint';
-import {useInsets} from '@/features/insets/contexts/InsetsContext';
-import type { SnapImage } from '@/types/snapProofPrint';
-import { readFileAsDataURL } from '@/utils/file';
-import Toolbar from './Toolbar';
+import { Index, Show } from 'solid-js';
+import { useInsets } from '@/features/insets/contexts/InsetsContext';
+import { pickFiles, readFileAsDataURL } from '@/utils/file';
+import useImages from '../../contexts/ImagesContext';
+import type { LoadedSnapImage, SnapImage } from '../../types/image';
+import ISToolbar from './ISToolbar';
 
 interface ImageSheetsProps {
   height: number;
   open: boolean;
-  onClose: () => void;
-  onOpen: () => void;
+  onClose?: () => void;
+  onOpen?: () => void;
 }
 
-export default function ImageSheets({ open, onClose, onOpen, height }: ImageSheetsProps) {
+export default function ImageSheets(props: ImageSheetsProps) {
   const sheetsBleeding = 56;
   const insets = useInsets();
-  const [images, setImages] = useAtom(imagesAtom);
-  const imageInputRef = useRef<HTMLInputElement>(null);
 
-  function clearImages() {
-    setImages(() => []);
-  }
+  const { state: images, actions: imagesActions } = useImages();
 
-  function updateImages(newImages: SnapImage[]) {
-    setImages((draft) => {
-      for (const newImage of newImages) {
-        const index = draft.findIndex((image) => image.key === newImage.key);
-        if (index >= 0) {
-          draft[index] = newImage;
-        }
-      }
-    });
-  }
-  function pushImages(newImages: SnapImage[]) {
-    setImages((draft) => {
-      draft.push(...newImages);
-    });
-  }
-
-  function handleAddImagesClick() {
-    imageInputRef.current?.click();
-  }
-  function handleImageInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { files } = event.target;
-    if (files) {
+  function loadImages(files: FileList | null) {
+    if (files && files.length > 0) {
       const imageProcessTasks = Array.from(files).map((file) => ({
         key: nanoid(),
         url: readFileAsDataURL(file),
@@ -57,8 +33,7 @@ export default function ImageSheets({ open, onClose, onOpen, height }: ImageShee
         status: 'loading',
         name: task.file.name,
       }));
-      pushImages(loadingImages);
-
+      imagesActions.addImages(loadingImages);
       const asyncImages = imageProcessTasks.map(async (task): Promise<SnapImage> => {
         try {
           const awaitedUrl = await task.url;
@@ -79,57 +54,55 @@ export default function ImageSheets({ open, onClose, onOpen, height }: ImageShee
       });
       Promise.all(asyncImages)
         .then((images) => {
-          updateImages(images);
+          imagesActions.updateImages(images);
         })
         .catch((e) => {
           console.error(e);
         });
     }
-    event.target.value = '';
+  }
+  function handleAddImagesClick() {
+    pickFiles({ accept: 'image/*', multiple: true })
+      .then(loadImages)
+      .catch((e) => {
+        console.error(e);
+      });
   }
 
   function handleClearImagesClick() {
-    clearImages();
+    imagesActions.clearImages();
   }
-
+  const theme = useTheme();
   return (
-    <SwipeableDrawer
+    <Drawer
       anchor="bottom"
-      disableSwipeToOpen={false}
-      onClose={onClose}
-      onOpen={onOpen}
-      open={open}
-      swipeAreaWidth={sheetsBleeding}
+      // disableSwipeToOpen={false}
+      onClose={props.onClose}
+      // onOpen={onOpen}
+      open={props.open}
+      // swipeAreaWidth={sheetsBleeding}
       sx={{
         '& .MuiDrawer-paper': {
           zIndex: 0,
-          height: height,
+          height: props.height,
           left: `${insets.left}px`,
           right: `${insets.right}px`,
           bottom: `${insets.bottom}px`,
-          transition: (theme: Theme) =>
-            theme.transitions.create(['left', 'right', 'bottom'], {
-              duration: theme.transitions.duration.enteringScreen,
-            }),
+          transition: theme.transitions.create(['left', 'right', 'bottom'], {
+            duration: theme.transitions.duration.enteringScreen,
+          }),
         },
       }}
       variant="permanent"
     >
-      <Toolbar
-        imagesCount={images.length}
+      <ISToolbar
+        imagesCount={images.images.length}
         onAddImageClick={handleAddImagesClick}
         onClearImagesClick={handleClearImagesClick}
       />
-      <input
-        accept="image/*"
-        multiple
-        onChange={handleImageInputChange}
-        ref={imageInputRef}
-        style={{ display: 'none' }}
-        type="file"
-      />
+
       <Box
-        sx={(theme) => ({
+        sx={{
           display: 'grid',
           width: '100%',
           gap: 1,
@@ -139,66 +112,64 @@ export default function ImageSheets({ open, onClose, onOpen, height }: ImageShee
           overflowX: 'hidden',
           gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
           [theme.breakpoints.up('sm')]: {
-            gridTemplateColumns: 'repeat(auto-fill, 120px)',
+            gridTemplateColumns: 'repeat(auto-fill, 90px)',
           },
-        })}
+        }}
       >
-        {images.map((item) => (
-          <Box
-            key={item.key}
-            sx={{
-              width: '100%',
-              transition: (theme: Theme) =>
-                theme.transitions.create(['width'], {
+        <Index each={images.images}>
+          {(image) => (
+            <Box
+              sx={{
+                width: '100%',
+                transition: theme.transitions.create(['width'], {
                   duration: theme.transitions.duration.enteringScreen,
                 }),
-            }}
-            title={item.name}
-          >
-            <Paper
-              sx={{
-                width: '100%',
-                aspectRatio: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
               }}
-              variant="outlined"
+              title={image().name}
             >
-              {item.status === 'loaded' ? (
-                <Box
-                  alt={item.name}
-                  component="img"
-                  loading="lazy"
-                  src={item.url}
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
-              ) : (
-                <CircularProgress />
-              )}
-            </Paper>
-            <Typography
-              component="div"
-              sx={{
-                width: '100%',
-                textAlign: 'center',
-                marginTop: 1,
-                userSelect: 'text',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-              variant="caption"
-            >
-              {item.name}
-            </Typography>
-          </Box>
-        ))}
+              <Paper
+                sx={{
+                  width: '100%',
+                  aspectRatio: '1',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                variant="outlined"
+              >
+                <Show when={image().status === 'loaded'} fallback={<CircularProgress />}>
+                  <Box
+                    alt={image().name}
+                    component="img"
+                    loading="lazy"
+                    src={(image() as LoadedSnapImage).url}
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                </Show>
+              </Paper>
+              <Typography
+                component="div"
+                sx={{
+                  width: '100%',
+                  textAlign: 'center',
+                  marginTop: 1,
+                  userSelect: 'text',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+                variant="caption"
+              >
+                {image().name}
+              </Typography>
+            </Box>
+          )}
+        </Index>
       </Box>
-    </SwipeableDrawer>
+    </Drawer>
   );
 }

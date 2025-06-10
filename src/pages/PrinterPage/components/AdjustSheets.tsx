@@ -11,41 +11,91 @@ import {
   ListSubheader,
   Radio,
   RadioGroup,
+  TextField,
   // SwipeableDrawer,
   // type SwipeableDrawerProps,
   Toolbar,
 } from '@suid/material';
-import { paperLayoutAtom, printConfigAtom, printPreviewConfigAtom } from '@/atoms/snapProofPrint';
+import type { DrawerProps } from '@suid/material/Drawer';
+import type { ChangeEvent } from '@suid/types';
+// import { paperLayoutAtom, printConfigAtom, printPreviewConfigAtom } from '@/atoms/snapProofPrint';
 import ListItemTitledComponent from '@/components/list/ListItemTitledComponent';
-import ListSliderItem from '@/components/list/ListSliderItem';
 import ListSwitchItem from '@/components/list/ListSwitchItem';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { useConfig } from '../contexts/ConfigContext';
-import type { DrawerProps } from '@suid/material/Drawer';
+import { createMemo, mergeProps } from 'solid-js';
+import { syncState } from '@/hooks/syncState';
 
 interface AdjustSheetsProps {
   open: DrawerProps['open'];
   // onOpen: SwipeableDrawerProps['onOpen'];
-  // onClose: SwipeableDrawerProps['onClose'];
+  onClose?: DrawerProps['onClose'];
   variant?: DrawerProps['variant'];
   width?: number | string;
 }
 
+const DEFAULT_PROPS = {
+  variant: 'persistent',
+} satisfies Partial<AdjustSheetsProps>;
+
 export default function AdjustSheets(props: AdjustSheetsProps) {
+  const finalProps = mergeProps(DEFAULT_PROPS, props);
   const { state: config, actions: configActions } = useConfig();
 
-  function handleColumnsChange(_event: React.SyntheticEvent | Event, value: number) {
-    configActions.layout.setColumns(value);
-  }
-  function handleRowsChange(_event: React.SyntheticEvent | Event, value: number) {
-    configActions.layout.setRows(value);
-  }
-  function handleOrientationChange(_event: React.ChangeEvent<HTMLInputElement>, value: string) {
+  const [columnsValue, setColumnsValue] = syncState(
+    () => String(config.layout.columns),
+    (value) => configActions.layout.setColumns(Number.parseInt(value())),
+    {
+      pushWhen: (value) => {
+        const columns = Number.parseInt(value);
+        return columns > 0 && columns !== config.layout.columns;
+      },
+      pullWhen: (upstreamValue, value) => {
+        return Number.parseInt(upstreamValue) !== Number.parseInt(value);
+      },
+    },
+  );
+
+  const [rowsValue, setRowsValue] = syncState(
+    () => String(config.layout.rows),
+    (value) => configActions.layout.setRows(Number.parseInt(value())),
+    {
+      pushWhen: (value) => {
+        const rows = Number.parseInt(value);
+        return rows > 0 && rows !== config.layout.rows;
+      },
+      pullWhen: (upstreamValue, value) => {
+        return Number.parseInt(upstreamValue) !== Number.parseInt(value);
+      },
+    },
+  );
+  const columnsError = createMemo(() => {
+    const columns = Number.parseFloat(columnsValue());
+    if (Number.isNaN(columns) || !Number.isInteger(columns)) {
+      return '请输入输入整数';
+    } else if (!(columns > 0)) {
+      return '列数必须大于0';
+    }
+    return null;
+  });
+
+  const rowsError = createMemo(() => {
+    const rows = Number.parseFloat(rowsValue());
+    if (Number.isNaN(rows) || !Number.isInteger(rows)) {
+      return '请输入输入整数';
+    } else if (!(rows > 0)) {
+      return '行数必须大于0';
+    }
+    return null;
+  });
+
+  function handleOrientationChange(_event: ChangeEvent<HTMLInputElement>, value: string) {
     if (value !== 'landscape' && value !== 'portrait') {
       return;
     }
     configActions.print.setOrientation(value);
   }
+
   function handleGrayPreviewToggle() {
     configActions.preview.setColorMode(config.preview.colorMode === 'colorful' ? 'gray' : 'colorful');
   }
@@ -57,17 +107,18 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
   return (
     <Drawer
       anchor="right"
-      // onClose={onClose}
+      onClose={finalProps.onClose}
       // onOpen={onOpen}
-      open={props.open}
-      // slotProps={{
-      //   paper: {
-      //     sx: {
-      //       width: props.width,
-      //     },
-      //   },
-      // }}
-      variant={props.variant}
+      open={finalProps.open}
+      variant={finalProps.variant}
+      PaperProps={{
+        sx: {
+          width: finalProps.width,
+          boxSizing: 'border-box',
+          maxWidth: 'calc(100% - 56px)',
+          zIndex: finalProps.variant !== 'temporary' ? 0 : undefined,
+        },
+      }}
     >
       <Toolbar>
         <ToolbarTitle>调整</ToolbarTitle>
@@ -76,7 +127,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
         {/* 页面布局 */}
         <List>
           <ListSubheader>页面布局</ListSubheader>
-          <ListSliderItem
+          {/* <ListSliderItem
             onChange={handleColumnsChange}
             sliderProps={{
               step: 1,
@@ -97,10 +148,42 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
             }}
             title="行数"
             value={config.layout.rows}
-          />
+          /> */}
+          <ListItem>
+            <TextField
+              label="列数"
+              type="number"
+              value={columnsValue()}
+              onChange={(_event, value) => setColumnsValue(value)}
+              fullWidth
+              inputProps={{
+                min: 1,
+                step: 1,
+              }}
+              required
+              error={columnsError() !== null}
+              helperText={columnsError()}
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              label="行数"
+              type="number"
+              value={rowsValue()}
+              onChange={(_event, value) => setRowsValue(value)}
+              fullWidth
+              inputProps={{
+                min: 1,
+                step: 1,
+              }}
+              required
+              error={rowsError() !== null}
+              helperText={rowsError()}
+            />
+          </ListItem>
           <ListItem>
             <ListItemTitledComponent title="方向">
-              <RadioGroup onChange={handleOrientationChange} row value={printConfig.orientation}>
+              <RadioGroup onChange={handleOrientationChange} row value={config.print.orientation}>
                 <FormControlLabel control={<Radio />} label="横向" value="landscape" />
                 <FormControlLabel control={<Radio />} label="纵向" value="portrait" />
               </RadioGroup>
@@ -112,7 +195,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
         <List>
           <ListSubheader>打印</ListSubheader>
           <ListSwitchItem
-            checked={printConfig.aspectRatioFixed}
+            checked={config.print.aspectRatioFixed}
             icon={<ArticleOutlinedIcon />}
             onClick={handleAspectRatioFixedToggle}
             summary="在打印时使用固定的比例，而非动态测量。FireFox 需要打开此项才能正确显示页面。"
@@ -124,7 +207,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
         <List>
           <ListSubheader>预览</ListSubheader>
           <ListSwitchItem
-            checked={previewConfig.colorMode === 'colorful'}
+            checked={config.preview.colorMode === 'colorful'}
             icon={<ContrastOutlinedIcon />}
             onClick={handleGrayPreviewToggle}
             title="彩色打印"

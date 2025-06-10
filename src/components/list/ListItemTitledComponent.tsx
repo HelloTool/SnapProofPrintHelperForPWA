@@ -1,15 +1,8 @@
-import { ListItemText } from '@suid/material';
+import { ListItemText, Typography } from '@suid/material';
 
-import type {  Theme } from '@suid/material/styles';
-import { SxProps } from '@suid/system';
+import type { Theme } from '@suid/material/styles';
+import type { SxProps } from '@suid/system';
 import type { JSX } from 'solid-js';
-
-interface SecondarySlotProps {
-  children: JSX.Element;
-}
-function SecondarySlot(props: SecondarySlotProps) {
-  return props.children;
-}
 
 interface ListItemTitledComponentProps {
   title?: JSX.Element;
@@ -17,12 +10,13 @@ interface ListItemTitledComponentProps {
   sx?: SxProps<Theme>;
 }
 
-export default function ListItemTitledComponent({ title, children, sx }: ListItemTitledComponentProps) {
+export default function ListItemTitledComponent(props: ListItemTitledComponentProps) {
   return (
     <ListItemText
-      primary={title}
-      secondary={children}
-      sx={sx}
+      primary={props.title}
+      secondary={props.children}
+      sx={props.sx}
+      secondaryTypographyProps={{ component: 'div' }}
     />
   );
 }

@@ -1,11 +1,11 @@
 import { Box, type Theme } from '@suid/material';
 import type { SxProps } from '@suid/system';
-import { createMemo, mergeProps } from 'solid-js';
-import type { JSX } from 'solid-js';
-import { getOrientationBasedSize } from '../utils/print';
-import { PrintPreviewPaperConfigProvider } from '../contexts/PrintPreviewPaperConfigContext';
 import type { DataType } from 'csstype';
+import type { JSX } from 'solid-js';
+import { createMemo, mergeProps } from 'solid-js';
+import { PrintPreviewPaperConfigProvider } from '../contexts/PrintPreviewPaperConfigContext';
 import { pageSizeNameToCm } from '../utils/paperSize';
+import { getOrientationBasedSize } from '../utils/print';
 
 interface PrintPreviewProps {
   children: JSX.Element;
