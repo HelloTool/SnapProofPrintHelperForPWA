@@ -210,7 +210,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
             checked={config.preview.colorMode === 'colorful'}
             icon={<ContrastOutlinedIcon />}
             onClick={handleGrayPreviewToggle}
-            title="彩色打印"
+            title="彩色预览"
           />
           <ListItem>
             <ListItemText secondary="预览选项不会影响最终打印效果" />
