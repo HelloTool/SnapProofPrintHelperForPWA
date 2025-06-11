@@ -19,14 +19,13 @@ export default function ImageSheets(props: ImageSheetsProps) {
 
   const { state: images, actions: imagesActions } = useImages();
 
-  function loadImages(files: FileList | null) {
-    if (files && files.length > 0) {
-      imagesActions.addImages(files);
-    }
-  }
   function handleAddImagesClick() {
     pickFiles({ accept: 'image/*', multiple: true })
-      .then(loadImages)
+      .then((files) => {
+        if (files && files.length > 0) {
+          imagesActions.addImageFiles(files);
+        }
+      })
       .catch((e) => {
         console.error(e);
       });

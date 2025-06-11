@@ -6,7 +6,7 @@ import type { SnapImage } from '../types/image';
 import { nanoid } from 'nanoid';
 
 export interface ImagesActions {
-  addImages: (imageFiles: FileList) => void;
+  addImageFiles: (imageFiles: FileList) => void;
   refreshChunkedImages: () => void;
   clearImages: () => void;
 }
@@ -20,7 +20,7 @@ export function createImagesActions(setState: SetStoreFunction<ImagesStore>, con
   }
 
   return {
-    addImages: (imageFiles: FileList) => {
+    addImageFiles: (imageFiles: FileList) => {
       const newImages: SnapImage[] = Array.from(imageFiles).map((file) => ({
         key: nanoid(),
         url: URL.createObjectURL(file),
