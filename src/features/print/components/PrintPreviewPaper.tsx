@@ -20,7 +20,6 @@ export default function PrintPreviewPaper(props: PrintPaperPreveiewProps) {
         {
           overflow: 'hidden',
           aspectRatio: `${paperConfig.paperAspectRatio}`,
-          backgroundColor: 'white',
           pointerEvents: 'none',
           filter: paperConfig.colorMode === 'gray' ? 'grayscale(100%)' : undefined,
         },

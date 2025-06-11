@@ -1,5 +1,4 @@
 import ArticleOutlinedIcon from '@suid/icons-material/ArticleOutlined';
-import ContrastOutlinedIcon from '@suid/icons-material/ContrastOutlined';
 import {
   Box,
   Divider,
@@ -22,9 +21,12 @@ import type { ChangeEvent } from '@suid/types';
 import ListItemTitledComponent from '@/components/list/ListItemTitledComponent';
 import ListSwitchItem from '@/components/list/ListSwitchItem';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
-import { useConfig } from '../contexts/ConfigContext';
-import { createMemo, mergeProps } from 'solid-js';
+import { usePreferredDarkMode } from '@/hooks/mediaQuery';
 import { syncState } from '@/hooks/syncState';
+import LightbulbOutlinedIcon from '@suid/icons-material/LightbulbOutlined';
+import PaletteOutlinedIcon from '@suid/icons-material/PaletteOutlined';
+import { createMemo, mergeProps, Show } from 'solid-js';
+import { useConfig } from '../contexts/ConfigContext';
 
 interface AdjustSheetsProps {
   open: DrawerProps['open'];
@@ -102,6 +104,12 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
 
   function handleAspectRatioFixedToggle() {
     configActions.print.toggleAspectRatio();
+  }
+
+  const isPreferredDark = usePreferredDarkMode();
+
+  function handleLightModeToggle() {
+    configActions.preview.toggleLightMode();
   }
 
   return (
@@ -208,10 +216,18 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
           <ListSubheader>预览</ListSubheader>
           <ListSwitchItem
             checked={config.preview.colorMode === 'colorful'}
-            icon={<ContrastOutlinedIcon />}
+            icon={<PaletteOutlinedIcon />}
             onClick={handleGrayPreviewToggle}
-            title="彩色预览"
+            title="彩色模式"
           />
+          <Show when={isPreferredDark()}>
+            <ListSwitchItem
+              checked={config.preview.lightMode}
+              icon={<LightbulbOutlinedIcon />}
+              onClick={handleLightModeToggle}
+              title="亮色模式"
+            />
+          </Show>
           <ListItem>
             <ListItemText secondary="预览选项不会影响最终打印效果" />
           </ListItem>

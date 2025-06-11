@@ -1,9 +1,13 @@
-import { createTheme, useMediaQuery } from '@suid/material';
+import { usePreferredDarkMode } from '@/hooks/mediaQuery';
+import { createTheme } from '@suid/material';
 import { createPalette } from '@suid/material/styles/createPalette';
 import { createMemo } from 'solid-js';
 
-export function createAppTheme() {
-  const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+interface AppThemeOptions {
+  isDarkMode?: boolean;
+}
+export function createAppTheme(options?: AppThemeOptions) {
+  const isDarkMode = options?.isDarkMode !== undefined ? () => Boolean(options.isDarkMode) : usePreferredDarkMode();
   return createTheme({
     palette: createMemo(() => {
       if (!isDarkMode()) {

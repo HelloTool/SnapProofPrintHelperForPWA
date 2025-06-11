@@ -24,6 +24,7 @@ export function createConfigStore() {
     },
     preview: {
       colorMode: 'gray',
+      lightMode: false,
     },
   });
 }

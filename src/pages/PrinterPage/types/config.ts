@@ -17,4 +17,5 @@ export interface PrintConfig {
 
 export interface PreviewConfig {
   colorMode: 'colorful' | 'gray';
+  lightMode: boolean;
 }

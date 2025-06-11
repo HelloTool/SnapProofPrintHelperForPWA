@@ -17,6 +17,7 @@ export interface ConfigActions {
   };
   preview: {
     setColorMode: (mode: 'colorful' | 'gray') => void;
+    toggleLightMode: () => void;
   };
 }
 
@@ -64,6 +65,9 @@ export function createConfigActions(setState: SetStoreFunction<ConfigStore>): Co
     preview: {
       setColorMode: (mode: 'colorful' | 'gray') => {
         setState('preview', 'colorMode', mode);
+      },
+      toggleLightMode: () => {
+        setState('preview', 'lightMode', (prev) => !prev);
       },
     },
   };

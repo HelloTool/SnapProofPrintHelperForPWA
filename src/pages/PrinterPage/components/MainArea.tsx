@@ -1,17 +1,26 @@
-import { Box, Toolbar, Typography, useTheme } from '@suid/material';
-import { Index, Show } from 'solid-js';
+import { Box, ThemeProvider, Toolbar, Typography, useTheme } from '@suid/material';
+import { createMemo, Index, Show } from 'solid-js';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import PrintPreview from '@/features/print/components/PrintPreview';
 import PrintPreviewPaper from '@/features/print/components/PrintPreviewPaper';
 import { useConfig } from '../contexts/ConfigContext';
 import useImages from '../contexts/ImagesContext';
 import SPPrintPageContent from './SPPrintPageContent';
+import { usePreferredDarkMode } from '@/hooks/mediaQuery';
+import { createAppTheme } from '@/themes/appTheme';
 
 export default function MainArea() {
   const insets = useInsets();
   const { state: images } = useImages();
   const { state: config } = useConfig();
   const theme = useTheme();
+  const isPreferredDark = usePreferredDarkMode();
+  const previewTheme = createMemo(() => {
+    if (isPreferredDark() && config.preview.lightMode) {
+      return createAppTheme({ isDarkMode: false });
+    }
+    return theme;
+  });
   return (
     <Box
       component="main"
@@ -89,18 +98,20 @@ export default function MainArea() {
                     }),
                   }}
                 >
-                  <PrintPreviewPaper
-                    sx={{
-                      width: '100%',
-                    }}
-                  >
-                    <SPPrintPageContent
-                      columns={config.layout.columns}
-                      rows={config.layout.rows}
-                      images={images()}
-                      mode="preview"
-                    />
-                  </PrintPreviewPaper>
+                  <ThemeProvider theme={previewTheme}>
+                    <PrintPreviewPaper
+                      sx={{
+                        width: '100%',
+                      }}
+                    >
+                      <SPPrintPageContent
+                        columns={config.layout.columns}
+                        rows={config.layout.rows}
+                        images={images()}
+                        mode="preview"
+                      />
+                    </PrintPreviewPaper>
+                  </ThemeProvider>
                   <Typography
                     align="center"
                     color="textPrimary"
