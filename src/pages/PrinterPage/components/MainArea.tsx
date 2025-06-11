@@ -1,19 +1,17 @@
-import Box from '@suid/material/Box';
-import Toolbar from '@suid/material/Toolbar';
-import Typography from '@suid/material/Typography';
-
+import { Box, Toolbar, Typography, useTheme } from '@suid/material';
+import { Index, Show } from 'solid-js';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import PrintPreview from '@/features/print/components/PrintPreview';
 import PrintPreviewPaper from '@/features/print/components/PrintPreviewPaper';
-import SPPrintPageContent from './SPPrintPageContent';
-import useImages from '../contexts/ImagesContext';
 import { useConfig } from '../contexts/ConfigContext';
-import { Index, Show } from 'solid-js';
+import useImages from '../contexts/ImagesContext';
+import SPPrintPageContent from './SPPrintPageContent';
 
 export default function MainArea() {
   const insets = useInsets();
   const { state: images } = useImages();
   const { state: config } = useConfig();
+  const theme = useTheme();
   return (
     <Box
       component="main"
@@ -24,11 +22,10 @@ export default function MainArea() {
         paddingTop: `${insets.top}px`,
         paddingRight: `${insets.right}px`,
         paddingBottom: `${insets.bottom}px`,
-        transition: (theme) =>
-          theme.transitions.create(['padding'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
+        transition: theme.transitions.create(['padding'], {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -86,11 +83,10 @@ export default function MainArea() {
                       lg: '480px',
                     },
                     maxWidth: '100%',
-                    transition: (theme) =>
-                      theme.transitions.create(['width'], {
-                        easing: theme.transitions.easing.sharp,
-                        duration: theme.transitions.duration.leavingScreen,
-                      }),
+                    transition: theme.transitions.create(['width'], {
+                      easing: theme.transitions.easing.easeInOut,
+                      duration: theme.transitions.duration.shorter,
+                    }),
                   }}
                 >
                   <PrintPreviewPaper
@@ -98,7 +94,7 @@ export default function MainArea() {
                       width: '100%',
                     }}
                   >
-                    <SPPrintPageContent columns={0} images={images()} rows={0} />
+                    <SPPrintPageContent columns={config.layout.columns} rows={config.layout.rows} images={images()} />
                   </PrintPreviewPaper>
                   <Typography
                     align="center"

@@ -1,37 +1,45 @@
 import { produce, type SetStoreFunction } from 'solid-js/store';
+import { chunkArray } from '@/utils/list';
 import type { ConfigStore } from '../stores/config';
 import type { ImagesStore } from '../stores/images';
 import type { SnapImage } from '../types/image';
-import { chunkArray } from '@/utils/list';
+import { nanoid } from 'nanoid';
 
 export interface ImagesActions {
-  addImages: (images: SnapImage[]) => void;
-  updateChunkedImages: () => void;
+  addImages: (imageFiles: FileList) => void;
+  refreshChunkedImages: () => void;
   clearImages: () => void;
 }
 export function createImagesActions(setState: SetStoreFunction<ImagesStore>, config: ConfigStore): ImagesActions {
-  function updateChunkedImages() {
+  function refreshChunkedImages() {
     setState(
       produce((state) => {
         state.chunkedImages = chunkArray(state.images, config.layout.columns * config.layout.rows);
       }),
     );
   }
+
   return {
-    addImages: (images: SnapImage[]) => {
+    addImages: (imageFiles: FileList) => {
+      const newImages: SnapImage[] = Array.from(imageFiles).map((file) => ({
+        key: nanoid(),
+        url: URL.createObjectURL(file),
+        name: file.name,
+      }));
       setState(
         produce((state) => {
-          state.images.push(...images);
+          state.images.push(...newImages);
         }),
       );
-      updateChunkedImages();
     },
-    updateChunkedImages,
+    refreshChunkedImages,
     clearImages: () => {
       setState(
         produce((state) => {
+          for (const image of state.images) {
+            URL.revokeObjectURL(image.url);
+          }
           state.images = [];
-          state.chunkedImages = [];
         }),
       );
     },

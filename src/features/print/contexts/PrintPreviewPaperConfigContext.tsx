@@ -30,6 +30,7 @@ export function PrintPreviewPaperConfigProvider(props: PrintPreviewPaperConfigPr
     'paperPaddingBottomPercent',
     'colorMode',
   ]);
+
   return (
     <PrintPreviewPaperConfigContext.Provider value={value}>{props.children}</PrintPreviewPaperConfigContext.Provider>
   );

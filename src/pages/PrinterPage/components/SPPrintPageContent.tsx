@@ -1,5 +1,7 @@
-import { Box, CircularProgress } from '@suid/material';
+import { Box } from '@suid/material';
+import { Index } from 'solid-js';
 import type { SnapImage } from '../types/image';
+import { StatefulImage } from '@/components/StatefulImage';
 
 interface SPPrintPageContentProps {
   images: SnapImage[];
@@ -7,7 +9,7 @@ interface SPPrintPageContentProps {
   columns: number;
 }
 
-export default function SPPrintPageContent({ images, rows, columns }: SPPrintPageContentProps) {
+export default function SPPrintPageContent(props: SPPrintPageContentProps) {
   return (
     <Box
       sx={{
@@ -19,36 +21,35 @@ export default function SPPrintPageContent({ images, rows, columns }: SPPrintPag
         display: 'flex',
       }}
     >
-      {images.map((image) => (
-        <Box
-          key={image.key}
-          sx={{
-            width: `calc(100% / ${columns})`,
-            height: `calc(100% / ${rows})`,
-            border: '1px dashed gray',
-            objectFit: 'contain',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {image.status === 'loaded' ? (
-            <Box
-              alt={image.name}
-              component="img"
-              key={image.key}
-              src={image.url}
+      <Index each={props.images}>
+        {(image) => (
+          <Box
+            sx={{
+              width: `calc(100% / ${props.columns})`,
+              height: `calc(100% / ${props.rows})`,
+              border: '1px dashed gray',
+              objectFit: 'contain',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <StatefulImage
               sx={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain',
+              }}
+              src={image().url}
+              alt={image().name}
+              imgProps={{
+                sx: {
+                  objectFit: 'contain',
+                },
               }}
             />
-          ) : (
-            <CircularProgress />
-          )}
-        </Box>
-      ))}
+          </Box>
+        )}
+      </Index>
     </Box>
   );
 }

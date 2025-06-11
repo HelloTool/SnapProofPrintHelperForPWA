@@ -1,10 +1,10 @@
 import { GlobalStyles } from '@suid/material';
 import type { DataType } from 'csstype';
-import { createMemo, type JSX } from 'solid-js';
+import { createMemo, type JSX, onMount } from 'solid-js';
 import { mergeProps, Portal } from 'solid-js/web';
-import { getOrientationBasedSize } from '../utils/print';
 import { PrintPaperConfigProvider } from '../contexts/PrintPaperConfigContext';
 import { pageSizeNameToCm } from '../utils/paperSize';
+import { getOrientationBasedSize } from '../utils/print';
 
 export interface PrintProps {
   children: JSX.Element;
@@ -41,6 +41,12 @@ export default function Print(props: PrintProps) {
     const contentHeight = finalPaperSize().height - finalProps.contentMarginTop - finalProps.contentMarginBottom;
     return contentWidth / contentHeight;
   });
+  let printPortal: HTMLDivElement | undefined;
+  onMount(() => {
+    if (printPortal) {
+      printPortal.className = 'print';
+    }
+  });
   return (
     <>
       <GlobalStyles
@@ -52,28 +58,28 @@ export default function Print(props: PrintProps) {
                 `${finalPaperSize().width}cm ${finalPaperSize().height}cm`) as any,
             margin: `${finalProps.contentMarginTop}cm ${finalProps.contentMarginRight}cm ${finalProps.contentMarginBottom}cm ${finalProps.contentMarginLeft}cm`,
           },
-          'body > .print': {
-            display: 'none',
-          },
-          '@media print': {
-            'body > *:not(.print)': {
-              display: 'none',
+          body: {
+            '& > *:not(.print)': {
+              '@media print': {
+                display: 'none',
+              },
             },
-            'body > .print': {
-              display: 'block',
+            '& > .print': {
+              display: 'none',
+              '@media print': {
+                display: 'block',
+              },
             },
           },
         }}
       />
-      <Portal>
-        <div class="print">
-          <PrintPaperConfigProvider
-            contentAspectRatio={contentAspectRatio()}
-            contentAspectRatioFixed={finalProps.contentAspectRatioFixed}
-          >
-            {props.children}
-          </PrintPaperConfigProvider>
-        </div>
+      <Portal ref={printPortal}>
+        <PrintPaperConfigProvider
+          contentAspectRatio={contentAspectRatio()}
+          contentAspectRatioFixed={finalProps.contentAspectRatioFixed}
+        >
+          {props.children}
+        </PrintPaperConfigProvider>
       </Portal>
     </>
   );

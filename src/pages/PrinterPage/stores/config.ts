@@ -1,5 +1,5 @@
-import { maybeChrome } from '@/utils/platform';
 import { createStore } from 'solid-js/store';
+import { maybeChrome } from '@/utils/platform';
 import type { PaperLayout, PreviewConfig, PrintConfig } from '../types/config';
 
 export interface ConfigStore {

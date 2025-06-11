@@ -1,6 +1,6 @@
 import { createContext, type JSX, useContext } from 'solid-js';
-import { createConfigStore, type ConfigStore } from '../stores/config';
-import { ConfigActions, createConfigActions } from '../actions/config';
+import { type ConfigActions, createConfigActions } from '../actions/config';
+import { type ConfigStore, createConfigStore } from '../stores/config';
 
 const ConfigContext = createContext<{ state: ConfigStore; actions: ConfigActions }>();
 

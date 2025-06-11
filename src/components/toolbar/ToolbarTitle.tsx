@@ -1,13 +1,14 @@
-import Typography from '@mui/material/Typography';
+import Typography from '@suid/material/Typography';
+import type { JSX } from 'solid-js';
 
 interface ToolbarTitleProps {
-  children?: React.ReactNode;
+  children?: JSX.Element;
 }
 
-export default function ToolbarTitle({ children }: ToolbarTitleProps) {
+export default function ToolbarTitle(props: ToolbarTitleProps) {
   return (
     <Typography component="h1" sx={{ flexGrow: 1 }} variant="h6">
-      {children}
+      {props.children}
     </Typography>
   );
 }

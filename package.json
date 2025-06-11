@@ -23,10 +23,11 @@
     "docs:generateOsNotices": "tsx ./scripts/docs/generate_os_notices.ts"
   },
   "dependencies": {
-    "@solid-primitives/filesystem": "^1.3.1",
+    "@material/tooltip": "^14.0.0",
     "@suid/icons-material": "^0.8.1",
     "@suid/material": "^0.18.0",
     "@suid/system": "^0.13.0",
+    "@suid/types": "^0.7.1",
     "es-toolkit": "^1.38.0",
     "i18next": "^25.0.1",
     "nanoid": "^5.1.5",
