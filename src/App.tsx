@@ -11,6 +11,7 @@ export function App() {
           body: {
             backgroundColor: theme.palette.background.default,
             colorScheme: theme.palette.mode,
+            color: theme.palette.text.primary,
           },
         }}
       />
