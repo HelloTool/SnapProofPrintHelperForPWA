@@ -1,5 +1,5 @@
-import { Box, Drawer, Paper, Typography, useTheme } from '@suid/material';
-import { Index } from 'solid-js';
+import { Box, Drawer, Fade, Paper, Typography, useTheme } from '@suid/material';
+import { createSignal, Index } from 'solid-js';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import { pickFiles } from '@/utils/file';
 import useImages from '../../contexts/ImagesContext';
@@ -22,7 +22,7 @@ export default function ImageSheets(props: ImageSheetsProps) {
   function handleAddImagesClick() {
     pickFiles({ accept: 'image/*', multiple: true })
       .then((files) => {
-        if (files && files.length > 0) {
+        if (files) {
           imagesActions.addImageFiles(files);
         }
       })
@@ -35,6 +35,33 @@ export default function ImageSheets(props: ImageSheetsProps) {
     imagesActions.clearImages();
   }
   const theme = useTheme();
+
+  const [dragEntered, setDragEntered] = createSignal(false);
+
+  function handleDragEnter(event: DragEvent) {
+    if (event.dataTransfer?.types.includes('Files')) {
+      setDragEntered(true);
+      console.log('drag enter');
+    }
+  }
+
+  function handleDragOver(event: DragEvent) {
+    event.preventDefault();
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = event.dataTransfer.types.includes('Files') ? 'copy' : 'none';
+      setDragEntered(true);
+    }
+  }
+  function handleDragLeave(_event: DragEvent) {
+    setDragEntered(false);
+  }
+  function handleDrop(event: DragEvent) {
+    event.preventDefault();
+    setDragEntered(false);
+    if (event.dataTransfer?.files) {
+      imagesActions.addImageFiles(event.dataTransfer.files);
+    }
+  }
   return (
     <Drawer
       anchor="bottom"
@@ -65,71 +92,113 @@ export default function ImageSheets(props: ImageSheetsProps) {
 
       <Box
         sx={{
-          display: 'grid',
+          position: 'relative',
+          height: '100%',
           width: '100%',
-          gap: 1,
-          padding: 1,
-          margin: 0,
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-          [theme.breakpoints.up('sm')]: {
-            gridTemplateColumns: 'repeat(auto-fill, 90px)',
-          },
         }}
+        onDragEnter={handleDragEnter}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
       >
-        <Index each={images.images}>
-          {(image) => (
-            <Box
-              sx={{
-                width: '100%',
-                transition: theme.transitions.create(['width'], {
-                  duration: theme.transitions.duration.enteringScreen,
-                }),
-              }}
-              title={image().name}
-            >
-              <Paper
+        <Box
+          sx={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            display: 'grid',
+            width: '100%',
+            gap: 1,
+            padding: 1,
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+            [theme.breakpoints.up('sm')]: {
+              gridTemplateColumns: 'repeat(auto-fill, 90px)',
+            },
+          }}
+        >
+          <Index each={images.images}>
+            {(image) => (
+              <Box
                 sx={{
                   width: '100%',
-                  aspectRatio: '1',
-                  overflow: 'hidden',
                 }}
-                variant="outlined"
+                title={image().name}
               >
-                <StatefulImage
-                  src={image().url}
+                <Paper
                   sx={{
                     width: '100%',
-                    height: '100%',
+                    aspectRatio: '1',
+                    overflow: 'hidden',
                   }}
-                  imgProps={{
-                    loading: 'lazy',
-                    sx: {
-                      objectFit: 'cover',
-                    },
+                  variant="outlined"
+                >
+                  <StatefulImage
+                    src={image().url}
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    imgProps={{
+                      loading: 'lazy',
+                      sx: {
+                        objectFit: 'cover',
+                      },
+                    }}
+                    alt={image().name}
+                  />
+                </Paper>
+                <Typography
+                  component="div"
+                  sx={{
+                    width: '100%',
+                    textAlign: 'center',
+                    marginTop: 1,
+                    userSelect: 'text',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
                   }}
-                  alt={image().name}
-                />
-              </Paper>
-              <Typography
-                component="div"
-                sx={{
-                  width: '100%',
-                  textAlign: 'center',
-                  marginTop: 1,
-                  userSelect: 'text',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-                variant="caption"
-              >
-                {image().name}
-              </Typography>
-            </Box>
-          )}
-        </Index>
+                  variant="caption"
+                >
+                  {image().name}
+                </Typography>
+              </Box>
+            )}
+          </Index>
+        </Box>
+        <Fade in={dragEntered()}>
+          <Box
+            sx={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              right: 0,
+              bottom: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onDragLeave={handleDragLeave}
+          >
+            <Box
+              sx={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: theme.palette.primary.main,
+                opacity: theme.palette.action.hoverOpacity,
+              }}
+            />
+            <Typography variant="body1" color="primary">
+              拖到此处添加图片
+            </Typography>
+          </Box>
+        </Fade>
       </Box>
     </Drawer>
   );

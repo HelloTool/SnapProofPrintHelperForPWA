@@ -21,11 +21,16 @@ export function createImagesActions(setState: SetStoreFunction<ImagesStore>, con
 
   return {
     addImageFiles: (imageFiles: FileList) => {
-      const newImages: SnapImage[] = Array.from(imageFiles).map((file) => ({
-        key: nanoid(),
-        url: URL.createObjectURL(file),
-        name: file.name,
-      }));
+      if (imageFiles.length === 0) {
+        return;
+      }
+      const newImages: SnapImage[] = Array.from(imageFiles)
+        .filter((file) => file.type.startsWith('image/'))
+        .map((file) => ({
+          key: nanoid(),
+          url: URL.createObjectURL(file),
+          name: file.name,
+        }));
       setState(
         produce((state) => {
           state.images.push(...newImages);
