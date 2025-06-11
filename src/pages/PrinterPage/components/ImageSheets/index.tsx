@@ -1,10 +1,9 @@
-import { Box, Drawer, Fade, Paper, Typography, useTheme } from '@suid/material';
-import { createSignal, Index } from 'solid-js';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import { pickFiles } from '@/utils/file';
+import { Box, Drawer, Fade, Paper, Typography, useTheme } from '@suid/material';
+import { createSignal, Index } from 'solid-js';
 import useImages from '../../contexts/ImagesContext';
 import ISToolbar from './ISToolbar';
-import { StatefulImage } from '@/components/StatefulImage';
 
 interface ImageSheetsProps {
   height: number;
@@ -144,18 +143,15 @@ export default function ImageSheets(props: ImageSheetsProps) {
                   }}
                   variant="outlined"
                 >
-                  <StatefulImage
-                    src={image().url}
+                  <Box
+                    component="img"
                     sx={{
                       width: '100%',
                       height: '100%',
+                      objectFit: 'cover',
                     }}
-                    imgProps={{
-                      loading: 'lazy',
-                      sx: {
-                        objectFit: 'cover',
-                      },
-                    }}
+                    src={image().url}
+                    loading="lazy"
                     alt={image().name}
                   />
                 </Paper>

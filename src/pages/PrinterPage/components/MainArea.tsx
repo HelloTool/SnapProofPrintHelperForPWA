@@ -94,7 +94,12 @@ export default function MainArea() {
                       width: '100%',
                     }}
                   >
-                    <SPPrintPageContent columns={config.layout.columns} rows={config.layout.rows} images={images()} />
+                    <SPPrintPageContent
+                      columns={config.layout.columns}
+                      rows={config.layout.rows}
+                      images={images()}
+                      mode="preview"
+                    />
                   </PrintPreviewPaper>
                   <Typography
                     align="center"

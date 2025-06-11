@@ -1,12 +1,13 @@
 import { Box } from '@suid/material';
 import { Index } from 'solid-js';
 import type { SnapImage } from '../types/image';
-import { StatefulImage } from '@/components/StatefulImage';
 
 interface SPPrintPageContentProps {
   images: SnapImage[];
   rows: number;
   columns: number;
+  statefulImage?: boolean;
+  mode: 'print' | 'preview';
 }
 
 export default function SPPrintPageContent(props: SPPrintPageContentProps) {
@@ -34,18 +35,17 @@ export default function SPPrintPageContent(props: SPPrintPageContentProps) {
               justifyContent: 'center',
             }}
           >
-            <StatefulImage
+            <Box
+              component="img"
               sx={{
                 width: '100%',
                 height: '100%',
+                objectFit: 'contain',
               }}
               src={image().url}
               alt={image().name}
-              imgProps={{
-                sx: {
-                  objectFit: 'contain',
-                },
-              }}
+              loading={props.mode === 'print' ? 'eager' : 'lazy'}
+              decoding="async"
             />
           </Box>
         )}

@@ -21,7 +21,12 @@ export default function SPPrint() {
       <Index each={images.chunkedImages}>
         {(images) => (
           <PrintPaper>
-            <SnapProofPageContent images={images()} columns={config.layout.columns} rows={config.layout.rows} />
+            <SnapProofPageContent
+              images={images()}
+              columns={config.layout.columns}
+              rows={config.layout.rows}
+              mode="print"
+            />
           </PrintPaper>
         )}
       </Index>
