@@ -106,6 +106,7 @@ export default function MainArea() {
                     color="textPrimary"
                     sx={{
                       userSelect: 'text',
+                      marginTop: 1,
                     }}
                     variant="subtitle1"
                   >
