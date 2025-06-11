@@ -38,18 +38,25 @@ export default function ImageSheets(props: ImageSheetsProps) {
 
   const [dragEntered, setDragEntered] = createSignal(false);
 
+  let isSelfDrag: boolean = false;
+  function handleDragStart(_event: DragEvent) {
+    isSelfDrag = true;
+  }
+
+  function handleDragEnd(_event: DragEvent) {
+    isSelfDrag = false;
+  }
+
   function handleDragEnter(event: DragEvent) {
-    if (event.dataTransfer?.types.includes('Files')) {
+    if (!isSelfDrag && event.dataTransfer?.types.includes('Files')) {
       setDragEntered(true);
-      console.log('drag enter');
     }
   }
 
   function handleDragOver(event: DragEvent) {
-    event.preventDefault();
-    if (event.dataTransfer) {
+    if (!isSelfDrag && event.dataTransfer) {
+      event.preventDefault();
       event.dataTransfer.dropEffect = event.dataTransfer.types.includes('Files') ? 'copy' : 'none';
-      setDragEntered(true);
     }
   }
   function handleDragLeave(_event: DragEvent) {
@@ -96,6 +103,8 @@ export default function ImageSheets(props: ImageSheetsProps) {
           height: '100%',
           width: '100%',
         }}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
         onDragEnter={handleDragEnter}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
