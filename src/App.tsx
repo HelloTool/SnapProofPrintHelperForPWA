@@ -1,4 +1,4 @@
-import { GlobalStyles, ThemeProvider } from '@suid/material';
+import { alpha, GlobalStyles, ThemeProvider } from '@suid/material';
 import PrinterPage from './pages/PrinterPage';
 import { createAppTheme } from './themes/appTheme';
 
@@ -12,6 +12,12 @@ export function App() {
             backgroundColor: theme.palette.background.default,
             colorScheme: theme.palette.mode,
             color: theme.palette.text.primary,
+            ...{
+              '--mdc-typography-font-family': theme.typography.fontFamily,
+            },
+          },
+          '.mdc-tooltip__surface': {
+            backgroundColor: alpha(theme.palette.grey[700], 0.9),
           },
         }}
       />
