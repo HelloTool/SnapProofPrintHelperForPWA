@@ -1,6 +1,6 @@
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import { pickFiles } from '@/utils/file';
-import { Box, Drawer, Fade, Paper, Typography, useTheme } from '@suid/material';
+import { alpha, Box, Drawer, Fade, Paper, Typography, useTheme } from '@suid/material';
 import { createSignal, Index } from 'solid-js';
 import useImages from '../../contexts/ImagesContext';
 import ISToolbar from './ISToolbar';
@@ -186,20 +186,10 @@ export default function ImageSheets(props: ImageSheetsProps) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.hoverOpacity),
             }}
             onDragLeave={handleDragLeave}
           >
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: theme.palette.primary.main,
-                opacity: theme.palette.action.hoverOpacity,
-              }}
-            />
             <Typography variant="body1" color="primary">
               拖到此处添加图片
             </Typography>
