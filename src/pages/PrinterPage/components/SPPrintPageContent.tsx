@@ -1,5 +1,5 @@
-import { Box, CircularProgress } from '@suid/material';
-import { Index, Show } from 'solid-js';
+import { Box } from '@suid/material';
+import { Index } from 'solid-js';
 import type { SnapImage } from '../types/image';
 import { StatefulImage } from '@/components/StatefulImage';
 

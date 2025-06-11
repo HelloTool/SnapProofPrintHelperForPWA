@@ -1,10 +1,8 @@
 import { Box, Drawer, Paper, Typography, useTheme } from '@suid/material';
-import { nanoid } from 'nanoid';
 import { Index } from 'solid-js';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import { pickFiles } from '@/utils/file';
 import useImages from '../../contexts/ImagesContext';
-import type { SnapImage } from '../../types/image';
 import ISToolbar from './ISToolbar';
 import { StatefulImage } from '@/components/StatefulImage';
 
@@ -23,12 +21,7 @@ export default function ImageSheets(props: ImageSheetsProps) {
 
   function loadImages(files: FileList | null) {
     if (files && files.length > 0) {
-      const newImages: SnapImage[] = Array.from(files).map((file) => ({
-        key: nanoid(),
-        url: URL.createObjectURL(file),
-        name: file.name,
-      }));
-      imagesActions.addImages(newImages);
+      imagesActions.addImages(files);
     }
   }
   function handleAddImagesClick() {

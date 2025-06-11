@@ -11,14 +11,8 @@ interface ImagesProviderProps {
 
 export function ImagesProvider(props: ImagesProviderProps) {
   const { state: config } = useConfig();
-  const [state, setState] = createImagesStore();
+  const [state, setState] = createImagesStore(config);
   const actions = createImagesActions(setState, config);
-
-  createEffect(() => {
-    config.layout.columns;
-    config.layout.rows;
-    actions.updateChunkedImages();
-  });
 
   return <ImagesContext.Provider value={{ state, actions }}>{props.children}</ImagesContext.Provider>;
 }
