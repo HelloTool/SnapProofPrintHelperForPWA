@@ -84,7 +84,8 @@ export default function ImageSheets(props: ImageSheetsProps) {
           right: `${insets.right}px`,
           bottom: `${insets.bottom}px`,
           transition: theme.transitions.create(['left', 'right', 'bottom'], {
-            duration: theme.transitions.duration.enteringScreen,
+            duration: theme.transitions.duration.standard,
+            easing: theme.transitions.easing.easeInOut,
           }),
         },
       }}

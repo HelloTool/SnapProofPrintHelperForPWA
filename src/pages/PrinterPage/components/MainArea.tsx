@@ -23,8 +23,8 @@ export default function MainArea() {
         paddingRight: `${insets.right}px`,
         paddingBottom: `${insets.bottom}px`,
         transition: theme.transitions.create(['padding'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
+          duration: theme.transitions.duration.standard,
+          easing: theme.transitions.easing.easeInOut,
         }),
         display: 'flex',
         flexDirection: 'column',
