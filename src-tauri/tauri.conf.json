@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "identifier": "io.gitee.jesse205.snap-proof-print-helper",
   "build": {
-    "beforeDevCommand": "pnpm dev:tauri:fortend",
+    "beforeDevCommand": "pnpm dev:tauri:frontend",
     "devUrl": "http://localhost:3000",
-    "beforeBuildCommand": "pnpm build:tauri:fortend",
+    "beforeBuildCommand": "pnpm build:tauri:frontend",
     "frontendDist": "../dist/tauri",
     "removeUnusedCommands": true
   },

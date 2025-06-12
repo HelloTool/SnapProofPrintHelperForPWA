@@ -12,10 +12,10 @@
   ],
   "scripts": {
     "build:browser": "rsbuild build --environment browser",
-    "build:tauri:frotend": "rsbuild build --environment tauri",
+    "build:tauri:frontend": "rsbuild build --environment tauri",
     "build:tauri": "tauri build",
     "dev:browser": "rsbuild dev --environment browser",
-    "dev:tauri:frotend": "rsbuild dev --environment tauri",
+    "dev:tauri:frontend": "rsbuild dev --environment tauri",
     "dev:tauri": "tauri dev",
     "preview:browser": "rsbuild preview  --environment browser",
     "check": "biome check --write",

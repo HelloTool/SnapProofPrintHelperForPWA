@@ -26,5 +26,12 @@
     "rsbuild.config.ts": "os_notices.json",
     "*": "${basename}.*.${extname}"
   },
-  "i18n-ally.localesPaths": ["src/locales"]
+  "i18n-ally.localesPaths": [
+    "src/locales"
+  ],
+  "cSpell.words": [
+    "icns",
+    "rsbuild",
+    "tauri"
+  ]
 }
