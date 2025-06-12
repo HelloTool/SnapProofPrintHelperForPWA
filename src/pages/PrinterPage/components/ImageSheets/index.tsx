@@ -117,6 +117,7 @@ export default function ImageSheets(props: ImageSheetsProps) {
             right: 0,
             bottom: 0,
             display: 'grid',
+            alignContent: 'start',
             width: '100%',
             gap: 1,
             padding: 1,
