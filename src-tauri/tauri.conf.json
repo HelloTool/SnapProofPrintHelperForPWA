@@ -15,7 +15,9 @@
       {
         "title": "快照凭证打印助手",
         "width": 1200,
-        "height": 900,
+        "height": 800,
+        "minWidth": 360,
+        "minHeight": 640,
         "center": true
       }
     ],
