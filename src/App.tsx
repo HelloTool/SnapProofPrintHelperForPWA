@@ -10,8 +10,23 @@ export function App() {
   if (IS_TAURI) {
     makeDisableDefaultDropListener();
     makeDisableDefaultF5Listener();
-    makeDisableDefaultContextMenuListener()
+    makeDisableDefaultContextMenuListener((target) => {
+      if (
+        target instanceof HTMLInputElement &&
+        (target.type === 'email' ||
+          target.type === 'text' ||
+          target.type === 'password' ||
+          target.type === 'number' ||
+          target.type === 'tel' ||
+          target.type === 'url' ||
+          target.type === 'search')
+      ) {
+        return false;
+      }
+      return true;
+    });
   }
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles
