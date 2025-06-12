@@ -8,6 +8,8 @@ import useImages from '../contexts/ImagesContext';
 import SPPrintPageContent from './SPPrintPageContent';
 import { usePreferredDarkMode } from '@/hooks/mediaQuery';
 import { createAppTheme } from '@/themes/appTheme';
+import { pageSizeNameToCm } from '@/features/print/utils/paperSize';
+import { getOrientationBasedSize } from '@/features/print/utils/print';
 
 export default function MainArea() {
   const insets = useInsets();
@@ -20,6 +22,37 @@ export default function MainArea() {
       return createAppTheme({ isDarkMode: false });
     }
     return theme;
+  });
+  const paperAspectRatio = createMemo(() => {
+    const pageSize = Array.isArray(config.print.size) ? config.print.size : pageSizeNameToCm(config.print.size);
+    const { width, height } = getOrientationBasedSize(pageSize, config.print.orientation);
+    return width / height;
+  });
+  const longSideWidth = {
+    xs: 360,
+    lg: 480,
+  } as const;
+  const previewPaperWidthSx = createMemo(() => {
+    return config.print.orientation === 'landscape'
+      ? {
+          xs: `${longSideWidth.xs}px`,
+          lg: `${longSideWidth.lg}px`,
+        }
+      : {
+          xs: `${longSideWidth.xs * paperAspectRatio()}px`,
+          lg: `${longSideWidth.lg * paperAspectRatio()}px`,
+        };
+  });
+  const previewPaperHeightSx = createMemo(() => {
+    return config.print.orientation === 'portrait'
+      ? {
+          xs: `${longSideWidth.xs}px`,
+          lg: `${longSideWidth.lg}px`,
+        }
+      : {
+          xs: `${longSideWidth.xs / paperAspectRatio()}px`,
+          lg: `${longSideWidth.lg / paperAspectRatio()}px`,
+        };
   });
   return (
     <Box
@@ -87,10 +120,7 @@ export default function MainArea() {
               {(images, index) => (
                 <Box
                   sx={{
-                    width: {
-                      xs: '360px',
-                      lg: '480px',
-                    },
+                    // width: previewWidth,
                     maxWidth: '100%',
                     transition: theme.transitions.create(['width'], {
                       easing: theme.transitions.easing.easeInOut,
@@ -101,7 +131,9 @@ export default function MainArea() {
                   <ThemeProvider theme={previewTheme}>
                     <PrintPreviewPaper
                       sx={{
-                        width: '100%',
+                        maxWidth: '100%',
+                        width: previewPaperWidthSx(),
+                        height: previewPaperHeightSx(),
                       }}
                     >
                       <SPPrintPageContent
