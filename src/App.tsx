@@ -1,12 +1,16 @@
 import { alpha, GlobalStyles, ThemeProvider } from '@suid/material';
-import { makeDisableDropListener } from './hooks/makeDisableDropListener';
+import { makeDisableDefaultDropListener } from './hooks/makeDisableDefaultDropListener';
 import PrinterPage from './pages/PrinterPage';
 import { createAppTheme } from './themes/appTheme';
+import { makeDisableDefaultF5Listener } from './hooks/makeDisableDefaultF5Listener';
+import { makeDisableDefaultContextMenuListener } from './hooks/makeDisableDefaultContextMenuListener';
 
 export function App() {
   const theme = createAppTheme();
   if (IS_TAURI) {
-    makeDisableDropListener();
+    makeDisableDefaultDropListener();
+    makeDisableDefaultF5Listener();
+    makeDisableDefaultContextMenuListener()
   }
   return (
     <ThemeProvider theme={theme}>
