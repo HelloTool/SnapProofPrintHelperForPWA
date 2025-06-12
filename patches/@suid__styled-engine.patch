@@ -1,15 +1,14 @@
 diff --git a/createStyle.jsx b/createStyle.jsx
-index 89127f2d1def94d6f04f513fc56e362255ded72b..41e806f269c749516387a560027aa4dedf914509 100644
+index 89127f2d1def94d6f04f513fc56e362255ded72b..5eb6d253134e506c4ad3732f0dd1849e9415d5c3 100644
 --- a/createStyle.jsx
 +++ b/createStyle.jsx
 @@ -71,7 +71,9 @@ function createStyle(value) {
                      }, context.injectFirst);
                  }
                  if (prevResult?.styleElement) {
--                    unregisterStyleElementUsage(prevResult.styleElement);
 +                    requestAnimationFrame(() => {
-+            unregisterStyleElementUsage(prevResult.styleElement);
-+          });
+                     unregisterStyleElementUsage(prevResult.styleElement);
++                });
                  }
              }
          }

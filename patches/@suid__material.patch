@@ -1,0 +1,65 @@
+diff --git a/Drawer/Drawer.jsx b/Drawer/Drawer.jsx
+index ee2cb238b530bb7c1d0f4220406bbfd22671fcde..572626c56290a8a9d0adb8cd005f02dd34c35734 100644
+--- a/Drawer/Drawer.jsx
++++ b/Drawer/Drawer.jsx
+@@ -8,7 +8,7 @@ import { getDrawerUtilityClass } from "./drawerClasses";
+ import createComponentFactory from "@suid/base/createComponentFactory";
+ import createElementRef from "@suid/system/createElementRef";
+ import clsx from "clsx";
+-import { children, createSignal, Match, onMount, Switch } from "solid-js";
++import { children, createSignal, Match, onMount, Switch, createMemo } from "solid-js";
+ const $ = createComponentFactory()({
+     name: "MuiDrawer",
+     selfPropNames: [
+@@ -169,31 +169,37 @@ const Drawer = $.component(function Drawer({ allProps, props, otherProps, classe
+     // Let's assume that the Drawer will always be rendered on user space.
+     // We use this state is order to skip the appear transition during the
+     // initial mount of the component.
+-    const [mounted, setMounted] = createSignal(false);
+     const element = createElementRef(otherProps);
+     const theme = useTheme();
+     const resolved = children(() => props.children);
+-    onMount(() => setMounted(true));
++   
+     function InternalDrawer() {
+         return (<DrawerPaper elevation={props.variant === "temporary" ? props.elevation : 0} square {...props.PaperProps} class={clsx(classes.paper, props.PaperProps.class)} ownerState={allProps}>
+         {resolved()}
+       </DrawerPaper>);
+     }
++    const internalDrawer=<InternalDrawer />
+     function SlidingDrawer() {
++        const [mounted, setMounted] = createSignal(false);
++        onMount(() => setMounted(true));
+         const anchorInvariant = getAnchor(theme, props.anchor);
+         return (<Slide in={props.open} direction={oppositeDirection[anchorInvariant]} timeout={props.transitionDuration} appear={mounted()} {...(props.SlideProps ?? {})}>
+-        <InternalDrawer />
++        {internalDrawer}
+       </Slide>);
+     }
++
++    const slidingDrawer = createMemo(()=>props.variant === "persistent" || props.variant === "temporary" ? <SlidingDrawer /> : undefined)
++
++    
+     return (<Switch>
+       <Match when={props.variant === "permanent"}>
+         <DrawerDockedRoot {...otherProps} class={clsx(classes.root, classes.docked, otherProps.class)} ownerState={allProps} ref={element}>
+-          <InternalDrawer />
++          {internalDrawer}
+         </DrawerDockedRoot>
+       </Match>
+       <Match when={props.variant === "persistent"}>
+         <DrawerDockedRoot {...otherProps} class={clsx(classes.root, classes.docked, otherProps.class)} ownerState={allProps} ref={element}>
+-          <SlidingDrawer />
++          {slidingDrawer()}
+         </DrawerDockedRoot>
+       </Match>
+       {<Match when={props.variant === "temporary"}>
+@@ -202,7 +208,7 @@ const Drawer = $.component(function Drawer({ allProps, props, otherProps, classe
+                 ...(props.ModalProps.BackdropProps ?? {}),
+                 transitionDuration: props.transitionDuration,
+             }} class={clsx(classes.root, classes.modal, otherProps.class)} open={props.open} ownerState={allProps} onClose={props.onClose} hideBackdrop={otherProps.hideBackdrop} ref={element} {...(otherProps ?? {})} {...(props.ModalProps ?? {})} transition>
+-            <SlidingDrawer />
++            {slidingDrawer()}
+           </DrawerRoot>
+         </Match>}
+     </Switch>);
