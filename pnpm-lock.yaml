@@ -22,6 +22,9 @@ importers:
       '@material/tooltip':
         specifier: ^14.0.0
         version: 14.0.0
+      '@solid-primitives/event-listener':
+        specifier: ^2.4.1
+        version: 2.4.1(solid-js@1.9.7)
       '@suid/icons-material':
         specifier: ^0.8.1
         version: 0.8.1(solid-js@1.9.7)
@@ -672,6 +675,16 @@ packages:
   '@rspack/lite-tapable@1.0.1':
     resolution: {integrity: sha512-VynGOEsVw2s8TAlLf/uESfrgfrq2+rcXB1muPJYBWbsm1Oa6r5qVQhjA5ggM6z/coYPrsVMgovl3Ff7Q7OCp1w==}
     engines: {node: '>=16.0.0'}
+
+  '@solid-primitives/event-listener@2.4.1':
+    resolution: {integrity: sha512-Xc/lBCeuh9LwzR4lYbMDtopwWK7N9b4o+FmI4uoI8DOtVGYi0Ip20DG8PtwHk+g31lHgvwtFFVKfnUx2UaqZJg==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/utils@6.3.1':
+    resolution: {integrity: sha512-4/Z59nnwu4MPR//zWZmZm2yftx24jMqQ8CSd/JobL26TPfbn4Ph8GKNVJfGJWShg1QB98qObJSskqizbTvcLLA==}
+    peerDependencies:
+      solid-js: ^1.6.12
 
   '@suid/base@0.10.1':
     resolution: {integrity: sha512-zP9Ujdd/9AbZnn/kDMC+mMdBrE8i7U4q9sCKwGw3bLx0FQ+utPxRV+9NQ8KLb0q0W5yleAHfjP0nycBAmL+DHQ==}
@@ -2002,6 +2015,15 @@ snapshots:
       '@swc/helpers': 0.5.17
 
   '@rspack/lite-tapable@1.0.1': {}
+
+  '@solid-primitives/event-listener@2.4.1(solid-js@1.9.7)':
+    dependencies:
+      '@solid-primitives/utils': 6.3.1(solid-js@1.9.7)
+      solid-js: 1.9.7
+
+  '@solid-primitives/utils@6.3.1(solid-js@1.9.7)':
+    dependencies:
+      solid-js: 1.9.7
 
   '@suid/base@0.10.1(patch_hash=71cc34c99adb1aa1664d73b5c07fbc6b35640cd1ff47bc387cc39177f903e67c)(solid-js@1.9.7)':
     dependencies:

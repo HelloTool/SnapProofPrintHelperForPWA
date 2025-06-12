@@ -1,9 +1,13 @@
 import { alpha, GlobalStyles, ThemeProvider } from '@suid/material';
+import { makeDisableDropListener } from './hooks/makeDisableDropListener';
 import PrinterPage from './pages/PrinterPage';
 import { createAppTheme } from './themes/appTheme';
 
 export function App() {
   const theme = createAppTheme();
+  if (IS_TAURI) {
+    makeDisableDropListener();
+  }
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles
