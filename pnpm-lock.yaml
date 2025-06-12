@@ -9,7 +9,7 @@ patchedDependencies:
     hash: 71cc34c99adb1aa1664d73b5c07fbc6b35640cd1ff47bc387cc39177f903e67c
     path: patches/@suid__base.patch
   '@suid/material':
-    hash: 62df8135705d194876fcf85ddf0a917b038223c911e82cfc6a59d93f78e3addb
+    hash: 8f41e2f06a183a2c9df57ae99dd2fb3e06a4f0b35d2b6a77ed9efb1a1ef29716
     path: patches/@suid__material.patch
   '@suid/styled-engine':
     hash: 241c76642f87abb963bb451aa45a6c7d3e68a6019df7f01a2c52000fa01f14cc
@@ -27,7 +27,7 @@ importers:
         version: 0.8.1(solid-js@1.9.7)
       '@suid/material':
         specifier: ^0.18.0
-        version: 0.18.0(patch_hash=62df8135705d194876fcf85ddf0a917b038223c911e82cfc6a59d93f78e3addb)(solid-js@1.9.7)
+        version: 0.18.0(patch_hash=8f41e2f06a183a2c9df57ae99dd2fb3e06a4f0b35d2b6a77ed9efb1a1ef29716)(solid-js@1.9.7)
       '@suid/system':
         specifier: ^0.13.0
         version: 0.13.0(solid-js@1.9.7)
@@ -2017,10 +2017,10 @@ snapshots:
 
   '@suid/icons-material@0.8.1(solid-js@1.9.7)':
     dependencies:
-      '@suid/material': 0.18.0(patch_hash=62df8135705d194876fcf85ddf0a917b038223c911e82cfc6a59d93f78e3addb)(solid-js@1.9.7)
+      '@suid/material': 0.18.0(patch_hash=8f41e2f06a183a2c9df57ae99dd2fb3e06a4f0b35d2b6a77ed9efb1a1ef29716)(solid-js@1.9.7)
       solid-js: 1.9.7
 
-  '@suid/material@0.18.0(patch_hash=62df8135705d194876fcf85ddf0a917b038223c911e82cfc6a59d93f78e3addb)(solid-js@1.9.7)':
+  '@suid/material@0.18.0(patch_hash=8f41e2f06a183a2c9df57ae99dd2fb3e06a4f0b35d2b6a77ed9efb1a1ef29716)(solid-js@1.9.7)':
     dependencies:
       '@suid/base': 0.10.1(patch_hash=71cc34c99adb1aa1664d73b5c07fbc6b35640cd1ff47bc387cc39177f903e67c)(solid-js@1.9.7)
       '@suid/css': 0.4.0
