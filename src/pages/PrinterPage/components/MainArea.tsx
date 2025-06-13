@@ -43,17 +43,6 @@ export default function MainArea() {
           lg: `${longSideWidth.lg * paperAspectRatio()}px`,
         };
   });
-  const previewPaperHeightSx = createMemo(() => {
-    return config.print.orientation === 'portrait'
-      ? {
-          xs: `${longSideWidth.xs}px`,
-          lg: `${longSideWidth.lg}px`,
-        }
-      : {
-          xs: `${longSideWidth.xs / paperAspectRatio()}px`,
-          lg: `${longSideWidth.lg / paperAspectRatio()}px`,
-        };
-  });
   return (
     <Box
       component="main"
@@ -120,7 +109,6 @@ export default function MainArea() {
               {(images, index) => (
                 <Box
                   sx={{
-                    // width: previewWidth,
                     maxWidth: '100%',
                     transition: theme.transitions.create(['width'], {
                       easing: theme.transitions.easing.easeInOut,
@@ -133,7 +121,6 @@ export default function MainArea() {
                       sx={{
                         maxWidth: '100%',
                         width: previewPaperWidthSx(),
-                        height: previewPaperHeightSx(),
                       }}
                     >
                       <SPPrintPageContent
