@@ -17,18 +17,17 @@ import {
 } from '@suid/material';
 import type { DrawerProps } from '@suid/material/Drawer';
 import type { ChangeEvent } from '@suid/types';
-// import { paperLayoutAtom, printConfigAtom, printPreviewConfigAtom } from '@/atoms/snapProofPrint';
 import ListItemTitledComponent from '@/components/list/ListItemTitledComponent';
 import ListSwitchItem from '@/components/list/ListSwitchItem';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import { usePreferredDarkMode } from '@/hooks/mediaQuery';
 import { syncState } from '@/hooks/syncState';
+import { mergeMultiSxProps } from '@/utils/suid';
 import LightbulbOutlinedIcon from '@suid/icons-material/LightbulbOutlined';
 import PaletteOutlinedIcon from '@suid/icons-material/PaletteOutlined';
-import { createMemo, mergeProps, Show } from 'solid-js';
+import { createMemo, Show } from 'solid-js';
 import { useConfig } from '../contexts/ConfigContext';
-import { mergeMultiSxProps } from '@/utils/suid';
 
 interface AdjustSheetsProps extends DrawerProps {}
 

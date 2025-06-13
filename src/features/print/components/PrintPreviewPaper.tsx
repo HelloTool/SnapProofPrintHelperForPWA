@@ -4,11 +4,11 @@ import type { JSX } from 'solid-js';
 import { mergeMultiSxProps } from '@/utils/suid';
 import { usePrintPreviewPaperConfig } from '../contexts/PrintPreviewPaperConfigContext';
 
-interface PrintPaperPreveiewProps {
+interface PrintPaperPreviewProps {
   children: JSX.Element;
   sx?: SxProps<Theme>;
 }
-export default function PrintPreviewPaper(props: PrintPaperPreveiewProps) {
+export default function PrintPreviewPaper(props: PrintPaperPreviewProps) {
   const paperConfig = usePrintPreviewPaperConfig();
 
   return (
