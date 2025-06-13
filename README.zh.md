@@ -1,13 +1,16 @@
 <div align="center">
 
+<img src="./docs/images/icon.svg" width="192" height="192" alt="App icon">
+
 # 快照凭证打印助手
 
 **仓库**：
-TODO
+[![Gitee 仓库](https://img.shields.io/badge/Gitee-仓库-C71D23?logo=gitee)][RepositoryOnGitee]
+[![GitHub 仓库](https://img.shields.io/badge/GitHub-仓库-0969da?logo=github)][RepositoryOnGitHub]
 
 **平台**：
-Windows 7+
-Web
+[![Windows 10+（exe）](https://img.shields.io/badge/Windows_10+-exe-0078D4?logo=windows)][ReleaseOnGitee]
+[![Web（PWA）](https://img.shields.io/badge/Web+-PWA-0078D4?logo=windows)][ReleaseOnGitee]
 
 **语言**：
 **中文** |
@@ -29,7 +32,13 @@ TODO
 
 ## 使用方法
 
-TODO
+1. 进入应用
+2. （仅手机）点击应用栏右上角“打开图片面板”按钮
+3. 点击图片面板右上角“添加图片”按钮
+4. （可选）在调整面板中调整参数
+5. 点击“打印”按钮
+6. （可选）调整打印参数
+7. 点击打印对话框内的“打印”按钮
 
 ## 兼容性
 
@@ -55,3 +64,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+## 开源声明
+
+请参见 [《开源声明》](./docs/legal/os_notices.md)
+
+[RepositoryOnGitee]: https://gitee.com/HelloTool/SnapProofPrintHelperForPWA
+[RepositoryOnGitHub]: https://github.com/HelloTool/SnapProofPrintHelperForPWA
+[ReleaseOnGitee]: https://gitee.com/HelloTool/SnapProofPrintHelperForPWA/releases
+[ReleaseOnGitHub]: https://github.com/HelloTool/SnapProofPrintHelperForPWA/releases

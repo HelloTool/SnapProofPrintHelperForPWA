@@ -1,8 +1,20 @@
 {
   "name": "snap-proof-print-helper",
   "version": "0.1.0",
+  "description": "Print multiple transfer record diagrams, e-commerce order diagrams, and so on in a voucher style onto paper,and add cutting lines.",
+  "homepage": "https://gitee.com/HelloTool/SnapProofPrintHelperForPWA",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Jesse205",
+    "email": "jesse205@qq.com",
+    "url": "https://gitee.com/Jesse205"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/HelloTool/SnapProofPrintHelperForPWA.git"
+  },
   "private": true,
-  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac",
   "type": "module",
   "licenses": [
     {
@@ -30,7 +42,6 @@
     "@suid/system": "^0.13.0",
     "@suid/types": "^0.7.1",
     "@tauri-apps/api": "^2.5.0",
-    "es-toolkit": "^1.38.0",
     "i18next": "^25.0.1",
     "nanoid": "^5.1.5",
     "solid-js": "^1.9.7"

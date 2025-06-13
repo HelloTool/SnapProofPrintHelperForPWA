@@ -40,9 +40,6 @@ importers:
       '@tauri-apps/api':
         specifier: ^2.5.0
         version: 2.5.0
-      es-toolkit:
-        specifier: ^1.38.0
-        version: 1.38.0
       i18next:
         specifier: ^25.0.1
         version: 25.0.1(typescript@5.8.3)
@@ -946,9 +943,6 @@ packages:
   entities@6.0.0:
     resolution: {integrity: sha512-aKstq2TDOndCn4diEyp9Uq/Flu2i1GlLkc6XIDQSDMuaFE3OPW5OphLCyQ5SpSJZTb4reN+kTcYru5yIfXoRPw==}
     engines: {node: '>=0.12'}
-
-  es-toolkit@1.38.0:
-    resolution: {integrity: sha512-OT3AxczYYd3W50bCj4V0hKoOAfqIy9tof0leNQYekEDxVKir3RTVTJOLij7VAe6fsCNsGhC0JqIkURpMXTCSEA==}
 
   esbuild@0.25.3:
     resolution: {integrity: sha512-qKA6Pvai73+M2FtftpNKRxJ78GIjmFXFxd/1DVBqGo/qNhLSfv+G12n9pNoWdytJC8U00TrViOwpjT0zgqQS8Q==}
@@ -2262,8 +2256,6 @@ snapshots:
   emojis-list@3.0.0: {}
 
   entities@6.0.0: {}
-
-  es-toolkit@1.38.0: {}
 
   esbuild@0.25.3:
     optionalDependencies:
