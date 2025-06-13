@@ -6,6 +6,13 @@ document.documentElement.lang = 'zh-CN';
 
 if (IS_TAURI) {
   document.documentElement.classList.add('tauri');
+  import('@tauri-apps/api/window')
+    .then(async ({ getCurrentWindow }) => {
+      await getCurrentWindow().show();
+    })
+    .catch((e) => {
+      console.error(e);
+    });
 }
 
 const root = document.getElementById('root');
