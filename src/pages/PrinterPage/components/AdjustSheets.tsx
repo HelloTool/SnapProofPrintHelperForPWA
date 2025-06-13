@@ -13,7 +13,7 @@ import {
   TextField,
   // SwipeableDrawer,
   // type SwipeableDrawerProps,
-  Toolbar,
+  Toolbar
 } from '@suid/material';
 import type { DrawerProps } from '@suid/material/Drawer';
 import type { ChangeEvent } from '@suid/types';
@@ -21,6 +21,7 @@ import type { ChangeEvent } from '@suid/types';
 import ListItemTitledComponent from '@/components/list/ListItemTitledComponent';
 import ListSwitchItem from '@/components/list/ListSwitchItem';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
+import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import { usePreferredDarkMode } from '@/hooks/mediaQuery';
 import { syncState } from '@/hooks/syncState';
 import LightbulbOutlinedIcon from '@suid/icons-material/LightbulbOutlined';
@@ -112,6 +113,8 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
     configActions.preview.toggleLightMode();
   }
 
+  const insets = useInsets();
+
   return (
     <Drawer
       anchor="right"
@@ -125,13 +128,21 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
           boxSizing: 'border-box',
           maxWidth: 'calc(100% - 56px)',
           zIndex: finalProps.variant !== 'temporary' ? 0 : undefined,
+          paddingTop: `${insets.top}px`,
+          paddingRight: `${insets.right}px`,
         },
       }}
     >
       <Toolbar>
         <ToolbarTitle>调整</ToolbarTitle>
       </Toolbar>
-      <Box sx={{ overflow: 'auto', overflowX: 'hidden' }}>
+      <Box
+        sx={{
+          overflow: 'auto',
+          overflowX: 'hidden',
+          paddingBottom: `${insets.bottom}px`,
+        }}
+      >
         {/* 页面布局 */}
         <List>
           <ListSubheader>页面布局</ListSubheader>

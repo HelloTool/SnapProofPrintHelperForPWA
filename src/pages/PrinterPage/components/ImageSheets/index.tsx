@@ -4,12 +4,14 @@ import { alpha, Box, Drawer, Fade, Paper, Typography, useTheme } from '@suid/mat
 import { createSignal, Index } from 'solid-js';
 import useImages from '../../contexts/ImagesContext';
 import ISToolbar from './ISToolbar';
+import type { DrawerProps } from '@suid/material/Drawer';
 
 interface ImageSheetsProps {
   height: number;
   open: boolean;
-  onClose?: () => void;
+  onClose?: DrawerProps['onClose'];
   onOpen?: () => void;
+  variant?: DrawerProps['variant'];
 }
 
 export default function ImageSheets(props: ImageSheetsProps) {
@@ -82,14 +84,14 @@ export default function ImageSheets(props: ImageSheetsProps) {
           height: props.height,
           left: `${insets.left}px`,
           right: `${insets.right}px`,
-          bottom: `${insets.bottom}px`,
+
           transition: theme.transitions.create(['left', 'right', 'bottom'], {
             duration: theme.transitions.duration.standard,
             easing: theme.transitions.easing.easeInOut,
           }),
         },
       }}
-      variant="permanent"
+      variant={props.variant}
     >
       <ISToolbar
         imagesCount={images.images.length}
@@ -121,6 +123,7 @@ export default function ImageSheets(props: ImageSheetsProps) {
             width: '100%',
             gap: 1,
             padding: 1,
+            paddingBottom: `calc(${insets.bottom}px + ${theme.spacing(1)})`,
             overflowY: 'auto',
             overflowX: 'hidden',
             gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',

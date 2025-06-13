@@ -2,7 +2,7 @@ import PrintIcon from '@suid/icons-material/Print';
 import ViewSidebarIcon from '@suid/icons-material/ViewSidebar';
 import ViewSidebarOutlinedIcon from '@suid/icons-material/ViewSidebarOutlined';
 import { AppBar, Box, Fab, Toolbar, useMediaQuery, useTheme } from '@suid/material';
-import { createDeferred, createSignal } from 'solid-js';
+import { createDeferred, createMemo, createSignal } from 'solid-js';
 import { ToolbarIconButton } from '@/components/toolbar/ToolbarIconButton';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { InsetsProvider } from '@/features/insets/contexts/InsetsContext';
@@ -18,9 +18,14 @@ function PrinterPageContent() {
   const theme = useTheme();
   const isSmAndUp = createDeferred(useMediaQuery(theme.breakpoints.up('sm')));
   const isMdAndUp = createDeferred(useMediaQuery(theme.breakpoints.up('md')));
+  const isHeight600AndUp = createDeferred(useMediaQuery('(min-height: 600px)'));
 
   const [isImageSheetsOpened, setImageSheetsOpened] = createSignal(true);
   const [isAdjustSheetsOpened, setAdjustSheetsOpened] = createSignal(isMdAndUp());
+
+  const isAdjustSheetsPersistent = isMdAndUp;
+  const isImageSheetsPersistent = isHeight600AndUp;
+
   function toggleAdjustSheets() {
     setAdjustSheetsOpened((prev) => !prev);
   }
@@ -28,8 +33,17 @@ function PrinterPageContent() {
     setImageSheetsOpened((prev) => !prev);
   }
 
-  const imagesSheetsHeight = 320;
   const adjustSheetsWidth = 320;
+  const imagesSheetsHeight = 320;
+
+  const adjustSheetsInsetWidth = createMemo(() =>
+    isAdjustSheetsPersistent() && isAdjustSheetsOpened() ? adjustSheetsWidth : 0,
+  );
+  const imagesSheetsInsetWidth = createMemo(() =>
+    isImageSheetsPersistent() && isImageSheetsOpened() ? imagesSheetsHeight : 0,
+  );
+
+  const fabInsetWidth = 48 + 16;
 
   const isPrinting = usePrint();
   function handlePrint() {
@@ -55,8 +69,11 @@ function PrinterPageContent() {
           />
         </Toolbar>
       </AppBar>
-      <InsetsProvider right={isMdAndUp() && isAdjustSheetsOpened() ? adjustSheetsWidth : 0}>
-        <InsetsProvider bottom={isImageSheetsOpened() ? imagesSheetsHeight : 0}>
+      <InsetsProvider
+        right={adjustSheetsInsetWidth()}
+        bottom={!isAdjustSheetsPersistent() || !isAdjustSheetsOpened() ? fabInsetWidth : undefined}
+      >
+        <InsetsProvider bottom={imagesSheetsInsetWidth()}>
           <MainArea />
         </InsetsProvider>
         <ImageSheets
@@ -64,15 +81,18 @@ function PrinterPageContent() {
           onClose={() => setImageSheetsOpened(false)}
           onOpen={() => setImageSheetsOpened(true)}
           open={isImageSheetsOpened()}
+          variant={isImageSheetsPersistent() ? 'persistent' : 'temporary'}
         />
       </InsetsProvider>
-      <AdjustSheets
-        onClose={() => setAdjustSheetsOpened(false)}
-        // onOpen={() => setAdjustSheetsOpened(true)}
-        open={isAdjustSheetsOpened()}
-        variant={isMdAndUp() ? 'persistent' : 'temporary'}
-        width={isSmAndUp() ? adjustSheetsWidth : '100%'}
-      />
+      <InsetsProvider bottom={isAdjustSheetsPersistent() ? fabInsetWidth : undefined}>
+        <AdjustSheets
+          onClose={() => setAdjustSheetsOpened(false)}
+          // onOpen={() => setAdjustSheetsOpened(true)}
+          open={isAdjustSheetsOpened()}
+          variant={isAdjustSheetsPersistent() ? 'persistent' : 'temporary'}
+          width={isSmAndUp() ? adjustSheetsWidth : '100%'}
+        />
+      </InsetsProvider>
       <Fab
         disabled={images.images.length === 0}
         onClick={handlePrint}
