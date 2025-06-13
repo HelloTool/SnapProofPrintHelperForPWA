@@ -14,3 +14,7 @@ export function pageSizeNameToCm(pageSize: DataType.PageSize): [number, number] 
       throw new Error(`Unknown page size: ${pageSize}`);
   }
 }
+
+export function getAvailablePageSizes(): DataType.PageSize[] {
+  return ['A4', 'A3', 'letter', 'legal'];
+}

@@ -3,13 +3,17 @@ import {
   Box,
   Divider,
   Drawer,
+  FormControl,
   FormControlLabel,
+  InputLabel,
   List,
   ListItem,
   ListItemText,
   ListSubheader,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   TextField,
   // SwipeableDrawer,
   // type SwipeableDrawerProps,
@@ -26,8 +30,11 @@ import { syncState } from '@/hooks/syncState';
 import { mergeMultiSxProps } from '@/utils/suid';
 import LightbulbOutlinedIcon from '@suid/icons-material/LightbulbOutlined';
 import PaletteOutlinedIcon from '@suid/icons-material/PaletteOutlined';
-import { createMemo, Show } from 'solid-js';
+import { createMemo, For, type JSX, Show } from 'solid-js';
 import { useConfig } from '../contexts/ConfigContext';
+import { getAvailablePageSizes } from '@/features/print/utils/paperSize';
+import type { DataType } from 'csstype';
+import type { SelectChangeEvent } from '@suid/material/Select';
 
 interface AdjustSheetsProps extends DrawerProps {}
 
@@ -94,6 +101,12 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
 
   function handleAspectRatioFixedToggle() {
     configActions.print.toggleAspectRatio();
+  }
+
+  function handlePageSizeChange(event: SelectChangeEvent<DataType.PageSize | 'custom'>, _child: JSX.Element) {
+    if (event.target.value !== 'custom') {
+      configActions.print.setPaperSize(event.target.value);
+    }
   }
 
   const isPreferredDark = usePreferredDarkMode();
@@ -193,6 +206,18 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
             />
           </ListItem>
           <ListItem>
+            <FormControl fullWidth>
+              <InputLabel>纸张尺寸</InputLabel>
+              <Select<DataType.PageSize | 'custom'>
+                label="纸张尺寸"
+                value={typeof config.print.size === 'string' ? config.print.size : 'custom'}
+                onChange={handlePageSizeChange}
+              >
+                <For each={getAvailablePageSizes()}>{(size) => <MenuItem value={size}>{size}</MenuItem>}</For>
+              </Select>
+            </FormControl>
+          </ListItem>
+          <ListItem>
             <ListItemTitledComponent title="方向">
               <RadioGroup onChange={handleOrientationChange} row value={config.print.orientation}>
                 <FormControlLabel control={<Radio />} label="横向" value="landscape" />
@@ -205,6 +230,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
         {/* 打印配置 */}
         <List>
           <ListSubheader>打印</ListSubheader>
+
           <ListSwitchItem
             checked={config.print.aspectRatioFixed}
             icon={<ArticleOutlinedIcon />}
