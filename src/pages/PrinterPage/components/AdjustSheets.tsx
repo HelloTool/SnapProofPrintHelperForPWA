@@ -119,6 +119,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
             boxSizing: 'border-box',
             paddingTop: `${insets.top}px`,
             paddingRight: `${insets.right}px`,
+            transitionProperty: 'right, bottom, transform, width !important',
           },
           props.PaperProps?.sx,
         ),
