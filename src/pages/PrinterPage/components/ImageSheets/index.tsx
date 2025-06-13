@@ -5,7 +5,7 @@ import { createSignal, Index } from 'solid-js';
 import useImages from '../../contexts/ImagesContext';
 import ISToolbar from './ISToolbar';
 import type { DrawerProps } from '@suid/material/Drawer';
-import { mergeMulitSxProps } from '@/utils/suid';
+import { mergeMultiSxProps } from '@/utils/suid';
 
 interface ImageSheetsProps extends DrawerProps {}
 
@@ -71,7 +71,7 @@ export default function ImageSheets(props: ImageSheetsProps) {
       {...props}
       PaperProps={{
         ...props.PaperProps,
-        sx: mergeMulitSxProps(
+        sx: mergeMultiSxProps(
           {
             zIndex: 0,
             left: `${insets.left}px`,

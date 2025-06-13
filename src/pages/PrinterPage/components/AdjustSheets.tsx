@@ -28,7 +28,7 @@ import LightbulbOutlinedIcon from '@suid/icons-material/LightbulbOutlined';
 import PaletteOutlinedIcon from '@suid/icons-material/PaletteOutlined';
 import { createMemo, mergeProps, Show } from 'solid-js';
 import { useConfig } from '../contexts/ConfigContext';
-import { mergeMulitSxProps } from '@/utils/suid';
+import { mergeMultiSxProps } from '@/utils/suid';
 
 interface AdjustSheetsProps extends DrawerProps {}
 
@@ -115,7 +115,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
       {...props}
       PaperProps={{
         ...props.PaperProps,
-        sx: mergeMulitSxProps(
+        sx: mergeMultiSxProps(
           {
             boxSizing: 'border-box',
             paddingTop: `${insets.top}px`,

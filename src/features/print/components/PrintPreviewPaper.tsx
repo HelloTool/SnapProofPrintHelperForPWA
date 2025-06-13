@@ -1,7 +1,7 @@
 import { Box, Paper, type Theme } from '@suid/material';
 import type { SxProps } from '@suid/system';
 import type { JSX } from 'solid-js';
-import { mergeMulitSxProps } from '@/utils/suid';
+import { mergeMultiSxProps } from '@/utils/suid';
 import { usePrintPreviewPaperConfig } from '../contexts/PrintPreviewPaperConfigContext';
 
 interface PrintPaperPreveiewProps {
@@ -16,7 +16,7 @@ export default function PrintPreviewPaper(props: PrintPaperPreveiewProps) {
       class="print-preview-paper"
       elevation={1}
       square
-      sx={mergeMulitSxProps(
+      sx={mergeMultiSxProps(
         {
           overflow: 'hidden',
           aspectRatio: `${paperConfig.paperAspectRatio}`,
