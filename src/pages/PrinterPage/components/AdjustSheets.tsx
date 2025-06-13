@@ -13,7 +13,7 @@ import {
   TextField,
   // SwipeableDrawer,
   // type SwipeableDrawerProps,
-  Toolbar
+  Toolbar,
 } from '@suid/material';
 import type { DrawerProps } from '@suid/material/Drawer';
 import type { ChangeEvent } from '@suid/types';
@@ -28,21 +28,11 @@ import LightbulbOutlinedIcon from '@suid/icons-material/LightbulbOutlined';
 import PaletteOutlinedIcon from '@suid/icons-material/PaletteOutlined';
 import { createMemo, mergeProps, Show } from 'solid-js';
 import { useConfig } from '../contexts/ConfigContext';
+import { mergeMulitSxProps } from '@/utils/suid';
 
-interface AdjustSheetsProps {
-  open: DrawerProps['open'];
-  // onOpen: SwipeableDrawerProps['onOpen'];
-  onClose?: DrawerProps['onClose'];
-  variant?: DrawerProps['variant'];
-  width?: number | string;
-}
-
-const DEFAULT_PROPS = {
-  variant: 'persistent',
-} satisfies Partial<AdjustSheetsProps>;
+interface AdjustSheetsProps extends DrawerProps {}
 
 export default function AdjustSheets(props: AdjustSheetsProps) {
-  const finalProps = mergeProps(DEFAULT_PROPS, props);
   const { state: config, actions: configActions } = useConfig();
 
   const [columnsValue, setColumnsValue] = syncState(
@@ -118,19 +108,21 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
   return (
     <Drawer
       anchor="right"
-      onClose={finalProps.onClose}
+      onClose={props.onClose}
       // onOpen={onOpen}
-      open={finalProps.open}
-      variant={finalProps.variant}
+      open={props.open}
+      variant={props.variant}
+      {...props}
       PaperProps={{
-        sx: {
-          width: finalProps.width,
-          boxSizing: 'border-box',
-          maxWidth: 'calc(100% - 56px)',
-          zIndex: finalProps.variant !== 'temporary' ? 0 : undefined,
-          paddingTop: `${insets.top}px`,
-          paddingRight: `${insets.right}px`,
-        },
+        ...props.PaperProps,
+        sx: mergeMulitSxProps(
+          {
+            boxSizing: 'border-box',
+            paddingTop: `${insets.top}px`,
+            paddingRight: `${insets.right}px`,
+          },
+          props.PaperProps?.sx,
+        ),
       }}
     >
       <Toolbar>

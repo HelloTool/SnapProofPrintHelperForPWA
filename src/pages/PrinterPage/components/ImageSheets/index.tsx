@@ -5,14 +5,9 @@ import { createSignal, Index } from 'solid-js';
 import useImages from '../../contexts/ImagesContext';
 import ISToolbar from './ISToolbar';
 import type { DrawerProps } from '@suid/material/Drawer';
+import { mergeMulitSxProps } from '@/utils/suid';
 
-interface ImageSheetsProps {
-  height: number;
-  open: boolean;
-  onClose?: DrawerProps['onClose'];
-  onOpen?: () => void;
-  variant?: DrawerProps['variant'];
-}
+interface ImageSheetsProps extends DrawerProps {}
 
 export default function ImageSheets(props: ImageSheetsProps) {
   const sheetsBleeding = 56;
@@ -73,25 +68,24 @@ export default function ImageSheets(props: ImageSheetsProps) {
   return (
     <Drawer
       anchor="bottom"
-      // disableSwipeToOpen={false}
-      onClose={props.onClose}
-      // onOpen={onOpen}
-      open={props.open}
-      // swipeAreaWidth={sheetsBleeding}
-      sx={{
-        '& .MuiDrawer-paper': {
-          zIndex: 0,
-          height: props.height,
-          left: `${insets.left}px`,
-          right: `${insets.right}px`,
+      {...props}
+      PaperProps={{
+        ...props.PaperProps,
+        sx: mergeMulitSxProps(
+          {
+            zIndex: 0,
+            left: `${insets.left}px`,
+            right: `${insets.right}px`,
 
-          transition: theme.transitions.create(['left', 'right', 'bottom'], {
-            duration: theme.transitions.duration.standard,
-            easing: theme.transitions.easing.easeInOut,
-          }),
-        },
+            transition: theme.transitions.create(['left', 'right', 'bottom'], {
+              duration: theme.transitions.duration.standard,
+              easing: theme.transitions.easing.easeInOut,
+            }),
+            transitionProperty: 'left, right, bottom, transform !important',
+          },
+          props.PaperProps?.sx,
+        ),
       }}
-      variant={props.variant}
     >
       <ISToolbar
         imagesCount={images.images.length}

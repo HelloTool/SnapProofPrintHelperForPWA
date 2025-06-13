@@ -13,6 +13,8 @@ import MainArea from './components/MainArea';
 import SPPrint from './components/SPPrint';
 import { ConfigProvider } from './contexts/ConfigContext';
 import useImages, { ImagesProvider } from './contexts/ImagesContext';
+import PhotoLibraryOutlinedIcon from '@suid/icons-material/PhotoLibraryOutlined';
+import PhotoLibraryIcon from '@suid/icons-material/PhotoLibrary';
 
 function PrinterPageContent() {
   const theme = useTheme();
@@ -62,26 +64,38 @@ function PrinterPageContent() {
         <Toolbar sx={{ borderBottom: `1px solid ${theme.palette.divider}` }}>
           <ToolbarTitle>快照凭证打印助手</ToolbarTitle>
           <ToolbarIconButton
+            icon={isImageSheetsOpened() ? <PhotoLibraryIcon /> : <PhotoLibraryOutlinedIcon />}
+            label={!isImageSheetsOpened() ? '打开图片面板' : '关闭图片面板'}
+            onClick={toggleImageSheets}
+            color={isImageSheetsOpened() ? 'primary' : undefined}
+          />
+          <ToolbarIconButton
             edge="end"
             icon={isAdjustSheetsOpened() ? <ViewSidebarIcon /> : <ViewSidebarOutlinedIcon />}
             label={!isAdjustSheetsOpened() ? '打开调整面板' : '关闭调整面板'}
             onClick={toggleAdjustSheets}
+            color={isAdjustSheetsOpened() ? 'primary' : undefined}
           />
         </Toolbar>
       </AppBar>
+      <InsetsProvider right={adjustSheetsInsetWidth()} bottom={imagesSheetsInsetWidth()}>
+        <MainArea />
+      </InsetsProvider>
       <InsetsProvider
-        right={adjustSheetsInsetWidth()}
-        bottom={!isAdjustSheetsPersistent() || !isAdjustSheetsOpened() ? fabInsetWidth : undefined}
+        right={isImageSheetsPersistent() ? adjustSheetsInsetWidth() : undefined}
+        bottom={isImageSheetsPersistent() && adjustSheetsInsetWidth() <= 0 ? fabInsetWidth : undefined}
       >
-        <InsetsProvider bottom={imagesSheetsInsetWidth()}>
-          <MainArea />
-        </InsetsProvider>
         <ImageSheets
-          height={imagesSheetsHeight}
           onClose={() => setImageSheetsOpened(false)}
-          onOpen={() => setImageSheetsOpened(true)}
+          // onOpen={() => setImageSheetsOpened(true)}
           open={isImageSheetsOpened()}
           variant={isImageSheetsPersistent() ? 'persistent' : 'temporary'}
+          PaperProps={{
+            sx: {
+              height: `${imagesSheetsHeight}px`,
+              maxHeight: '50%',
+            },
+          }}
         />
       </InsetsProvider>
       <InsetsProvider bottom={isAdjustSheetsPersistent() ? fabInsetWidth : undefined}>
@@ -90,7 +104,13 @@ function PrinterPageContent() {
           // onOpen={() => setAdjustSheetsOpened(true)}
           open={isAdjustSheetsOpened()}
           variant={isAdjustSheetsPersistent() ? 'persistent' : 'temporary'}
-          width={isSmAndUp() ? adjustSheetsWidth : '100%'}
+          PaperProps={{
+            sx: {
+              width: isSmAndUp() ? adjustSheetsWidth : '100%',
+              maxWidth: 'calc(100% - 56px)',
+              zIndex: isAdjustSheetsPersistent() ? 0 : undefined,
+            },
+          }}
         />
       </InsetsProvider>
       <Fab
