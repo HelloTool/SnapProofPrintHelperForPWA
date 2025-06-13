@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  '@material/tooltip':
+    hash: 747480458c384a36433ad89a1517a37bd8682ca73f1b3dc80b4101f279f866b9
+    path: patches/@material__tooltip.patch
   '@suid/base':
     hash: 71cc34c99adb1aa1664d73b5c07fbc6b35640cd1ff47bc387cc39177f903e67c
     path: patches/@suid__base.patch
@@ -21,7 +24,7 @@ importers:
     dependencies:
       '@material/tooltip':
         specifier: ^14.0.0
-        version: 14.0.0
+        version: 14.0.0(patch_hash=747480458c384a36433ad89a1517a37bd8682ca73f1b3dc80b4101f279f866b9)
       '@solid-primitives/event-listener':
         specifier: ^2.4.1
         version: 2.4.1(solid-js@1.9.7)
@@ -1864,7 +1867,7 @@ snapshots:
       '@material/feature-targeting': 14.0.0
       tslib: 2.8.1
 
-  '@material/tooltip@14.0.0':
+  '@material/tooltip@14.0.0(patch_hash=747480458c384a36433ad89a1517a37bd8682ca73f1b3dc80b4101f279f866b9)':
     dependencies:
       '@material/animation': 14.0.0
       '@material/base': 14.0.0

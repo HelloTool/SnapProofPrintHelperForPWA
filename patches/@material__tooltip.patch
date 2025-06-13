@@ -1,0 +1,45 @@
+diff --git a/component.js b/component.js
+index e07b496ce6cd27ad3afb87ad29e40ee29ca6fdc2..a8752491154c73813f9075a511b7791ab825f22f 100644
+--- a/component.js
++++ b/component.js
+@@ -77,7 +77,7 @@ var MDCTooltip = /** @class */ (function (_super) {
+             // TODO(b/157075286): Listening for a 'focus' event is too broad.
+             this.anchorElem.addEventListener('focus', this.handleFocus);
+             this.anchorElem.addEventListener('mouseleave', this.handleMouseLeave);
+-            this.anchorElem.addEventListener('touchstart', this.handleTouchstart);
++            this.anchorElem.addEventListener('touchstart', this.handleTouchstart, { passive:true });
+             this.anchorElem.addEventListener('touchend', this.handleTouchend);
+         }
+         this.listen('transitionend', this.handleTransitionEnd);
+diff --git a/foundation.js b/foundation.js
+index c8c62df0653b73264768d26603292bfcdcdeab4d..9b6820de0d792d25c1cac8dea76bd7d908a1b02f 100644
+--- a/foundation.js
++++ b/foundation.js
+@@ -350,9 +350,10 @@ var MDCTooltipFoundation = /** @class */ (function (_super) {
+         if (this.isTooltipMultiline() && !this.richTooltip) {
+             this.adapter.addClass(MULTILINE_TOOLTIP);
+         }
++        this.adapter.setStyleProperty('left', '0px')
++        this.adapter.setStyleProperty('top', '0px')
+         this.anchorRect = this.adapter.getAnchorBoundingRect();
+         this.parentRect = this.adapter.getParentBoundingRect();
+-        this.richTooltip ? this.positionRichTooltip() : this.positionPlainTooltip();
+         this.adapter.registerAnchorEventHandler('blur', this.anchorBlurHandler);
+         this.adapter.registerDocumentEventHandler('click', this.documentClickHandler);
+         this.adapter.registerDocumentEventHandler('keydown', this.documentKeydownHandler);
+@@ -373,9 +374,12 @@ var MDCTooltipFoundation = /** @class */ (function (_super) {
+             finally { if (e_1) throw e_1.error; }
+         }
+         this.frameId = requestAnimationFrame(function () {
+-            _this.clearAllAnimationClasses();
+-            _this.adapter.addClass(SHOWN);
+-            _this.adapter.addClass(SHOWING_TRANSITION);
++            requestAnimationFrame(function () {
++                _this.richTooltip ? _this.positionRichTooltip() : _this.positionPlainTooltip();
++                _this.clearAllAnimationClasses();
++                _this.adapter.addClass(SHOWN);
++                _this.adapter.addClass(SHOWING_TRANSITION);
++            });
+         });
+     };
+     MDCTooltipFoundation.prototype.hide = function () {

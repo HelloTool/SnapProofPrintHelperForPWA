@@ -4,7 +4,9 @@ onlyBuiltDependencies:
   - core-js
   - core-js-pure
   - esbuild
+
 patchedDependencies:
   '@suid/styled-engine': patches/@suid__styled-engine.patch
   '@suid/base': patches/@suid__base.patch
   '@suid/material': patches/@suid__material.patch
+  '@material/tooltip': patches/@material__tooltip.patch
