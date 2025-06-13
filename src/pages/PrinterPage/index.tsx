@@ -28,6 +28,8 @@ function PrinterPageContent() {
   const isAdjustSheetsPersistent = isMdAndUp;
   const isImageSheetsPersistent = isHeight600AndUp;
 
+  const isAdjustSheetsButtonActive = () => isAdjustSheetsOpened() && isAdjustSheetsPersistent();
+  const isImageSheetsButtonActive = () => isImageSheetsOpened() && isImageSheetsPersistent();
   function toggleAdjustSheets() {
     setAdjustSheetsOpened((prev) => !prev);
   }
@@ -64,17 +66,17 @@ function PrinterPageContent() {
         <Toolbar sx={{ borderBottom: `1px solid ${theme.palette.divider}` }}>
           <ToolbarTitle>快照凭证打印助手</ToolbarTitle>
           <ToolbarIconButton
-            icon={isImageSheetsOpened() ? <PhotoLibraryIcon /> : <PhotoLibraryOutlinedIcon />}
-            label={!isImageSheetsOpened() ? '打开图片面板' : '关闭图片面板'}
+            icon={isImageSheetsButtonActive() ? <PhotoLibraryIcon /> : <PhotoLibraryOutlinedIcon />}
+            label={!isImageSheetsButtonActive() ? '打开图片面板' : '关闭图片面板'}
             onClick={toggleImageSheets}
-            color={isImageSheetsOpened() ? 'primary' : undefined}
+            color={isImageSheetsButtonActive() ? 'primary' : undefined}
           />
           <ToolbarIconButton
             edge="end"
-            icon={isAdjustSheetsOpened() ? <ViewSidebarIcon /> : <ViewSidebarOutlinedIcon />}
-            label={!isAdjustSheetsOpened() ? '打开调整面板' : '关闭调整面板'}
+            icon={isAdjustSheetsButtonActive() ? <ViewSidebarIcon /> : <ViewSidebarOutlinedIcon />}
+            label={!isAdjustSheetsButtonActive() ? '打开调整面板' : '关闭调整面板'}
             onClick={toggleAdjustSheets}
-            color={isAdjustSheetsOpened() ? 'primary' : undefined}
+            color={isAdjustSheetsButtonActive() ? 'primary' : undefined}
           />
         </Toolbar>
       </AppBar>
