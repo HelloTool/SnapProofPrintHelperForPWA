@@ -8,11 +8,11 @@ if (IS_TAURI) {
   document.documentElement.classList.add('tauri');
   import('@tauri-apps/api/window')
     .then(async ({ getCurrentWindow }) => {
-      await getCurrentWindow().show();
+      const currentWindow = getCurrentWindow();
+      currentWindow.setTitle('快照凭证打印助手').catch(console.error);
+      currentWindow.show().catch(console.error);
     })
-    .catch((e) => {
-      console.error(e);
-    });
+    .catch(console.error);
 }
 
 const root = document.getElementById('root');

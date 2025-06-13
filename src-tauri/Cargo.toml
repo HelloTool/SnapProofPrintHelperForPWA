@@ -1,10 +1,11 @@
 [package]
-name = "snap-proof-print-helper"
+name = "SnapProofPrintHelper"
 version = "0.1.0"
-description = "Print multiple transfer record diagrams,e-commerce order diagrams,and so on in a voucher style onto paper,and add cutting lines."
+description = "Print multiple transfer record diagrams, e-commerce order diagrams, and so on in a voucher style onto paper,and add cutting lines."
 authors = ["Jesse205"]
 edition = "2021"
 license = "Apache-2.0"
+homepage = "https://gitee.com/HelloTool/SnapProofPrintHelperForPWA"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
