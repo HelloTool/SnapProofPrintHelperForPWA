@@ -12,7 +12,6 @@ export interface PrintConfig {
   contentMarginBottom: number;
   orientation: 'landscape' | 'portrait';
   size: DataType.PageSize | [number, number];
-  aspectRatioFixed: boolean;
 }
 
 export interface PreviewConfig {

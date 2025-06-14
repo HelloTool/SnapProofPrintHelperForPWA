@@ -99,10 +99,6 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
     configActions.preview.setColorMode(config.preview.colorMode === 'colorful' ? 'gray' : 'colorful');
   }
 
-  function handleAspectRatioFixedToggle() {
-    configActions.print.toggleAspectRatio();
-  }
-
   function handlePageSizeChange(event: SelectChangeEvent<DataType.PageSize | 'custom'>, _child: JSX.Element) {
     if (event.target.value !== 'custom') {
       configActions.print.setPaperSize(event.target.value);
@@ -228,17 +224,9 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
         </List>
         <Divider />
         {/* 打印配置 */}
-        <List>
+        {/* <List>
           <ListSubheader>打印</ListSubheader>
-
-          <ListSwitchItem
-            checked={config.print.aspectRatioFixed}
-            icon={<ArticleOutlinedIcon />}
-            onClick={handleAspectRatioFixedToggle}
-            summary="在打印时使用固定的比例，而非动态测量。FireFox 需要打开此项才能正确显示页面。"
-            title="固定页面比例"
-          />
-        </List>
+        </List> */}
         <Divider />
         {/* 预览配置 */}
         <List>

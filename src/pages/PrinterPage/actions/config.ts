@@ -13,7 +13,6 @@ export interface ConfigActions {
     setMarginBottom: (value: number) => void;
     setOrientation: (value: 'landscape' | 'portrait') => void;
     setPaperSize: (size: ConfigStore['print']['size']) => void;
-    toggleAspectRatio: () => void;
   };
   preview: {
     setColorMode: (mode: 'colorful' | 'gray') => void;
@@ -55,10 +54,6 @@ export function createConfigActions(setState: SetStoreFunction<ConfigStore>): Co
 
       setPaperSize: (size: ConfigStore['print']['size']) => {
         setState('print', 'size', size);
-      },
-
-      toggleAspectRatio: () => {
-        setState('print', 'aspectRatioFixed', (prev) => !prev);
       },
     },
 

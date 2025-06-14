@@ -1,5 +1,5 @@
 import { createStore } from 'solid-js/store';
-import { maybeChrome } from '@/utils/platform';
+
 import type { PaperLayout, PreviewConfig, PrintConfig } from '../types/config';
 
 export interface ConfigStore {
@@ -20,7 +20,6 @@ export function createConfigStore() {
       contentMarginBottom: 1,
       orientation: 'landscape',
       size: 'A4',
-      aspectRatioFixed: !maybeChrome,
     },
     preview: {
       colorMode: 'gray',
