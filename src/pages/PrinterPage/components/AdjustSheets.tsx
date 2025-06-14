@@ -1,10 +1,21 @@
-import ArticleOutlinedIcon from '@suid/icons-material/ArticleOutlined';
+import ListSwitchItem from '@/components/list/ListSwitchItem';
+import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
+import { useInsets } from '@/features/insets/contexts/InsetsContext';
+import { getAvailablePageSizes } from '@/features/print/utils/paperSize';
+import { usePreferredDarkMode } from '@/hooks/mediaQuery';
+import { syncState } from '@/hooks/syncState';
+import { maybeAndroid, maybeChrome } from '@/utils/platform';
+import { mergeMultiSxProps } from '@/utils/suid';
+import LightbulbOutlinedIcon from '@suid/icons-material/LightbulbOutlined';
+import PaletteOutlinedIcon from '@suid/icons-material/PaletteOutlined';
 import {
   Box,
   Divider,
   Drawer,
   FormControl,
   FormControlLabel,
+  FormHelperText,
+  FormLabel,
   InputLabel,
   List,
   ListItem,
@@ -20,21 +31,11 @@ import {
   Toolbar,
 } from '@suid/material';
 import type { DrawerProps } from '@suid/material/Drawer';
+import type { SelectChangeEvent } from '@suid/material/Select';
 import type { ChangeEvent } from '@suid/types';
-import ListItemTitledComponent from '@/components/list/ListItemTitledComponent';
-import ListSwitchItem from '@/components/list/ListSwitchItem';
-import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
-import { useInsets } from '@/features/insets/contexts/InsetsContext';
-import { usePreferredDarkMode } from '@/hooks/mediaQuery';
-import { syncState } from '@/hooks/syncState';
-import { mergeMultiSxProps } from '@/utils/suid';
-import LightbulbOutlinedIcon from '@suid/icons-material/LightbulbOutlined';
-import PaletteOutlinedIcon from '@suid/icons-material/PaletteOutlined';
+import type { DataType } from 'csstype';
 import { createMemo, For, type JSX, Show } from 'solid-js';
 import { useConfig } from '../contexts/ConfigContext';
-import { getAvailablePageSizes } from '@/features/print/utils/paperSize';
-import type { DataType } from 'csstype';
-import type { SelectChangeEvent } from '@suid/material/Select';
 
 interface AdjustSheetsProps extends DrawerProps {}
 
@@ -203,23 +204,45 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
           </ListItem>
           <ListItem>
             <FormControl fullWidth>
-              <InputLabel>纸张尺寸</InputLabel>
+              <InputLabel id="adjust-panel__size__label" for="adjust-panel__size__select">
+                纸张尺寸
+              </InputLabel>
               <Select<DataType.PageSize | 'custom'>
+                id="adjust-panel__size__select"
+                aria-describedby="adjust-panel__size__helper"
+                labelId="adjust-panel__size__label"
                 label="纸张尺寸"
                 value={typeof config.print.size === 'string' ? config.print.size : 'custom'}
                 onChange={handlePageSizeChange}
               >
                 <For each={getAvailablePageSizes()}>{(size) => <MenuItem value={size}>{size}</MenuItem>}</For>
               </Select>
+              <Show when={!maybeChrome}>
+                <FormHelperText id="adjust-panel__size__helper">
+                  您可能需要在“打印”窗口中同时更改“纸张尺寸”。
+                </FormHelperText>
+              </Show>
             </FormControl>
           </ListItem>
           <ListItem>
-            <ListItemTitledComponent title="方向">
-              <RadioGroup onChange={handleOrientationChange} row value={config.print.orientation}>
+            <FormControl fullWidth variant="standard">
+              <FormLabel id="adjust-panel__orientation__label">方向</FormLabel>
+              <RadioGroup
+                aria-labelledby="adjust-panel__orientation__label"
+                aria-describedby="adjust-panel__orientation__helper"
+                onChange={handleOrientationChange}
+                row
+                value={config.print.orientation}
+              >
                 <FormControlLabel control={<Radio />} label="横向" value="landscape" />
                 <FormControlLabel control={<Radio />} label="纵向" value="portrait" />
               </RadioGroup>
-            </ListItemTitledComponent>
+              <Show when={maybeAndroid}>
+                <FormHelperText id="adjust-panel__orientation__helper">
+                  您可能需要在“打印”窗口中同时更改“纸张方向”。
+                </FormHelperText>
+              </Show>
+            </FormControl>
           </ListItem>
         </List>
         <Divider />
