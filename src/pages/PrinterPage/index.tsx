@@ -2,7 +2,7 @@ import PrintIcon from '@suid/icons-material/Print';
 import ViewSidebarIcon from '@suid/icons-material/ViewSidebar';
 import ViewSidebarOutlinedIcon from '@suid/icons-material/ViewSidebarOutlined';
 import { AppBar, Box, Fab, Toolbar, useMediaQuery, useTheme } from '@suid/material';
-import { createDeferred, createMemo, createSignal } from 'solid-js';
+import { createDeferred, createMemo, createSignal, Show } from 'solid-js';
 import { ToolbarIconButton } from '@/components/toolbar/ToolbarIconButton';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { InsetsProvider } from '@/features/insets/contexts/InsetsContext';
@@ -128,7 +128,9 @@ function PrinterPageContent() {
         <PrintIcon sx={{ mr: 1 }} />
         打印
       </Fab>
-      {isPrinting() ? <SPPrint /> : null}
+      <Show when={isPrinting()}>
+        <SPPrint />
+      </Show>
     </Box>
   );
 }

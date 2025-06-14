@@ -12,7 +12,6 @@ export default function SPPrint() {
     <Print
       paperOrientation={config.print.orientation}
       paperSize={config.print.size}
-      contentAspectRatioFixed={config.print.aspectRatioFixed}
       contentMarginLeft={config.print.contentMarginLeft}
       contentMarginTop={config.print.contentMarginTop}
       contentMarginRight={config.print.contentMarginRight}

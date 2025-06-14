@@ -10,7 +10,6 @@ export interface PrintProps {
   children: JSX.Element;
   paperSize?: DataType.PageSize | [number, number];
   paperOrientation?: 'landscape' | 'portrait';
-  contentAspectRatioFixed?: boolean;
   contentMarginLeft?: number;
   contentMarginTop?: number;
   contentMarginRight?: number;
@@ -20,7 +19,6 @@ export interface PrintProps {
 const DEFAULT_PROPS = {
   paperSize: 'A4',
   paperOrientation: 'portrait',
-  contentAspectRatioFixed: false,
   contentMarginLeft: 2.25,
   contentMarginTop: 2.25,
   contentMarginRight: 2.25,
