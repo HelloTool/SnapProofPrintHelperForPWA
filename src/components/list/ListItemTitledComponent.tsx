@@ -1,4 +1,4 @@
-import { ListItemText, Typography } from '@suid/material';
+import { ListItemText } from '@suid/material';
 
 import type { Theme } from '@suid/material/styles';
 import type { SxProps } from '@suid/system';

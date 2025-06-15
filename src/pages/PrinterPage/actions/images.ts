@@ -1,9 +1,9 @@
+import { nanoid } from 'nanoid';
 import { produce, type SetStoreFunction } from 'solid-js/store';
 import { chunkArray } from '@/utils/list';
 import type { ConfigStore } from '../stores/config';
 import type { ImagesStore } from '../stores/images';
 import type { SnapImage } from '../types/image';
-import { nanoid } from 'nanoid';
 
 export interface ImagesActions {
   addImageFiles: (imageFiles: FileList) => void;

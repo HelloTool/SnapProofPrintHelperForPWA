@@ -3,7 +3,7 @@ import { IconButton } from '@suid/material';
 import type { IconButtonProps } from '@suid/material/IconButton';
 import type { Theme } from '@suid/material/styles';
 import type { SxProps } from '@suid/system';
-import { createUniqueId, onCleanup, onMount, type JSX } from 'solid-js';
+import { createUniqueId, type JSX, onCleanup, onMount } from 'solid-js';
 import '@material/tooltip/dist/mdc.tooltip.min.css';
 
 interface ToolbarIconButtonProps {

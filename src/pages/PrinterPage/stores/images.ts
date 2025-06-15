@@ -1,7 +1,7 @@
 import { createStore } from 'solid-js/store';
+import { chunkArray } from '@/utils/list';
 import type { SnapImage } from '../types/image';
 import type { ConfigStore } from './config';
-import { chunkArray } from '@/utils/list';
 
 export interface ImagesStore {
   images: SnapImage[];

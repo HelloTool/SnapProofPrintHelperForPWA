@@ -3,13 +3,13 @@ import { createMemo, Index, Show } from 'solid-js';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import PrintPreview from '@/features/print/components/PrintPreview';
 import PrintPreviewPaper from '@/features/print/components/PrintPreviewPaper';
+import { pageSizeNameToCm } from '@/features/print/utils/paperSize';
+import { getOrientationBasedSize } from '@/features/print/utils/print';
+import { usePreferredDarkMode } from '@/hooks/mediaQuery';
+import { createAppTheme } from '@/themes/appTheme';
 import { useConfig } from '../contexts/ConfigContext';
 import useImages from '../contexts/ImagesContext';
 import SPPrintPageContent from './SPPrintPageContent';
-import { usePreferredDarkMode } from '@/hooks/mediaQuery';
-import { createAppTheme } from '@/themes/appTheme';
-import { pageSizeNameToCm } from '@/features/print/utils/paperSize';
-import { getOrientationBasedSize } from '@/features/print/utils/print';
 
 export default function MainArea() {
   const insets = useInsets();

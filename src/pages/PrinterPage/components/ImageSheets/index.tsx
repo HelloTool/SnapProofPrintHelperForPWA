@@ -1,17 +1,19 @@
+import AddIcon from '@suid/icons-material/Add';
+import ClearAllOutlinedIcon from '@suid/icons-material/ClearAllOutlined';
+import CloseIcon from '@suid/icons-material/Close';
+import { alpha, Box, Drawer, Fade, Paper, Toolbar, Typography, useTheme } from '@suid/material';
+import type { DrawerProps } from '@suid/material/Drawer';
+import { createSignal, Index, Show } from 'solid-js';
 import { ToolbarIconButton } from '@/components/toolbar/ToolbarIconButton';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import { pickFiles } from '@/utils/file';
 import { mergeMultiSxProps } from '@/utils/suid';
-import AddIcon from '@suid/icons-material/Add';
-import ClearAllOutlinedIcon from '@suid/icons-material/ClearAllOutlined';
-import { alpha, Box, Drawer, Fade, Paper, Toolbar, Typography, useTheme } from '@suid/material';
-import type { DrawerProps } from '@suid/material/Drawer';
-import { createSignal, Index, Show } from 'solid-js';
 import useImages from '../../contexts/ImagesContext';
-import CloseIcon from '@suid/icons-material/Close';
+
 interface ImageSheetsProps extends DrawerProps {
-  onClose?: (event: {}, reason: 'backdropClick' | 'escapeKeyDown' | 'toolbarClick') => void;
+  // biome-ignore lint/suspicious/noExplicitAny: false
+  onClose?: (event: any, reason: 'backdropClick' | 'escapeKeyDown' | 'toolbarClick') => void;
   showCloseButton?: boolean;
 }
 

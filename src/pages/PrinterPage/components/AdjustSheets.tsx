@@ -1,11 +1,3 @@
-import ListSwitchItem from '@/components/list/ListSwitchItem';
-import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
-import { useInsets } from '@/features/insets/contexts/InsetsContext';
-import { getAvailablePageSizes } from '@/features/print/utils/paperSize';
-import { usePreferredDarkMode } from '@/hooks/mediaQuery';
-import { syncState } from '@/hooks/syncState';
-import { maybeAndroid, maybeChrome } from '@/utils/platform';
-import { mergeMultiSxProps } from '@/utils/suid';
 import LightbulbOutlinedIcon from '@suid/icons-material/LightbulbOutlined';
 import PaletteOutlinedIcon from '@suid/icons-material/PaletteOutlined';
 import {
@@ -35,6 +27,14 @@ import type { SelectChangeEvent } from '@suid/material/Select';
 import type { ChangeEvent } from '@suid/types';
 import type { DataType } from 'csstype';
 import { createMemo, For, type JSX, Show } from 'solid-js';
+import ListSwitchItem from '@/components/list/ListSwitchItem';
+import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
+import { useInsets } from '@/features/insets/contexts/InsetsContext';
+import { getAvailablePageSizes } from '@/features/print/utils/paperSize';
+import { usePreferredDarkMode } from '@/hooks/mediaQuery';
+import { syncState } from '@/hooks/syncState';
+import { maybeAndroid, maybeChrome } from '@/utils/platform';
+import { mergeMultiSxProps } from '@/utils/suid';
 import { useConfig } from '../contexts/ConfigContext';
 
 interface AdjustSheetsProps extends DrawerProps {}

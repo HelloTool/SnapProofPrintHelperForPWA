@@ -30,8 +30,8 @@
     "dev:tauri:frontend": "rsbuild dev --environment tauri",
     "dev:tauri": "tauri dev",
     "preview:browser": "rsbuild preview  --environment browser",
-    "check": "biome check --write",
-    "format": "biome format --write",
+    "check": "biome check",
+    "format": "biome format",
     "docs:generateOsNotices": "tsx ./scripts/docs/generate_os_notices.ts"
   },
   "dependencies": {
