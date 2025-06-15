@@ -219,7 +219,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
               </Select>
               <Show when={!maybeChrome}>
                 <FormHelperText id="adjust-panel__size__helper">
-                  您可能需要在“打印”窗口中同时更改“纸张尺寸”。
+                  您可能需要在“打印”窗口中同时更改“纸张尺寸”才能正确打印。
                 </FormHelperText>
               </Show>
             </FormControl>
@@ -239,7 +239,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
               </RadioGroup>
               <Show when={maybeAndroid}>
                 <FormHelperText id="adjust-panel__orientation__helper">
-                  您可能需要在“打印”窗口中同时更改“纸张方向”。
+                  您可能需要在“打印”窗口中同时更改“纸张方向”才能正确打印。
                 </FormHelperText>
               </Show>
             </FormControl>
