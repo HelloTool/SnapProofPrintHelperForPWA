@@ -217,7 +217,7 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
               >
                 <For each={getAvailablePageSizes()}>{(size) => <MenuItem value={size}>{size}</MenuItem>}</For>
               </Select>
-              <Show when={!maybeChrome}>
+              <Show when={!maybeChrome || maybeAndroid}>
                 <FormHelperText id="adjust-panel__size__helper">
                   您可能需要在“打印”窗口中同时更改“纸张尺寸”才能正确打印。
                 </FormHelperText>
