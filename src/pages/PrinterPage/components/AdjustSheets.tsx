@@ -249,8 +249,8 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
         {/* 打印配置 */}
         {/* <List>
           <ListSubheader>打印</ListSubheader>
-        </List> */}
-        <Divider />
+        </List>
+        <Divider /> */}
         {/* 预览配置 */}
         <List>
           <ListSubheader>预览</ListSubheader>
