@@ -1,5 +1,6 @@
 import { Box } from '@suid/material';
 import { Index } from 'solid-js';
+import { isItemColumnStart, isItemRowStart } from '@/utils/grid';
 import type { SnapImage } from '../types/image';
 
 interface SPPrintPageContentProps {
@@ -17,18 +18,20 @@ export default function SPPrintPageContent(props: SPPrintPageContentProps) {
         width: '100%',
         height: '100%',
         userSelect: 'none',
-        fontSize: 0,
         overflow: 'hidden',
         display: 'flex',
+        flexWrap: 'wrap',
       }}
     >
       <Index each={props.images}>
-        {(image) => (
+        {(image, index) => (
           <Box
             sx={{
               width: `calc(100% / ${props.columns})`,
               height: `calc(100% / ${props.rows})`,
               border: '1px dashed gray',
+              borderLeft: !isItemColumnStart(index, props.columns) ? 'none' : undefined,
+              borderTop: !isItemRowStart(index, props.columns) ? 'none' : undefined,
               objectFit: 'contain',
               display: 'flex',
               alignItems: 'center',
