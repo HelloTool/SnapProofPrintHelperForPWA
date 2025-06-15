@@ -7,11 +7,12 @@ import AddIcon from '@suid/icons-material/Add';
 import ClearAllOutlinedIcon from '@suid/icons-material/ClearAllOutlined';
 import { alpha, Box, Drawer, Fade, Paper, Toolbar, Typography, useTheme } from '@suid/material';
 import type { DrawerProps } from '@suid/material/Drawer';
-import { createSignal, Index } from 'solid-js';
+import { createSignal, Index, Show } from 'solid-js';
 import useImages from '../../contexts/ImagesContext';
 import CloseIcon from '@suid/icons-material/Close';
 interface ImageSheetsProps extends DrawerProps {
   onClose?: (event: {}, reason: 'backdropClick' | 'escapeKeyDown' | 'toolbarClick') => void;
+  showCloseButton?: boolean;
 }
 
 export default function ImageSheets(props: ImageSheetsProps) {
@@ -92,13 +93,15 @@ export default function ImageSheets(props: ImageSheetsProps) {
       }}
     >
       <Toolbar>
-        <ToolbarIconButton
-          icon={<CloseIcon />}
-          label="关闭图片面板"
-          onClick={() => props.onClose?.({}, 'toolbarClick')}
-          edge="start"
-          sx={{ mr: 2 }}
-        />
+        <Show when={props.showCloseButton}>
+          <ToolbarIconButton
+            icon={<CloseIcon />}
+            label="关闭图片面板"
+            onClick={() => props.onClose?.({}, 'toolbarClick')}
+            edge="start"
+            sx={{ mr: 2 }}
+          />
+        </Show>
 
         <ToolbarTitle>图片（{images.images.length} 张）</ToolbarTitle>
         <ToolbarIconButton

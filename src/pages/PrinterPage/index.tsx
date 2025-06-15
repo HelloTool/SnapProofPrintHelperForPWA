@@ -93,6 +93,7 @@ function PrinterPageContent() {
           // onOpen={() => setImageSheetsOpened(true)}
           open={isImageSheetsOpened()}
           variant={isImageSheetsPersistent() ? 'persistent' : 'temporary'}
+          showCloseButton={!isImageSheetsPersistent()}
           PaperProps={{
             sx: {
               height: isImageSheetsPersistent() ? `${imagesSheetsHeight}px` : '100%',
