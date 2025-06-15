@@ -1,20 +1,21 @@
-import PrintIcon from '@suid/icons-material/Print';
-import ViewSidebarIcon from '@suid/icons-material/ViewSidebar';
-import ViewSidebarOutlinedIcon from '@suid/icons-material/ViewSidebarOutlined';
-import { AppBar, Box, Fab, Toolbar, useMediaQuery, useTheme } from '@suid/material';
-import { createDeferred, createMemo, createSignal, Show } from 'solid-js';
 import { ToolbarIconButton } from '@/components/toolbar/ToolbarIconButton';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { InsetsProvider } from '@/features/insets/contexts/InsetsContext';
 import usePrint from '@/features/print/hooks/createPrinting';
+import { createSheetOpenState } from '@/hooks/createSheetOpenedState';
+import PhotoLibraryIcon from '@suid/icons-material/PhotoLibrary';
+import PhotoLibraryOutlinedIcon from '@suid/icons-material/PhotoLibraryOutlined';
+import PrintIcon from '@suid/icons-material/Print';
+import ViewSidebarIcon from '@suid/icons-material/ViewSidebar';
+import ViewSidebarOutlinedIcon from '@suid/icons-material/ViewSidebarOutlined';
+import { AppBar, Box, Fab, Toolbar, useMediaQuery, useTheme } from '@suid/material';
+import { createDeferred, createMemo, Show } from 'solid-js';
 import AdjustSheets from './components/AdjustSheets';
 import ImageSheets from './components/ImageSheets';
 import MainArea from './components/MainArea';
 import SPPrint from './components/SPPrint';
 import { ConfigProvider } from './contexts/ConfigContext';
 import useImages, { ImagesProvider } from './contexts/ImagesContext';
-import PhotoLibraryOutlinedIcon from '@suid/icons-material/PhotoLibraryOutlined';
-import PhotoLibraryIcon from '@suid/icons-material/PhotoLibrary';
 
 function PrinterPageContent() {
   const theme = useTheme();
@@ -22,11 +23,11 @@ function PrinterPageContent() {
   const isMdAndUp = createDeferred(useMediaQuery(theme.breakpoints.up('md')));
   const isHeight600AndUp = createDeferred(useMediaQuery('(min-height: 600px)'));
 
-  const [isAdjustSheetsOpened, setAdjustSheetsOpened] = createSignal(isMdAndUp());
-  const [isImageSheetsOpened, setImageSheetsOpened] = createSignal(isHeight600AndUp());
-
   const isAdjustSheetsPersistent = isMdAndUp;
-  const isImageSheetsPersistent = () => isHeight600AndUp() || (!isAdjustSheetsPersistent() && isAdjustSheetsOpened());
+  const isImageSheetsPersistent = isHeight600AndUp;
+
+  const [isAdjustSheetsOpened, setAdjustSheetsOpened] = createSheetOpenState(isAdjustSheetsPersistent);
+  const [isImageSheetsOpened, setImageSheetsOpened] = createSheetOpenState(isImageSheetsPersistent);
 
   const isAdjustSheetsButtonActive = () => isAdjustSheetsOpened() && isAdjustSheetsPersistent();
   const isImageSheetsButtonActive = () => isImageSheetsOpened() && isImageSheetsPersistent();
