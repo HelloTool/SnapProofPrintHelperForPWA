@@ -27,5 +27,9 @@
     "*": "${basename}.*.${extname}"
   },
   "i18n-ally.localesPaths": ["src/locales"],
-  "cSpell.words": ["icns", "nsis", "rsbuild", "tauri"]
+  "cSpell.words": ["icns", "nsis", "rsbuild", "tauri"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  }
 }
