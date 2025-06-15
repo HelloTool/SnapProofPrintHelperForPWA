@@ -1,13 +1,18 @@
+import { ToolbarIconButton } from '@/components/toolbar/ToolbarIconButton';
+import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import { pickFiles } from '@/utils/file';
-import { alpha, Box, Drawer, Fade, Paper, Typography, useTheme } from '@suid/material';
+import { mergeMultiSxProps } from '@/utils/suid';
+import AddIcon from '@suid/icons-material/Add';
+import ClearAllOutlinedIcon from '@suid/icons-material/ClearAllOutlined';
+import { alpha, Box, Drawer, Fade, Paper, Toolbar, Typography, useTheme } from '@suid/material';
+import type { DrawerProps } from '@suid/material/Drawer';
 import { createSignal, Index } from 'solid-js';
 import useImages from '../../contexts/ImagesContext';
-import ISToolbar from './ISToolbar';
-import type { DrawerProps } from '@suid/material/Drawer';
-import { mergeMultiSxProps } from '@/utils/suid';
-
-interface ImageSheetsProps extends DrawerProps {}
+import CloseIcon from '@suid/icons-material/Close';
+interface ImageSheetsProps extends DrawerProps {
+  onClose?: (event: {}, reason: 'backdropClick' | 'escapeKeyDown' | 'toolbarClick') => void;
+}
 
 export default function ImageSheets(props: ImageSheetsProps) {
   const sheetsBleeding = 56;
@@ -86,11 +91,24 @@ export default function ImageSheets(props: ImageSheetsProps) {
         ),
       }}
     >
-      <ISToolbar
-        imagesCount={images.images.length}
-        onAddImageClick={handleAddImagesClick}
-        onClearImagesClick={handleClearImagesClick}
-      />
+      <Toolbar>
+        <ToolbarIconButton
+          icon={<CloseIcon />}
+          label="关闭图片面板"
+          onClick={() => props.onClose?.({}, 'toolbarClick')}
+          edge="start"
+          sx={{ mr: 2 }}
+        />
+
+        <ToolbarTitle>图片（{images.images.length} 张）</ToolbarTitle>
+        <ToolbarIconButton
+          disabled={images.images.length === 0}
+          icon={<ClearAllOutlinedIcon />}
+          label={'移除所有图片'}
+          onClick={handleClearImagesClick}
+        />
+        <ToolbarIconButton edge="end" icon={<AddIcon />} label={'添加图片'} onClick={handleAddImagesClick} />
+      </Toolbar>
 
       <Box
         sx={{

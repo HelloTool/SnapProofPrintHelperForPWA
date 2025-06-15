@@ -22,11 +22,11 @@ function PrinterPageContent() {
   const isMdAndUp = createDeferred(useMediaQuery(theme.breakpoints.up('md')));
   const isHeight600AndUp = createDeferred(useMediaQuery('(min-height: 600px)'));
 
-  const [isImageSheetsOpened, setImageSheetsOpened] = createSignal(true);
   const [isAdjustSheetsOpened, setAdjustSheetsOpened] = createSignal(isMdAndUp());
+  const [isImageSheetsOpened, setImageSheetsOpened] = createSignal(isHeight600AndUp());
 
   const isAdjustSheetsPersistent = isMdAndUp;
-  const isImageSheetsPersistent = isHeight600AndUp;
+  const isImageSheetsPersistent = () => isHeight600AndUp() || (!isAdjustSheetsPersistent() && isAdjustSheetsOpened());
 
   const isAdjustSheetsButtonActive = () => isAdjustSheetsOpened() && isAdjustSheetsPersistent();
   const isImageSheetsButtonActive = () => isImageSheetsOpened() && isImageSheetsPersistent();
@@ -94,8 +94,7 @@ function PrinterPageContent() {
           variant={isImageSheetsPersistent() ? 'persistent' : 'temporary'}
           PaperProps={{
             sx: {
-              height: `${imagesSheetsHeight}px`,
-              maxHeight: '50%',
+              height: isImageSheetsPersistent() ? `${imagesSheetsHeight}px` : '100%',
             },
           }}
         />
