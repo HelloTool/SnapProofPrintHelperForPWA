@@ -1,15 +1,16 @@
 import AddIcon from '@suid/icons-material/Add';
 import ClearAllOutlinedIcon from '@suid/icons-material/ClearAllOutlined';
 import CloseIcon from '@suid/icons-material/Close';
-import { alpha, Box, Drawer, Fade, Paper, Toolbar, Typography, useTheme } from '@suid/material';
+import { alpha, Box, Drawer, Fade, Toolbar, Typography, useTheme } from '@suid/material';
 import type { DrawerProps } from '@suid/material/Drawer';
-import { createSignal, Index, Show } from 'solid-js';
+import { createSignal, For, Show } from 'solid-js';
 import { ToolbarIconButton } from '@/components/toolbar/ToolbarIconButton';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import { pickFiles } from '@/utils/file';
 import { mergeMultiSxProps } from '@/utils/suid';
 import useImages from '../../contexts/ImagesContext';
+import ImageItem from './ImageItem';
 
 interface ImageSheetsProps extends DrawerProps {
   // biome-ignore lint/suspicious/noExplicitAny: false
@@ -148,52 +149,16 @@ export default function ImageSheets(props: ImageSheetsProps) {
             },
           }}
         >
-          <Index each={images.images}>
+          <For each={images.images}>
             {(image) => (
-              <Box
+              <ImageItem
                 sx={{
                   width: '100%',
                 }}
-                title={image().name}
-              >
-                <Paper
-                  sx={{
-                    width: '100%',
-                    aspectRatio: '1',
-                    overflow: 'hidden',
-                  }}
-                  variant="outlined"
-                >
-                  <Box
-                    component="img"
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                    }}
-                    src={image().url}
-                    loading="lazy"
-                    alt={image().name}
-                  />
-                </Paper>
-                <Typography
-                  component="div"
-                  sx={{
-                    width: '100%',
-                    textAlign: 'center',
-                    marginTop: 1,
-                    userSelect: 'text',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                  variant="caption"
-                >
-                  {image().name}
-                </Typography>
-              </Box>
+                image={image}
+              />
             )}
-          </Index>
+          </For>
         </Box>
         <Fade in={dragEntered()}>
           <Box
