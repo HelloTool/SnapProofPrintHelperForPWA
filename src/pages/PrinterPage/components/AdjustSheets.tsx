@@ -202,6 +202,11 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
               helperText={rowsError()}
             />
           </ListItem>
+        </List>
+        <Divider />
+        {/* 打印配置 */}
+        <List>
+          <ListSubheader>打印</ListSubheader>
           <ListItem>
             <FormControl fullWidth>
               <InputLabel id="adjust-panel__size__label" for="adjust-panel__size__select">
@@ -246,11 +251,6 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
           </ListItem>
         </List>
         <Divider />
-        {/* 打印配置 */}
-        {/* <List>
-          <ListSubheader>打印</ListSubheader>
-        </List>
-        <Divider /> */}
         {/* 预览配置 */}
         <List>
           <ListSubheader>预览</ListSubheader>
