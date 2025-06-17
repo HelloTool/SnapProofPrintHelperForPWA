@@ -10,7 +10,7 @@
 
 **平台**：
 [![Windows 10+（exe）](https://img.shields.io/badge/Windows_10+-exe-0078D4?logo=windows)][ReleaseOnGitee]
-[![Web（PWA）](https://img.shields.io/badge/Web+-PWA-0078D4?logo=windows)][ReleaseOnGitee]
+[![Web（PWA）](https://img.shields.io/badge/Web-PWA-0078D4?logo=windows)][ReleaseOnGitee]
 
 **语言**：
 **中文** |
