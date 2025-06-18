@@ -18,6 +18,7 @@ import MainArea from './components/MainArea';
 import SPPrint from './components/SPPrint';
 import { ConfigProvider } from './contexts/ConfigContext';
 import useImages, { ImagesProvider } from './contexts/ImagesContext';
+import AppBarArea from './components/AppBarArea';
 
 function PrinterPageContent() {
   const theme = useTheme();
@@ -31,8 +32,6 @@ function PrinterPageContent() {
   const [isAdjustSheetsOpened, setAdjustSheetsOpened] = createSheetOpenState(isAdjustSheetsPersistent);
   const [isImageSheetsOpened, setImageSheetsOpened] = createSheetOpenState(isImageSheetsPersistent);
 
-  const isAdjustSheetsButtonActive = () => isAdjustSheetsOpened() && isAdjustSheetsPersistent();
-  const isImageSheetsButtonActive = () => isImageSheetsOpened() && isImageSheetsPersistent();
   function toggleAdjustSheets() {
     setAdjustSheetsOpened((prev) => !prev);
   }
@@ -59,14 +58,6 @@ function PrinterPageContent() {
 
   const { state: images } = useImages();
 
-  const [isMoreOptionsOpened, setMoreOptionsOpened] = createSignal(false);
-  let moreOptionsRef: HTMLButtonElement | undefined;
-
-  function handleUpdateMenuItemClick() {
-    setMoreOptionsOpened(false);
-    getWorkBox()?.messageSkipWaiting();
-    // openAboutDialog();
-  }
   return (
     <Box
       class="printer-page"
@@ -74,59 +65,12 @@ function PrinterPageContent() {
         height: '100%',
       }}
     >
-      <AppBar>
-        <Toolbar sx={{ borderBottom: `1px solid ${theme.palette.divider}` }}>
-          <ToolbarTitle>快照凭证打印助手</ToolbarTitle>
-          <ToolbarIconButton
-            icon={isImageSheetsButtonActive() ? <PhotoLibraryIcon /> : <PhotoLibraryOutlinedIcon />}
-            label={!isImageSheetsButtonActive() ? '打开图片面板' : '关闭图片面板'}
-            onClick={toggleImageSheets}
-            color={isImageSheetsButtonActive() ? 'primary' : undefined}
-          />
-          <ToolbarIconButton
-            icon={isAdjustSheetsButtonActive() ? <ViewSidebarIcon /> : <ViewSidebarOutlinedIcon />}
-            label={!isAdjustSheetsButtonActive() ? '打开调整面板' : '关闭调整面板'}
-            onClick={toggleAdjustSheets}
-            color={isAdjustSheetsButtonActive() ? 'primary' : undefined}
-          />
-          <ToolbarIconButton
-            aria-controls={open() ? 'more-options-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open() ? 'true' : undefined}
-            edge="end"
-            icon={
-              <Badge variant="dot" invisible={!isServiceWorkerWaiting()}>
-                <MoreVertIcon />
-              </Badge>
-            }
-            label={'更多选项'}
-            onClick={() => setMoreOptionsOpened(true)}
-            ref={moreOptionsRef}
-          />
-          <Menu
-            id="more-options-menu"
-            anchorEl={moreOptionsRef}
-            open={isMoreOptionsOpened()}
-            onClose={() => setMoreOptionsOpened(false)}
-            MenuListProps={{ 'aria-labelledby': 'basic-button' }}
-            PaperProps={{
-              sx: {
-                minWidth: '168px',
-                [theme.breakpoints.up('sm')]: {
-                  width: '192px',
-                },
-              },
-            }}
-          >
-            {CONFIG_ENABLE_PWA ? (
-              <Show when={isServiceWorkerWaiting()}>
-                <MenuItem onClick={handleUpdateMenuItemClick}>重启以应用更新</MenuItem>
-              </Show>
-            ) : undefined}
-            {/* <MenuItem>关于</MenuItem> */}
-          </Menu>
-        </Toolbar>
-      </AppBar>
+      <AppBarArea
+        imageSheetsButtonActive={isImageSheetsOpened() && isImageSheetsPersistent()}
+        adjustSheetsButtonActive={isAdjustSheetsOpened() && isAdjustSheetsPersistent()}
+        onToggleAdjustSheets={toggleAdjustSheets}
+        onToggleImageSheets={toggleImageSheets}
+      />
       <InsetsProvider right={adjustSheetsInsetWidth()} bottom={imagesSheetsInsetWidth()}>
         <MainArea />
       </InsetsProvider>
