@@ -1,6 +1,8 @@
 import './styles/index.scss';
 import { render } from 'solid-js/web';
 import { App } from './App';
+import { isServiceWorkerSupported } from './utils/platform';
+import { registerServiceWorker } from './features/workbox';
 
 document.documentElement.lang = 'zh-CN';
 
@@ -13,6 +15,10 @@ if (IS_TAURI) {
       currentWindow.show().catch(console.error);
     })
     .catch(console.error);
+}
+
+if (CONFIG_ENABLE_PWA && import.meta.env.PROD && isServiceWorkerSupported()) {
+  registerServiceWorker();
 }
 
 const root = document.getElementById('root');

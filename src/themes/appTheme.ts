@@ -123,6 +123,11 @@ export function createAppTheme(options?: AppThemeOptions) {
         //   },
         // },
       },
+      MuiBadge: {
+        defaultProps: {
+          color: 'secondary',
+        },
+      },
     },
   });
 }

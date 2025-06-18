@@ -1,14 +1,16 @@
+import MoreVertIcon from '@suid/icons-material/MoreVert';
 import PhotoLibraryIcon from '@suid/icons-material/PhotoLibrary';
 import PhotoLibraryOutlinedIcon from '@suid/icons-material/PhotoLibraryOutlined';
 import PrintIcon from '@suid/icons-material/Print';
 import ViewSidebarIcon from '@suid/icons-material/ViewSidebar';
 import ViewSidebarOutlinedIcon from '@suid/icons-material/ViewSidebarOutlined';
-import { AppBar, Box, Fab, Toolbar, useMediaQuery, useTheme } from '@suid/material';
-import { createDeferred, createMemo, Show } from 'solid-js';
+import { AppBar, Badge, Box, Fab, Menu, MenuItem, Toolbar, useMediaQuery, useTheme } from '@suid/material';
+import { createDeferred, createMemo, createSignal, Show } from 'solid-js';
 import { ToolbarIconButton } from '@/components/toolbar/ToolbarIconButton';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { InsetsProvider } from '@/features/insets/contexts/InsetsContext';
 import usePrint from '@/features/print/hooks/createPrinting';
+import { getWorkBox, isServiceWorkerWaiting } from '@/features/workbox';
 import { createSheetOpenState } from '@/hooks/createSheetOpenedState';
 import AdjustSheets from './components/AdjustSheets';
 import ImageSheets from './components/ImageSheets';
@@ -56,6 +58,15 @@ function PrinterPageContent() {
   }
 
   const { state: images } = useImages();
+
+  const [isMoreOptionsOpened, setMoreOptionsOpened] = createSignal(false);
+  let moreOptionsRef: HTMLButtonElement | undefined;
+
+  function handleUpdateMenuItemClick() {
+    setMoreOptionsOpened(false);
+    getWorkBox()?.messageSkipWaiting();
+    // openAboutDialog();
+  }
   return (
     <Box
       class="printer-page"
@@ -73,12 +84,47 @@ function PrinterPageContent() {
             color={isImageSheetsButtonActive() ? 'primary' : undefined}
           />
           <ToolbarIconButton
-            edge="end"
             icon={isAdjustSheetsButtonActive() ? <ViewSidebarIcon /> : <ViewSidebarOutlinedIcon />}
             label={!isAdjustSheetsButtonActive() ? '打开调整面板' : '关闭调整面板'}
             onClick={toggleAdjustSheets}
             color={isAdjustSheetsButtonActive() ? 'primary' : undefined}
           />
+          <ToolbarIconButton
+            aria-controls={open() ? 'more-options-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open() ? 'true' : undefined}
+            edge="end"
+            icon={
+              <Badge variant="dot" invisible={!isServiceWorkerWaiting()}>
+                <MoreVertIcon />
+              </Badge>
+            }
+            label={'更多选项'}
+            onClick={() => setMoreOptionsOpened(true)}
+            ref={moreOptionsRef}
+          />
+          <Menu
+            id="more-options-menu"
+            anchorEl={moreOptionsRef}
+            open={isMoreOptionsOpened()}
+            onClose={() => setMoreOptionsOpened(false)}
+            MenuListProps={{ 'aria-labelledby': 'basic-button' }}
+            PaperProps={{
+              sx: {
+                minWidth: '168px',
+                [theme.breakpoints.up('sm')]: {
+                  width: '192px',
+                },
+              },
+            }}
+          >
+            {CONFIG_ENABLE_PWA ? (
+              <Show when={isServiceWorkerWaiting()}>
+                <MenuItem onClick={handleUpdateMenuItemClick}>重启以应用更新</MenuItem>
+              </Show>
+            ) : undefined}
+            {/* <MenuItem>关于</MenuItem> */}
+          </Menu>
         </Toolbar>
       </AppBar>
       <InsetsProvider right={adjustSheetsInsetWidth()} bottom={imagesSheetsInsetWidth()}>

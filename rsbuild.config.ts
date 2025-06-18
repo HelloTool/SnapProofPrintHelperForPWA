@@ -1,3 +1,4 @@
+import { GenerateSW } from '@aaroon/workbox-rspack-plugin';
 import { defineConfig } from '@rsbuild/core';
 import { pluginBabel } from '@rsbuild/plugin-babel';
 import { pluginSass } from '@rsbuild/plugin-sass';
@@ -17,7 +18,7 @@ export default defineConfig({
   output: {
     polyfill: 'usage',
     minify: {
-      js: true,
+      js: false,
       jsOptions: {
         minimizerOptions: {
           compress: {
@@ -36,11 +37,13 @@ export default defineConfig({
   source: {
     define: {
       IS_TAURI: false,
+      CONFIG_ENABLE_PWA: true,
     },
   },
   performance: {
     removeConsole: ['log'],
   },
+
   environments: {
     browser: {
       output: {
@@ -48,6 +51,20 @@ export default defineConfig({
           root: 'dist/browser',
         },
         copy: [{ from: './public', to: '.' }],
+      },
+      tools: {
+        rspack: {
+          plugins: [
+            ...(process.env.NODE_ENV === 'development'
+              ? []
+              : [
+                  new GenerateSW({
+                    cacheId: 'snap-proof-print-helper',
+                    cleanupOutdatedCaches: true,
+                  }),
+                ]),
+          ],
+        },
       },
     },
     tauri: {
@@ -60,6 +77,7 @@ export default defineConfig({
       source: {
         define: {
           IS_TAURI: true,
+          CONFIG_ENABLE_PWA: false,
         },
       },
       html: {

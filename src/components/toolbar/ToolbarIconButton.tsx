@@ -15,6 +15,7 @@ interface ToolbarIconButtonProps {
   disabled?: boolean;
   sx?: SxProps<Theme>;
   onClick?: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent, JSX.EventHandler<HTMLButtonElement, MouseEvent>>;
+  ref?: HTMLButtonElement | undefined;
 }
 export function ToolbarIconButton(props: ToolbarIconButtonProps) {
   const tooltipId = createUniqueId();
@@ -22,7 +23,7 @@ export function ToolbarIconButton(props: ToolbarIconButtonProps) {
   let mdcTooltip: MDCTooltip | undefined;
   onMount(() => {
     if (tooltipRef) {
-      mdcTooltip = new MDCTooltip(tooltipRef);
+      // mdcTooltip = new MDCTooltip(tooltipRef);
     }
   });
   onCleanup(() => {
@@ -35,9 +36,9 @@ export function ToolbarIconButton(props: ToolbarIconButtonProps) {
   return (
     <>
       {/* TODO: 等待suid官方支持Tooltip */}
-      {/* <div ref={tooltipRef} id={tooltipId} class="mdc-tooltip" role="tooltip" aria-hidden="true">
+      <div ref={tooltipRef} id={tooltipId} class="mdc-tooltip" role="tooltip" aria-hidden="true">
         <div class="mdc-tooltip__surface mdc-tooltip__surface-animation">{props.tooltip ?? props.label}</div>
-      </div> */}
+      </div>
       <span aria-describedby={tooltipId} title={props.tooltip ?? props.label}>
         <IconButton
           aria-label={props.label}
@@ -46,6 +47,7 @@ export function ToolbarIconButton(props: ToolbarIconButtonProps) {
           edge={props.edge}
           onClick={props.onClick}
           sx={props.sx}
+          ref={props.ref}
         >
           {props.icon}
         </IconButton>
