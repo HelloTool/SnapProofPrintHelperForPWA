@@ -18,7 +18,6 @@ export default defineConfig({
   output: {
     polyfill: 'usage',
     minify: {
-      js: false,
       jsOptions: {
         minimizerOptions: {
           compress: {
