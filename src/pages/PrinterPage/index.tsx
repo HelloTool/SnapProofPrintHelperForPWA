@@ -1,24 +1,17 @@
-import MoreVertIcon from '@suid/icons-material/MoreVert';
-import PhotoLibraryIcon from '@suid/icons-material/PhotoLibrary';
-import PhotoLibraryOutlinedIcon from '@suid/icons-material/PhotoLibraryOutlined';
 import PrintIcon from '@suid/icons-material/Print';
-import ViewSidebarIcon from '@suid/icons-material/ViewSidebar';
-import ViewSidebarOutlinedIcon from '@suid/icons-material/ViewSidebarOutlined';
-import { AppBar, Badge, Box, Fab, Menu, MenuItem, Toolbar, useMediaQuery, useTheme } from '@suid/material';
+import { Box, Fab, useMediaQuery, useTheme } from '@suid/material';
 import { createDeferred, createMemo, createSignal, Show } from 'solid-js';
-import { ToolbarIconButton } from '@/components/toolbar/ToolbarIconButton';
-import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { InsetsProvider } from '@/features/insets/contexts/InsetsContext';
 import usePrint from '@/features/print/hooks/createPrinting';
-import { getWorkBox, isServiceWorkerWaiting } from '@/features/workbox';
 import { createSheetOpenState } from '@/hooks/createSheetOpenedState';
 import AdjustSheets from './components/AdjustSheets';
+import AppBarArea from './components/AppBarArea';
 import ImageSheets from './components/ImageSheets';
 import MainArea from './components/MainArea';
 import SPPrint from './components/SPPrint';
 import { ConfigProvider } from './contexts/ConfigContext';
 import useImages, { ImagesProvider } from './contexts/ImagesContext';
-import AppBarArea from './components/AppBarArea';
+import AboutDialog from '@/dialogs/AboutDialog';
 
 function PrinterPageContent() {
   const theme = useTheme();
@@ -58,6 +51,7 @@ function PrinterPageContent() {
 
   const { state: images } = useImages();
 
+  const [isAboutDialogOpened, setAboutDialogOpened] = createSignal(false);
   return (
     <Box
       class="printer-page"
@@ -70,6 +64,7 @@ function PrinterPageContent() {
         adjustSheetsButtonActive={isAdjustSheetsOpened() && isAdjustSheetsPersistent()}
         onToggleAdjustSheets={toggleAdjustSheets}
         onToggleImageSheets={toggleImageSheets}
+        onAboutClick={() => setAboutDialogOpened(true)}
       />
       <InsetsProvider right={adjustSheetsInsetWidth()} bottom={imagesSheetsInsetWidth()}>
         <MainArea />
@@ -122,6 +117,7 @@ function PrinterPageContent() {
       <Show when={isPrinting()}>
         <SPPrint />
       </Show>
+      <AboutDialog open={isAboutDialogOpened()} onClose={() => setAboutDialogOpened(false)} />
     </Box>
   );
 }

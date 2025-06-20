@@ -14,6 +14,7 @@ interface AppBarAreaProps {
   onToggleImageSheets?: () => void;
   imageSheetsButtonActive?: boolean;
   adjustSheetsButtonActive?: boolean;
+  onAboutClick?: () => void;
 }
 export default function AppBarArea(props: AppBarAreaProps) {
   const theme = useTheme();
@@ -24,6 +25,11 @@ export default function AppBarArea(props: AppBarAreaProps) {
   function handleUpdateMenuItemClick() {
     setMoreOptionsOpened(false);
     getWorkBox()?.messageSkipWaiting();
+  }
+
+  function handleAboutMenuIteClick() {
+    setMoreOptionsOpened(false);
+    props.onAboutClick?.();
   }
   return (
     <AppBar>
@@ -75,7 +81,7 @@ export default function AppBarArea(props: AppBarAreaProps) {
               <MenuItem onClick={handleUpdateMenuItemClick}>重启以应用更新</MenuItem>
             </Show>
           ) : undefined}
-          {/* <MenuItem>关于</MenuItem> */}
+          <MenuItem onClick={handleAboutMenuIteClick}>关于</MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>

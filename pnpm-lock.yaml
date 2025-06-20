@@ -28,6 +28,9 @@ importers:
       '@solid-primitives/event-listener':
         specifier: ^2.4.1
         version: 2.4.1(solid-js@1.9.7)
+      '@suid/base':
+        specifier: ^0.10.1
+        version: 0.10.1(patch_hash=71cc34c99adb1aa1664d73b5c07fbc6b35640cd1ff47bc387cc39177f903e67c)(solid-js@1.9.7)
       '@suid/icons-material':
         specifier: ^0.8.1
         version: 0.8.1(solid-js@1.9.7)

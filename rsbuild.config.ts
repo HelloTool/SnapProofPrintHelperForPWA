@@ -37,6 +37,7 @@ export default defineConfig({
     define: {
       IS_TAURI: false,
       CONFIG_ENABLE_PWA: true,
+      'import.meta.env.APP_VERSION': JSON.stringify(process.env.npm_package_version),
     },
   },
   performance: {
