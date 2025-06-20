@@ -12,7 +12,7 @@ import {
 } from '@suid/material';
 import { For, type JSX } from 'solid-js';
 import APP_ICON from '@/assets/images/icon.svg';
-import { APP_EMAIL, APP_VERSION, URL_REPOSITORY } from '@/constants';
+import { APP_EMAIL, APP_VERSION, URL_APP_LICENSE, URL_REPOSITORY } from '@/constants';
 
 interface AboutInformation {
   label: string;
@@ -27,15 +27,27 @@ export default function AboutDialog(props: AboutDialogProps) {
   const infos: AboutInformation[] = [
     {
       label: '开源许可：',
-      content: 'Apache-2.0',
+      content: (
+        <Link href={URL_APP_LICENSE} target="_blank">
+          Apache 2.0
+        </Link>
+      ),
     },
     {
       label: '开源仓库：',
-      content: <Link href={URL_REPOSITORY}>{URL_REPOSITORY}</Link>,
+      content: (
+        <Link href={URL_REPOSITORY} target="_blank">
+          {URL_REPOSITORY}
+        </Link>
+      ),
     },
     {
       label: '联系作者：',
-      content: <Link href={`mailto:${APP_EMAIL}`}>{APP_EMAIL}</Link>,
+      content: (
+        <Link href={`mailto:${APP_EMAIL}`} target="_blank">
+          {APP_EMAIL}
+        </Link>
+      ),
     },
   ];
   return (

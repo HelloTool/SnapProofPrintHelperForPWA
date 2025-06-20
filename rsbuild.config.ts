@@ -1,8 +1,26 @@
+import { execSync } from 'node:child_process';
 import { GenerateSW } from '@aaroon/workbox-rspack-plugin';
 import { defineConfig } from '@rsbuild/core';
 import { pluginBabel } from '@rsbuild/plugin-babel';
 import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginSolid } from '@rsbuild/plugin-solid';
+
+const GIT_REFERENCE =
+  process.env.NODE_ENV === 'development'
+    ? 'main'
+    : (() => {
+        try {
+          return execSync('git describe --tags --exact-match HEAD').toString().trim();
+        } catch (_e) {
+          console.warn('Failed to get git tags, using commit hash instead');
+          try {
+            return execSync('git rev-parse HEAD').toString().trim();
+          } catch (_e) {
+            console.warn('Failed to get git commit hash');
+            return 'main';
+          }
+        }
+      })();
 
 export default defineConfig({
   plugins: [
@@ -37,6 +55,7 @@ export default defineConfig({
     define: {
       IS_TAURI: false,
       CONFIG_ENABLE_PWA: true,
+      'import.meta.env.GIT_REFERENCE': JSON.stringify(GIT_REFERENCE),
       'import.meta.env.APP_VERSION': JSON.stringify(process.env.npm_package_version),
     },
   },
