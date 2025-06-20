@@ -128,6 +128,16 @@ export function createAppTheme(options?: AppThemeOptions) {
           color: 'secondary',
         },
       },
+      MuiPopover: {
+        defaultProps: {
+          transition: true,
+        },
+      },
+      MuiDialog: {
+        defaultProps: {
+          transition: true,
+        },
+      },
     },
   });
 }
