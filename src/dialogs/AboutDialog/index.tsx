@@ -109,7 +109,7 @@ export default function AboutDialog(props: AboutDialogProps) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button>法律信息…</Button>
+        {/* <Button>法律信息…</Button> */}
         <Box sx={{ flexGrow: 1 }} />
         <Button onClick={() => props.onClose?.({}, 'buttonClick')}>确定</Button>
       </DialogActions>
