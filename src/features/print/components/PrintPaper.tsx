@@ -14,6 +14,7 @@ export default function PrintPaper(props: PrintPaperProps) {
       sx={{
         width: '100%',
         aspectRatio: `${paperConfig.contentAspectRatio}`,
+        breakBefore: 'page',
       }}
     >
       {props.children}
