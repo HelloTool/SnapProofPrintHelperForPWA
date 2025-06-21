@@ -1,18 +1,9 @@
 import type { ModalUnstyledOnClose } from '@suid/base/ModalUnstyled';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Link,
-  Typography,
-} from '@suid/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, Link } from '@suid/material';
 import { For, type JSX } from 'solid-js';
 import APP_ICON from '@/assets/images/icon.svg';
 import { APP_EMAIL, APP_VERSION, URL_APP_LICENSE, URL_REPOSITORY } from '@/constants';
+import AboutHeader from './AboutHeader';
 
 interface AboutInformation {
   label: string;
@@ -51,57 +42,21 @@ export default function AboutDialog(props: AboutDialogProps) {
     },
   ];
   return (
-    <Dialog
-      open={props.open}
-      onClose={props.onClose}
-      PaperProps={{
-        sx: {
-          minWidth: 'min(calc(100% - 64px), 280px)',
-        },
-      }}
-    >
-      <DialogTitle
-        component="div"
-        sx={{
-          userSelect: 'text',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'block',
-              width: '48px',
-              height: '48px',
-            }}
-            component="img"
-            src={APP_ICON}
-            alt="应用图标"
-          />
-          <Box
-            sx={{
-              marginLeft: 3,
-            }}
-          >
-            <Typography variant="subtitle1">快照凭证打印助手</Typography>
-            <Typography variant="subtitle2" color="textSecondary">
-              v{APP_VERSION}
-            </Typography>
-          </Box>
-        </Box>
-      </DialogTitle>
+    <Dialog open={props.open} onClose={props.onClose}>
       <DialogContent
         sx={{
           userSelect: 'text',
           overflowWrap: 'break-word',
         }}
       >
-        <DialogContentText component="div">
+        <AboutHeader icon={APP_ICON} name="快照凭证打印助手" version={APP_VERSION} />
+        <DialogContentText
+          component="div"
+          sx={{
+            marginTop: 1,
+            marginLeft: 7,
+          }}
+        >
           <Box component="p">将多个转账记录图、电商订单图等以凭证样式打印到纸中。</Box>
           <Box
             component="p"

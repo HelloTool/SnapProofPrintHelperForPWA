@@ -1,0 +1,6 @@
+.MuiDialog-root {
+  .MuiDialog-paper {
+    max-width: 560px;
+    min-width: min(calc(100% - 64px), 280px);
+  }
+}
