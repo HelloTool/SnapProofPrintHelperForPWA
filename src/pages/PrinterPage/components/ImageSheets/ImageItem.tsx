@@ -27,6 +27,7 @@ export default function ImageItem(props: ImageItemProps) {
           }}
           src={localProps.image.url}
           loading="lazy"
+          decoding="async"
           alt={localProps.image.name}
         />
       </Paper>

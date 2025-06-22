@@ -1,4 +1,4 @@
-import { createStore } from 'solid-js/store';
+import { createStore, unwrap } from 'solid-js/store';
 import { chunkArray } from '@/utils/list';
 import type { SnapImage } from '../types/image';
 import type { ConfigStore } from './config';
@@ -11,7 +11,7 @@ export function createImagesStore(config: ConfigStore) {
   return createStore<ImagesStore>({
     images: [],
     get chunkedImages(): SnapImage[][] {
-      return chunkArray(this.images, config.layout.columns * config.layout.rows);
+      return chunkArray(unwrap(this.images), config.layout.columns * config.layout.rows);
     },
   });
 }
