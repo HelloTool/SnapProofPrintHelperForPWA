@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process';
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { GenerateSW } from '@aaroon/workbox-rspack-plugin';
 import { defineConfig, type RsbuildPlugin } from '@rsbuild/core';
@@ -94,11 +94,13 @@ export default defineConfig({
           setup(api) {
             api.onBeforeBuild(async () => {
               const { rootPath, distPath } = api.context;
+              const mkdirPromise = mkdir(distPath, { recursive: true });
               const manifest = await readFile(path.join(rootPath, './src/manifest.json'), { encoding: 'utf-8' });
               const replacedManifest = manifest.replaceAll(
                 '<%= process.env.BASE_URL %>',
                 api.getRsbuildConfig('current').output.assetPrefix,
               );
+              await mkdirPromise;
               await writeFile(path.join(distPath, 'manifest.json'), replacedManifest);
             });
           },
