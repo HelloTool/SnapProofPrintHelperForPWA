@@ -1,37 +1,51 @@
-import { type Accessor, createEffect, createSignal, on, type Signal } from 'solid-js';
+import { type Accessor, createRenderEffect, createSignal, on } from 'solid-js';
 
-interface Options<T> {
-  pushWhen?: (value: T, upstreamValue: T) => boolean;
-  pullWhen?: (upstreamValue: T, value: T) => boolean;
+interface SyncStateOptions<U, D> {
+  flowDown: (upstreamValue: U) => D;
+  flowUp: (downstreamValue: D) => U;
+  canFlowUp?: (downstreamValue: D) => boolean;
+  canFlowDown?: (upstreamValue: U) => boolean;
 }
-export function syncState<T>(
-  upstreamValue: Accessor<T>,
-  setUpstreamValue?: (value: Accessor<T>) => void,
-  options?: Options<T>,
-): Signal<T> {
-  const { pushWhen = () => true, pullWhen = () => true } = options ?? {};
-  const [value, setValue] = createSignal<T>(upstreamValue());
 
-  createEffect(
+export function syncState<U, D>(
+  upstreamValue: Accessor<U>,
+  setUpstreamValue: (value: Accessor<U>) => void,
+  { flowDown, flowUp, canFlowUp = () => true, canFlowDown = () => true }: SyncStateOptions<U, D>,
+) {
+  let flowedUpstreamValue: U = upstreamValue();
+  let flowedDownstreamValue: D = flowDown(flowedUpstreamValue);
+  const [downstreamValue, setDownstreamValue] = createSignal<D>(flowedDownstreamValue);
+  createRenderEffect(
     on(
       upstreamValue,
       (v) => {
-        if (pullWhen(v, value())) {
-          setValue(() => v);
+        if (v !== flowedUpstreamValue && canFlowDown(v)) {
+          const newValue = flowDown(v);
+          if (newValue !== flowedDownstreamValue) {
+            flowedUpstreamValue = flowUp(newValue);
+            flowedDownstreamValue = newValue;
+            setDownstreamValue(() => newValue);
+          }
         }
       },
       { defer: true },
     ),
   );
-
-  if (setUpstreamValue) {
-    createEffect(
-      on(value, (v) => {
-        if (pushWhen(v, upstreamValue())) {
-          setUpstreamValue(() => v);
+  createRenderEffect(
+    on(
+      downstreamValue,
+      (v) => {
+        if (v !== flowedDownstreamValue && canFlowUp(v)) {
+          const newValue = flowUp(v);
+          if (newValue !== flowedUpstreamValue) {
+            flowedDownstreamValue = flowDown(newValue);
+            flowedUpstreamValue = newValue;
+            setUpstreamValue(() => newValue);
+          }
         }
-      }),
-    );
-  }
-  return [value, setValue];
+      },
+      { defer: true },
+    ),
+  );
+  return [downstreamValue, setDownstreamValue];
 }

@@ -43,32 +43,25 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
   const { state: config, actions: configActions } = useConfig();
 
   const [columnsValue, setColumnsValue] = syncState(
-    () => String(config.layout.columns),
-    (value) => configActions.layout.setColumns(Number.parseInt(value())),
+    () => config.layout.columns,
+    (value) => configActions.layout.setColumns(value()),
     {
-      pushWhen: (value) => {
-        const columns = Number.parseInt(value);
-        return columns > 0 && columns !== config.layout.columns;
-      },
-      pullWhen: (upstreamValue, value) => {
-        return Number.parseInt(upstreamValue) !== Number.parseInt(value);
-      },
+      flowDown: (value) => String(value),
+      flowUp: (value) => Number.parseInt(value),
+      canFlowUp: (value) => Number.parseInt(value) > 0,
     },
   );
 
   const [rowsValue, setRowsValue] = syncState(
-    () => String(config.layout.rows),
-    (value) => configActions.layout.setRows(Number.parseInt(value())),
+    () => config.layout.rows,
+    (value) => configActions.layout.setRows(value()),
     {
-      pushWhen: (value) => {
-        const rows = Number.parseInt(value);
-        return rows > 0 && rows !== config.layout.rows;
-      },
-      pullWhen: (upstreamValue, value) => {
-        return Number.parseInt(upstreamValue) !== Number.parseInt(value);
-      },
+      flowDown: (value) => String(value),
+      flowUp: (value) => Number.parseInt(value),
+      canFlowUp: (value) => Number.parseInt(value) > 0,
     },
   );
+
   const columnsError = createMemo(() => {
     const columns = Number.parseFloat(columnsValue());
     if (Number.isNaN(columns) || !Number.isInteger(columns)) {
