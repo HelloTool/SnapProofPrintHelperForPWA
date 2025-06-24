@@ -7,10 +7,12 @@ export interface ConfigActions {
     setRows: (rows: number) => void;
   };
   print: {
+    setMarginPreset: (value: 'default' | 'custom') => void;
     setMarginLeft: (value: number) => void;
     setMarginTop: (value: number) => void;
     setMarginRight: (value: number) => void;
     setMarginBottom: (value: number) => void;
+    resetMargins: () => void;
     setOrientation: (value: 'landscape' | 'portrait') => void;
     setPaperSize: (size: ConfigStore['print']['size']) => void;
   };
@@ -33,6 +35,9 @@ export function createConfigActions(setState: SetStoreFunction<ConfigStore>): Co
     },
 
     print: {
+      setMarginPreset: (preset) => {
+        setState('print', 'contentMarginPreset', preset);
+      },
       setMarginLeft: (value: number) => {
         setState('print', 'contentMarginLeft', value);
       },
@@ -48,6 +53,14 @@ export function createConfigActions(setState: SetStoreFunction<ConfigStore>): Co
       setMarginBottom: (value: number) => {
         setState('print', 'contentMarginBottom', value);
       },
+
+      resetMargins: () => {
+        setState('print', 'contentMarginLeft', 0.5);
+        setState('print', 'contentMarginTop', 1);
+        setState('print', 'contentMarginRight', 0.5);
+        setState('print', 'contentMarginBottom', 1);
+      },
+
       setOrientation: (value: 'landscape' | 'portrait') => {
         setState('print', 'orientation', value);
       },

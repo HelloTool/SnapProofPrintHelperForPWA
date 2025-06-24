@@ -1,4 +1,4 @@
-import { createContext, type JSX, useContext } from 'solid-js';
+import { createContext, createEffect, type JSX, useContext } from 'solid-js';
 import { type ConfigActions, createConfigActions } from '../actions/config';
 import { type ConfigStore, createConfigStore } from '../stores/config';
 
@@ -11,6 +11,12 @@ interface ConfigProviderProps {
 export function ConfigProvider(props: ConfigProviderProps) {
   const [state, setState] = createConfigStore();
   const actions = createConfigActions(setState);
+
+  createEffect(() => {
+    if (state.print.contentMarginPreset === 'default') {
+      actions.print.resetMargins();
+    }
+  });
 
   return <ConfigContext.Provider value={{ state, actions }}>{props.children}</ConfigContext.Provider>;
 }

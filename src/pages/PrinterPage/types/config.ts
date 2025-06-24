@@ -6,6 +6,7 @@ export interface PaperLayout {
 }
 
 export interface PrintConfig {
+  contentMarginPreset: 'default' | 'custom';
   contentMarginLeft: number;
   contentMarginTop: number;
   contentMarginRight: number;

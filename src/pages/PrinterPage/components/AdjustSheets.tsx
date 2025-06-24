@@ -8,6 +8,7 @@ import {
   FormControlLabel,
   FormHelperText,
   FormLabel,
+  InputAdornment,
   InputLabel,
   List,
   ListItem,
@@ -36,20 +37,37 @@ import { type SyncStateOptions, syncState } from '@/hooks/syncState';
 import { maybeAndroid, maybeChrome } from '@/utils/platform';
 import { mergeMultiSxProps } from '@/utils/suid';
 import { useConfig } from '../contexts/ConfigContext';
+import type { PrintConfig } from '../types/config';
 
 function createPositiveIntegerInputLinter(value: Accessor<string>) {
   return createMemo(() => {
     const columns = Number.parseFloat(value());
-    if (Number.isNaN(columns) || !Number.isInteger(columns)) {
+    if (Number.isNaN(columns) || !Number.isInteger(columns) || columns < 1) {
       return '请输入大于0的整数';
     }
     return null;
   });
 }
+function createMarginInputLinter(value: Accessor<string>) {
+  return createMemo(() => {
+    const columns = Number.parseFloat(value());
+    if (Number.isNaN(columns) || columns < 0) {
+      return '请输入大于0的数字';
+    }
+    return null;
+  });
+}
+
 const POSITIVE_INTEGER_INPUT_SYNC_STATE_OPTIONS: SyncStateOptions<number, string> = {
   flowDown: (value) => String(value),
   flowUp: (value) => Number.parseInt(value),
   canFlowUp: (value) => Number.parseInt(value) > 0,
+};
+
+const MARGIN_INPUT_SYNC_STATE_OPTIONS: SyncStateOptions<number, string> = {
+  flowDown: (value) => String(value),
+  flowUp: (value) => Number.parseFloat(value),
+  canFlowUp: (value) => Number.parseFloat(value) > 0,
 };
 
 interface AdjustSheetsProps extends DrawerProps {}
@@ -88,6 +106,35 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
       configActions.print.setPaperSize(event.target.value);
     }
   }
+  function handleMarginPresetChange(event: SelectChangeEvent<PrintConfig['contentMarginPreset']>, _child: JSX.Element) {
+    configActions.print.setMarginPreset(event.target.value);
+  }
+
+  const [marginTopValue, setMarginTopValue] = syncState(
+    () => config.print.contentMarginTop,
+    (value) => configActions.print.setMarginTop(value()),
+    MARGIN_INPUT_SYNC_STATE_OPTIONS,
+  );
+  const [marginBottomValue, setMarginBottomValue] = syncState(
+    () => config.print.contentMarginBottom,
+    (value) => configActions.print.setMarginBottom(value()),
+    MARGIN_INPUT_SYNC_STATE_OPTIONS,
+  );
+  const [marginLeftValue, setMarginLeftValue] = syncState(
+    () => config.print.contentMarginLeft,
+    (value) => configActions.print.setMarginLeft(value()),
+    MARGIN_INPUT_SYNC_STATE_OPTIONS,
+  );
+  const [marginRightValue, setMarginRightValue] = syncState(
+    () => config.print.contentMarginRight,
+    (value) => configActions.print.setMarginRight(value()),
+    MARGIN_INPUT_SYNC_STATE_OPTIONS,
+  );
+
+  const marginTopError = createMarginInputLinter(marginTopValue);
+  const marginBottomError = createMarginInputLinter(marginBottomValue);
+  const marginLeftError = createMarginInputLinter(marginLeftValue);
+  const marginRightError = createMarginInputLinter(marginRightValue);
 
   const isPreferredDark = usePreferredDarkMode();
 
@@ -212,6 +259,104 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
               </Show>
             </FormControl>
           </ListItem>
+          <ListItem>
+            <FormControl fullWidth>
+              <InputLabel id="adjust-panel__margin__label" for="adjust-panel__margin__select">
+                页边距
+              </InputLabel>
+              <Select<PrintConfig['contentMarginPreset']>
+                id="adjust-panel__margin__select"
+                aria-describedby="adjust-panel__margin__helper"
+                labelId="adjust-panel__margin__label"
+                label="页边距"
+                value={config.print.contentMarginPreset}
+                onChange={handleMarginPresetChange}
+              >
+                <MenuItem value="default">默认</MenuItem>
+                <MenuItem value="custom">自定义</MenuItem>
+              </Select>
+            </FormControl>
+          </ListItem>
+          <Show when={config.print.contentMarginPreset === 'custom'}>
+            <ListItem>
+              <TextField
+                label="上边距"
+                type="number"
+                fullWidth
+                inputProps={{
+                  min: 0,
+                  step: 0.1,
+                }}
+                required
+                value={marginTopValue()}
+                onChange={(_event, value) => setMarginTopValue(value)}
+                error={marginTopError() !== null}
+                helperText={marginTopError()}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                }}
+              />
+              <TextField
+                label="下边距"
+                type="number"
+                fullWidth
+                inputProps={{
+                  min: 0,
+                  step: 0.1,
+                }}
+                sx={{
+                  marginLeft: 2,
+                }}
+                required
+                value={marginBottomValue()}
+                onChange={(_event, value) => setMarginBottomValue(value)}
+                error={marginBottomError() !== null}
+                helperText={marginBottomError()}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                }}
+              />
+            </ListItem>
+            <ListItem>
+              <TextField
+                label="左边距"
+                type="number"
+                fullWidth
+                inputProps={{
+                  min: 0,
+                  step: 0.1,
+                }}
+                required
+                value={marginLeftValue()}
+                onChange={(_event, value) => setMarginLeftValue(value)}
+                error={marginLeftError() !== null}
+                helperText={marginLeftError()}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                }}
+              />
+              <TextField
+                label="右边距"
+                type="number"
+                fullWidth
+                inputProps={{
+                  min: 0,
+                  step: 0.1,
+                }}
+                sx={{
+                  marginLeft: 2,
+                }}
+                required
+                value={marginRightValue()}
+                onChange={(_event, value) => setMarginRightValue(value)}
+                error={marginRightError() !== null}
+                helperText={marginRightError()}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                }}
+              />
+            </ListItem>
+          </Show>
           <ListItem>
             <FormControl fullWidth variant="standard">
               <FormLabel id="adjust-panel__orientation__label">方向</FormLabel>

@@ -14,6 +14,7 @@ export function createConfigStore() {
       rows: 1,
     },
     print: {
+      contentMarginPreset: 'default',
       contentMarginLeft: 0.5,
       contentMarginTop: 1,
       contentMarginRight: 0.5,
