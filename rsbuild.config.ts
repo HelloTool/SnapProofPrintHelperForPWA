@@ -1,6 +1,8 @@
 import { execSync } from 'node:child_process';
+import { readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
 import { GenerateSW } from '@aaroon/workbox-rspack-plugin';
-import { defineConfig } from '@rsbuild/core';
+import { defineConfig, type RsbuildPlugin } from '@rsbuild/core';
 import { pluginBabel } from '@rsbuild/plugin-babel';
 import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginSolid } from '@rsbuild/plugin-solid';
@@ -31,7 +33,8 @@ export default defineConfig({
     pluginSass(),
   ],
   html: {
-    template: './src/index.browser.html',
+    template: './src/index.html',
+    title: '',
   },
   output: {
     polyfill: 'usage',
@@ -50,7 +53,7 @@ export default defineConfig({
     port: process.env.NODE_ENV === 'development' ? 3000 : 8080,
     publicDir: false,
   },
-  tools: {},
+
   source: {
     define: {
       IS_TAURI: false,
@@ -85,6 +88,22 @@ export default defineConfig({
           ],
         },
       },
+      plugins: [
+        {
+          name: 'web-manifest-plugin',
+          setup(api) {
+            api.onBeforeBuild(async () => {
+              const { rootPath, distPath } = api.context;
+              const manifest = await readFile(path.join(rootPath, './src/manifest.json'), { encoding: 'utf-8' });
+              const replacedManifest = manifest.replaceAll(
+                '<%= process.env.BASE_URL %>',
+                api.getRsbuildConfig('current').output.assetPrefix,
+              );
+              await writeFile(path.join(distPath, 'manifest.json'), replacedManifest);
+            });
+          },
+        } satisfies RsbuildPlugin,
+      ],
     },
     tauri: {
       output: {
@@ -98,10 +117,6 @@ export default defineConfig({
           IS_TAURI: true,
           CONFIG_ENABLE_PWA: false,
         },
-      },
-      html: {
-        template: './src/index.tauri.html',
-        title: '',
       },
     },
   },

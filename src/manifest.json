@@ -1,0 +1,50 @@
+{
+  "name": "快照凭证打印助手",
+  "short_name": "快照凭证打印助手",
+  "description": "将多个转账记录图、电商订单图等以凭证样式打印到纸中。",
+  "start_url": "<%= process.env.BASE_URL %>",
+  "scope": "<%= process.env.BASE_URL %>",
+  "display": "standalone",
+  "display_override": ["minimal-ui"],
+  "categories": ["productivity", "finance"],
+  "icons": [
+    {
+      "src": "<%= process.env.BASE_URL %>images/icons/maskable_icon_x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "<%= process.env.BASE_URL %>images/icons/maskable_icon_x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "<%= process.env.BASE_URL %>images/icons/maskable_icon_x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "<%= process.env.BASE_URL %>images/icons/maskable_icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "<%= process.env.BASE_URL %>images/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "<%= process.env.BASE_URL %>images/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "<%= process.env.BASE_URL %>images/icons/icon.svg",
+      "sizes": "any"
+    }
+  ]
+}
