@@ -5,7 +5,7 @@
   "start_url": "<%= process.env.BASE_URL %>",
   "scope": "<%= process.env.BASE_URL %>",
   "display": "standalone",
-  "display_override": ["minimal-ui"],
+  "display_override": ["standalone", "minimal-ui"],
   "categories": ["productivity", "finance"],
   "icons": [
     {

@@ -1,6 +1,21 @@
 import { makeEventListener } from '@solid-primitives/event-listener';
 
-export function makeDisableDefaultContextMenuListener(when?: (target: EventTarget) => boolean) {
+const DEFAULT_WHEN = (target: EventTarget): boolean => {
+  if (
+    target instanceof HTMLInputElement &&
+    (target.type === 'email' ||
+      target.type === 'text' ||
+      target.type === 'password' ||
+      target.type === 'number' ||
+      target.type === 'tel' ||
+      target.type === 'url' ||
+      target.type === 'search')
+  ) {
+    return false;
+  }
+  return true;
+};
+export function makeDisableDefaultContextMenuListener(when: (target: EventTarget) => boolean = DEFAULT_WHEN) {
   makeEventListener(
     document.documentElement,
     'contextmenu',

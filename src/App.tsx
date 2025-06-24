@@ -1,4 +1,5 @@
-import { alpha, GlobalStyles, ThemeProvider } from '@suid/material';
+import { alpha, GlobalStyles, ThemeProvider, useMediaQuery } from '@suid/material';
+import { createEffect } from 'solid-js';
 import { makeDisableDefaultContextMenuListener } from './hooks/makeDisableDefaultContextMenuListener';
 import { makeDisableDefaultDropListener } from './hooks/makeDisableDefaultDropListener';
 import { makeDisableDefaultF5Listener } from './hooks/makeDisableDefaultF5Listener';
@@ -10,20 +11,15 @@ export function App() {
   if (IS_TAURI) {
     makeDisableDefaultDropListener();
     makeDisableDefaultF5Listener();
-    makeDisableDefaultContextMenuListener((target) => {
-      if (
-        target instanceof HTMLInputElement &&
-        (target.type === 'email' ||
-          target.type === 'text' ||
-          target.type === 'password' ||
-          target.type === 'number' ||
-          target.type === 'tel' ||
-          target.type === 'url' ||
-          target.type === 'search')
-      ) {
-        return false;
+    makeDisableDefaultContextMenuListener();
+  } else {
+    const standaloneMode = useMediaQuery('(display-mode: standalone)');
+
+    createEffect(() => {
+      if (standaloneMode()) {
+        makeDisableDefaultDropListener();
+        makeDisableDefaultContextMenuListener();
       }
-      return true;
     });
   }
 
