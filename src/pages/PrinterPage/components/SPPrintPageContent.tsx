@@ -21,6 +21,7 @@ export default function SPPrintPageContent(props: SPPrintPageContentProps) {
         overflow: 'hidden',
         display: 'flex',
         flexWrap: 'wrap',
+        alignContent: 'flex-start',
       }}
     >
       <Index each={props.images}>
