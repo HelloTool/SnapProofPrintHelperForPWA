@@ -1,6 +1,6 @@
 import { type Accessor, createRenderEffect, createSignal, on, type Setter } from 'solid-js';
 
-interface SyncStateOptions<U, D> {
+export interface SyncStateOptions<U, D> {
   flowDown: (upstreamValue: U) => D;
   flowUp: (downstreamValue: D) => U;
   canFlowUp?: (downstreamValue: D) => boolean;

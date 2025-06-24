@@ -26,13 +26,13 @@ import type { DrawerProps } from '@suid/material/Drawer';
 import type { SelectChangeEvent } from '@suid/material/Select';
 import type { ChangeEvent } from '@suid/types';
 import type { DataType } from 'csstype';
-import { createMemo, For, type JSX, Show } from 'solid-js';
+import { type Accessor, createMemo, For, type JSX, Show } from 'solid-js';
 import ListSwitchItem from '@/components/list/ListSwitchItem';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
 import { getAvailablePageSizes } from '@/features/print/utils/paperSize';
 import { usePreferredDarkMode } from '@/hooks/mediaQuery';
-import { syncState } from '@/hooks/syncState';
+import { type SyncStateOptions, syncState } from '@/hooks/syncState';
 import { maybeAndroid, maybeChrome } from '@/utils/platform';
 import { mergeMultiSxProps } from '@/utils/suid';
 import { useConfig } from '../contexts/ConfigContext';
@@ -46,6 +46,11 @@ function createPositiveIntegerInputLinter(value: Accessor<string>) {
     return null;
   });
 }
+const POSITIVE_INTEGER_INPUT_SYNC_STATE_OPTIONS: SyncStateOptions<number, string> = {
+  flowDown: (value) => String(value),
+  flowUp: (value) => Number.parseInt(value),
+  canFlowUp: (value) => Number.parseInt(value) > 0,
+};
 
 interface AdjustSheetsProps extends DrawerProps {}
 
@@ -55,21 +60,13 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
   const [columnsValue, setColumnsValue] = syncState(
     () => config.layout.columns,
     (value) => configActions.layout.setColumns(value()),
-    {
-      flowDown: (value) => String(value),
-      flowUp: (value) => Number.parseInt(value),
-      canFlowUp: (value) => Number.parseInt(value) > 0,
-    },
+    POSITIVE_INTEGER_INPUT_SYNC_STATE_OPTIONS,
   );
 
   const [rowsValue, setRowsValue] = syncState(
     () => config.layout.rows,
     (value) => configActions.layout.setRows(value()),
-    {
-      flowDown: (value) => String(value),
-      flowUp: (value) => Number.parseInt(value),
-      canFlowUp: (value) => Number.parseInt(value) > 0,
-    },
+    POSITIVE_INTEGER_INPUT_SYNC_STATE_OPTIONS,
   );
 
   const columnsError = createPositiveIntegerInputLinter(columnsValue);
