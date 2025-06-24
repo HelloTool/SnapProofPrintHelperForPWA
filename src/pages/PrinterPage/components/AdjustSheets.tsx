@@ -37,6 +37,16 @@ import { maybeAndroid, maybeChrome } from '@/utils/platform';
 import { mergeMultiSxProps } from '@/utils/suid';
 import { useConfig } from '../contexts/ConfigContext';
 
+function createPositiveIntegerInputLinter(value: Accessor<string>) {
+  return createMemo(() => {
+    const columns = Number.parseFloat(value());
+    if (Number.isNaN(columns) || !Number.isInteger(columns)) {
+      return '请输入大于0的整数';
+    }
+    return null;
+  });
+}
+
 interface AdjustSheetsProps extends DrawerProps {}
 
 export default function AdjustSheets(props: AdjustSheetsProps) {
@@ -62,25 +72,8 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
     },
   );
 
-  const columnsError = createMemo(() => {
-    const columns = Number.parseFloat(columnsValue());
-    if (Number.isNaN(columns) || !Number.isInteger(columns)) {
-      return '请输入整数';
-    } else if (!(columns > 0)) {
-      return '列数必须大于0';
-    }
-    return null;
-  });
-
-  const rowsError = createMemo(() => {
-    const rows = Number.parseFloat(rowsValue());
-    if (Number.isNaN(rows) || !Number.isInteger(rows)) {
-      return '请输入整数';
-    } else if (!(rows > 0)) {
-      return '行数必须大于0';
-    }
-    return null;
-  });
+  const columnsError = createPositiveIntegerInputLinter(columnsValue);
+  const rowsError = createPositiveIntegerInputLinter(rowsValue);
 
   function handleOrientationChange(_event: ChangeEvent<HTMLInputElement>, value: string) {
     if (value !== 'landscape' && value !== 'portrait') {

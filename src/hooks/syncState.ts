@@ -1,4 +1,4 @@
-import { type Accessor, createRenderEffect, createSignal, on } from 'solid-js';
+import { type Accessor, createRenderEffect, createSignal, on, type Setter } from 'solid-js';
 
 interface SyncStateOptions<U, D> {
   flowDown: (upstreamValue: U) => D;
@@ -11,7 +11,7 @@ export function syncState<U, D>(
   upstreamValue: Accessor<U>,
   setUpstreamValue: (value: Accessor<U>) => void,
   { flowDown, flowUp, canFlowUp = () => true, canFlowDown = () => true }: SyncStateOptions<U, D>,
-) {
+): [Accessor<D>, Setter<D>] {
   let flowedUpstreamValue: U = upstreamValue();
   let flowedDownstreamValue: D = flowDown(flowedUpstreamValue);
   const [downstreamValue, setDownstreamValue] = createSignal<D>(flowedDownstreamValue);
