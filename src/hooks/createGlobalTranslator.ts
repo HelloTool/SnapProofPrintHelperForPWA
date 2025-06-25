@@ -1,15 +1,24 @@
-import * as i18n from '@solid-primitives/i18n';
-import { type Accessor, createResource } from 'solid-js';
-import type { GlobalDictionary, RawGlobalDictionary } from '@/locales';
+import { flatten, translator } from '@solid-primitives/i18n';
+import type { Accessor } from 'solid-js';
+import type { RawGlobalDictionary } from '@/locales';
+import en from '@/locales/en';
 import zhCN from '@/locales/zh-CN';
 
-async function fetchDictionary<T>(locale: T): Promise<GlobalDictionary> {
-  const dict: RawGlobalDictionary = (await import(`@/locales/${locale}`)).default;
-  return i18n.flatten(dict);
-}
-
 export default function createGlobalTranslator<T extends string>(currentLocale: Accessor<T>) {
-  const [dict] = createResource(currentLocale, fetchDictionary, { initialValue: i18n.flatten(zhCN) });
-  const t = i18n.translator(dict);
+  const dictionary = () => {
+    let rawDictionary: RawGlobalDictionary;
+    switch (currentLocale()) {
+      case 'zh-CN':
+        rawDictionary = zhCN;
+        break;
+      case 'en':
+        rawDictionary = en;
+        break;
+      default:
+        rawDictionary = zhCN;
+    }
+    return flatten(rawDictionary);
+  };
+  const t = translator(dictionary);
   return t;
 }
