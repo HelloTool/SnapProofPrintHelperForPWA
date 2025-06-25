@@ -16,7 +16,7 @@ function createMarginInputLinter(value: Accessor<string>) {
 const MARGIN_INPUT_SYNC_STATE_OPTIONS: SyncStateOptions<number, string> = {
   flowDown: (value) => String(value),
   flowUp: (value) => Number.parseFloat(value),
-  canFlowUp: (value) => Number.parseFloat(value) > 0,
+  canFlowUp: (value) => Number.parseFloat(value) >= 0,
 };
 export default function CustomMarginItems() {
   const { state: config, actions: configActions } = useConfig();
