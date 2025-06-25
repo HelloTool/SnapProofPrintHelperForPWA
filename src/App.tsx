@@ -25,6 +25,16 @@ export function App() {
         makeDisableDefaultContextMenuListener();
       }
     });
+    // Meta 组件不稳定，所以需要手动更新
+    createEffect(() => {
+      let themeColorMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+      if (!themeColorMeta) {
+        themeColorMeta = document.createElement('meta');
+        themeColorMeta.name = 'theme-color';
+        document.head.appendChild(themeColorMeta);
+      }
+      themeColorMeta.content = theme.palette.background.default;
+    });
   }
 
   const currentLocale = createCurrentLocale();
@@ -46,6 +56,7 @@ export function App() {
           <Title>{t('app.name')}</Title>
           <Meta name="description" content={t('app.description')} />
           <Meta name="apple-mobile-web-app-title" content={t('app.name')} />
+          {/* <Meta name="theme-color" content={theme.palette.background.default} /> */}
         </MetaProvider>
         <GlobalStyles
           styles={{
