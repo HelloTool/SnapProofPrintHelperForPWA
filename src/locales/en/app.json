@@ -1,6 +1,0 @@
-{
-  "$schema": "../base/app.schema.json",
-  "appName": "Snap Proof Print Helper",
-  "appShortName": "SP Print Helper",
-  "appDescription": "Print multiple transfer record graphs, e-commerce order graphs, etc. on paper in a voucher style."
-}

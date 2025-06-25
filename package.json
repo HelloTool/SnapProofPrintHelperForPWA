@@ -37,6 +37,8 @@
   "dependencies": {
     "@material/tooltip": "^14.0.0",
     "@solid-primitives/event-listener": "^2.4.1",
+    "@solid-primitives/i18n": "^2.2.1",
+    "@solidjs/meta": "^0.29.4",
     "@suid/base": "^0.10.1",
     "@suid/icons-material": "^0.8.1",
     "@suid/material": "^0.18.0",

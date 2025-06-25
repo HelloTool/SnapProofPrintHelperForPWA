@@ -1,6 +1,0 @@
-{
-  "$schema": "../base/app.schema.json",
-  "appName": "快照凭证打印助手",
-  "appShortName": "快照凭证打印助手",
-  "appDescription": "将多个转账记录图、电商订单图等以凭证样式打印到纸中。"
-}

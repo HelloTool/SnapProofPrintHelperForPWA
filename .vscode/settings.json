@@ -33,6 +33,7 @@
     "nsis",
     "rsbuild",
     "rspack",
+    "solidjs",
     "tauri"
   ],
   "editor.codeActionsOnSave": {

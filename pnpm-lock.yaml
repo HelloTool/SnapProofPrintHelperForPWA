@@ -28,6 +28,12 @@ importers:
       '@solid-primitives/event-listener':
         specifier: ^2.4.1
         version: 2.4.1(solid-js@1.9.7)
+      '@solid-primitives/i18n':
+        specifier: ^2.2.1
+        version: 2.2.1(solid-js@1.9.7)
+      '@solidjs/meta':
+        specifier: ^0.29.4
+        version: 0.29.4(solid-js@1.9.7)
       '@suid/base':
         specifier: ^0.10.1
         version: 0.10.1(patch_hash=71cc34c99adb1aa1664d73b5c07fbc6b35640cd1ff47bc387cc39177f903e67c)(solid-js@1.9.7)
@@ -1145,10 +1151,20 @@ packages:
     peerDependencies:
       solid-js: ^1.6.12
 
+  '@solid-primitives/i18n@2.2.1':
+    resolution: {integrity: sha512-TnTnE2Ku11MGYZ1JzhJ8pYscwg1fr9MteoYxPwsfxWfh9Jp5K7RRJncJn9BhOHvNLwROjqOHZ46PT7sPHqbcXw==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
   '@solid-primitives/utils@6.3.1':
     resolution: {integrity: sha512-4/Z59nnwu4MPR//zWZmZm2yftx24jMqQ8CSd/JobL26TPfbn4Ph8GKNVJfGJWShg1QB98qObJSskqizbTvcLLA==}
     peerDependencies:
       solid-js: ^1.6.12
+
+  '@solidjs/meta@0.29.4':
+    resolution: {integrity: sha512-zdIWBGpR9zGx1p1bzIPqF5Gs+Ks/BH8R6fWhmUa/dcK1L2rUC8BAcZJzNRYBQv74kScf1TSOs0EY//Vd/I0V8g==}
+    peerDependencies:
+      solid-js: '>=1.8.4'
 
   '@suid/base@0.10.1':
     resolution: {integrity: sha512-zP9Ujdd/9AbZnn/kDMC+mMdBrE8i7U4q9sCKwGw3bLx0FQ+utPxRV+9NQ8KLb0q0W5yleAHfjP0nycBAmL+DHQ==}
@@ -3768,7 +3784,15 @@ snapshots:
       '@solid-primitives/utils': 6.3.1(solid-js@1.9.7)
       solid-js: 1.9.7
 
+  '@solid-primitives/i18n@2.2.1(solid-js@1.9.7)':
+    dependencies:
+      solid-js: 1.9.7
+
   '@solid-primitives/utils@6.3.1(solid-js@1.9.7)':
+    dependencies:
+      solid-js: 1.9.7
+
+  '@solidjs/meta@0.29.4(solid-js@1.9.7)':
     dependencies:
       solid-js: 1.9.7
 

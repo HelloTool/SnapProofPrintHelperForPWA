@@ -1,6 +1,7 @@
 import PrintIcon from '@suid/icons-material/Print';
 import { Box, Fab, useMediaQuery, useTheme } from '@suid/material';
 import { createDeferred, createMemo, createSignal, Show } from 'solid-js';
+import AboutDialog from '@/dialogs/AboutDialog';
 import { InsetsProvider } from '@/features/insets/contexts/InsetsContext';
 import usePrint from '@/features/print/hooks/createPrinting';
 import { createSheetOpenState } from '@/hooks/createSheetOpenedState';
@@ -11,7 +12,6 @@ import MainArea from './components/MainArea';
 import SPPrint from './components/SPPrint';
 import { ConfigProvider } from './contexts/ConfigContext';
 import useImages, { ImagesProvider } from './contexts/ImagesContext';
-import AboutDialog from '@/dialogs/AboutDialog';
 
 function PrinterPageContent() {
   const theme = useTheme();
