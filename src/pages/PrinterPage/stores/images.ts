@@ -11,6 +11,7 @@ export function createImagesStore(config: ConfigStore) {
   return createStore<ImagesStore>({
     images: [],
     get chunkedImages(): SnapImage[][] {
+      this.images.length;
       return chunkArray(unwrap(this.images), config.layout.columns * config.layout.rows);
     },
   });
