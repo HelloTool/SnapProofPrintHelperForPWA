@@ -2,13 +2,15 @@ import { glob } from 'node:fs/promises';
 import path from 'node:path';
 import zhCNManifest from './src/locales/zh-CN/manifest';
 
-const manifestsGlob = glob(path.join(import.meta.dirname, './src/locales/*/manifest.*'), {
-  exclude: [path.join(import.meta.dirname, './src/locales/zh-CN')],
-});
+const manifestsGlob = glob(path.join(import.meta.dirname, './src/locales/*/manifest.*'), {});
+const excludedManifest = zhCNManifest;
 
 const manifests = [];
 for await (const manifestPath of manifestsGlob) {
-  manifests.push((await import(manifestPath)).default);
+  const manifest = (await import(manifestPath)).default;
+  if (manifest !== excludedManifest) {
+    manifests.push((await import(manifestPath)).default);
+  }
 }
 
 function makeLocalizedManifest(...manifests: Record<string, unknown>[]): Record<string, unknown> {
