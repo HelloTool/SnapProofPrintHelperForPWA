@@ -1,6 +1,4 @@
 import { execSync } from 'node:child_process';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import path from 'node:path';
 import { GenerateSW } from '@aaroon/workbox-rspack-plugin';
 import { defineConfig, type RsbuildPlugin } from '@rsbuild/core';
 import { pluginBabel } from '@rsbuild/plugin-babel';
@@ -92,16 +90,18 @@ export default defineConfig({
         {
           name: 'web-manifest-plugin',
           setup(api) {
-            api.onBeforeBuild(async () => {
-              const { rootPath, distPath } = api.context;
-              const mkdirPromise = mkdir(distPath, { recursive: true });
-              const manifest = await readFile(path.join(rootPath, './src/manifest.json'), { encoding: 'utf-8' });
-              const replacedManifest = manifest.replaceAll(
-                '<%= process.env.BASE_URL %>',
-                api.getRsbuildConfig('current').output.assetPrefix,
+            api.processAssets({ stage: 'additional' }, async ({ sources, compilation }) => {
+              const manifest = await import('./src/manifest.json');
+              delete manifest.$schema;
+              const localeManifest = (await import('./src/locales/manifest')).default;
+              const mergedManifest = Object.assign(manifest, localeManifest);
+              const source = new sources.RawSource(
+                JSON.stringify(mergedManifest).replaceAll(
+                  '<%= process.env.BASE_URL %>',
+                  api.getRsbuildConfig('current').output.assetPrefix,
+                ),
               );
-              await mkdirPromise;
-              await writeFile(path.join(distPath, 'manifest.json'), replacedManifest);
+              compilation.emitAsset('manifest.json', source);
             });
           },
         } satisfies RsbuildPlugin,

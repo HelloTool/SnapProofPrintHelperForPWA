@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "App Localization Schema",
+  "type": "object",
+  "properties": {
+    "appName": {
+      "type": "string",
+      "description": "The name of the app"
+    },
+    "appShortName": {
+      "type": "string",
+      "description": "The short name of the app"
+    },
+    "appDescription": {
+      "type": "string",
+      "description": "The description of the app"
+    }
+  },
+  "required": ["appName", "appShortName", "appDescription"]
+}

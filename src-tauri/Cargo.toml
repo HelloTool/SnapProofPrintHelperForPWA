@@ -1,7 +1,7 @@
 [package]
 name = "SnapProofPrintHelper"
 version = "0.1.0"
-description = "Print multiple transfer record diagrams, e-commerce order diagrams, and so on in a voucher style onto paper."
+description = "Print multiple transfer record graphs, e-commerce order graphs, etc. on paper in a voucher style."
 authors = ["Jesse205"]
 edition = "2021"
 license = "Apache-2.0"

@@ -1,7 +1,5 @@
 {
-  "name": "快照凭证打印助手",
-  "short_name": "快照凭证打印助手",
-  "description": "将多个转账记录图、电商订单图等以凭证样式打印到纸中。",
+  "$schema": "https://www.schemastore.org/web-manifest-combined.json",
   "start_url": "<%= process.env.BASE_URL %>",
   "scope": "<%= process.env.BASE_URL %>",
   "display": "standalone",
