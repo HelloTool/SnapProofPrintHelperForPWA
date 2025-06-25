@@ -1,5 +1,15 @@
-import enManifest from './en/manifest';
-import zhCNManifest from './zh-CN/manifest';
+import { glob } from 'node:fs/promises';
+import path from 'node:path';
+import zhCNManifest from './src/locales/zh-CN/manifest';
+
+const manifestsGlob = glob(path.join(import.meta.dirname, './src/locales/*/manifest.*'), {
+  exclude: [path.join(import.meta.dirname, './src/locales/zh-CN')],
+});
+
+const manifests = [];
+for await (const manifestPath of manifestsGlob) {
+  manifests.push((await import(manifestPath)).default);
+}
 
 function makeLocalizedManifest(...manifests: Record<string, unknown>[]): Record<string, unknown> {
   const localizedManifest: Record<string, Record<string, unknown>> = {};
@@ -20,5 +30,5 @@ function makeLocalizedManifest(...manifests: Record<string, unknown>[]): Record<
 
 export default {
   ...zhCNManifest,
-  ...makeLocalizedManifest(enManifest),
+  ...makeLocalizedManifest(...manifests),
 };
