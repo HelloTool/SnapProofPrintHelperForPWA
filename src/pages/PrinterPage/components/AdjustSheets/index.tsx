@@ -21,6 +21,7 @@ import {
   // SwipeableDrawer,
   // type SwipeableDrawerProps,
   Toolbar,
+  Typography,
 } from '@suid/material';
 import type { DrawerProps } from '@suid/material/Drawer';
 import type { SelectChangeEvent } from '@suid/material/Select';
@@ -30,7 +31,7 @@ import { type Accessor, createMemo, For, type JSX, Show } from 'solid-js';
 import ListSwitchItem from '@/components/list/ListSwitchItem';
 import ToolbarTitle from '@/components/toolbar/ToolbarTitle';
 import { useInsets } from '@/features/insets/contexts/InsetsContext';
-import { getAvailablePageSizes } from '@/features/print/utils/paperSize';
+import { getAvailablePageSizes, pageSizeNameToCm } from '@/features/print/utils/paperSize';
 import { type SyncStateOptions, syncState } from '@/hooks/syncState';
 import { usePreferredDarkMode } from '@/hooks/usePreferredDarkMode';
 import { maybeAndroid } from '@/utils/platform';
@@ -209,7 +210,26 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
                 value={typeof config.print.size === 'string' ? config.print.size : 'custom'}
                 onChange={handlePageSizeChange}
               >
-                <For each={getAvailablePageSizes()}>{(size) => <MenuItem value={size}>{size}</MenuItem>}</For>
+                <For each={getAvailablePageSizes()}>
+                  {(size) => {
+                    const [widthCm, heightCm] = pageSizeNameToCm(size);
+                    return (
+                      <MenuItem value={size} sx={{ alignItems: 'baseline' }}>
+                        <span>{size}</span>
+                        <Typography
+                          variant="body2"
+                          color="textSecondary"
+                          component="span"
+                          sx={{
+                            marginLeft: 0.5,
+                          }}
+                        >
+                          {`(${widthCm}cm x ${heightCm}cm)`}
+                        </Typography>
+                      </MenuItem>
+                    );
+                  }}
+                </For>
               </Select>
               <FormHelperText id="adjust-panel__size__helper">
                 您可能需要在“打印”窗口中同时更改“纸张尺寸”才能正确打印。

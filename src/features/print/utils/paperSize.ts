@@ -3,19 +3,19 @@ import type { DataType } from 'csstype';
 export function pageSizeNameToCm(pageSize: DataType.PageSize): [number, number] {
   switch (pageSize) {
     case 'A3':
-      return [29.7, 42.0];
+      return [42.0, 29.7];
     case 'A4':
-      return [21.0, 29.7];
+      return [29.7, 21.0];
     case 'A5':
-      return [14.8, 21.0];
+      return [21.0, 14.8];
     case 'B4':
-      return [25.0, 35.3];
+      return [35.3, 25.0];
     case 'B5':
-      return [17.6, 25.0];
+      return [25.0, 17.6];
     case 'letter':
-      return [21.59, 27.94];
+      return [27.94, 21.59];
     case 'legal':
-      return [21.59, 35.56];
+      return [35.56, 21.59];
     default:
       throw new Error(`Unknown page size: ${pageSize}`);
   }
