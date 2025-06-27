@@ -214,18 +214,21 @@ export default function AdjustSheets(props: AdjustSheetsProps) {
                   {(size) => {
                     const [widthCm, heightCm] = pageSizeNameToCm(size);
                     return (
-                      <MenuItem value={size} sx={{ alignItems: 'baseline' }}>
-                        <span>{size}</span>
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          component="span"
-                          sx={{
-                            marginLeft: 0.5,
-                          }}
-                        >
-                          {`(${widthCm}cm x ${heightCm}cm)`}
-                        </Typography>
+                      <MenuItem value={size}>
+                        <span>
+                          {size}
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="span"
+                            sx={{
+                              marginLeft: 0.5,
+                              alignSelf: 'center',
+                            }}
+                          >
+                            {`(${widthCm}cm x ${heightCm}cm)`}
+                          </Typography>
+                        </span>
                       </MenuItem>
                     );
                   }}
