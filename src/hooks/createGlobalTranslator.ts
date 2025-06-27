@@ -1,10 +1,12 @@
-import { flatten, translator } from '@solid-primitives/i18n';
+import { flatten, type Translator, translator } from '@solid-primitives/i18n';
 import type { Accessor } from 'solid-js';
-import type { RawGlobalDictionary } from '@/locales';
+import type { GlobalDictionary, RawGlobalDictionary } from '@/locales';
 import en from '@/locales/en';
 import zhCN from '@/locales/zh-CN';
 
-export default function createGlobalTranslator<T extends string>(currentLocale: Accessor<T>) {
+export default function createGlobalTranslator<T extends string>(
+  currentLocale: Accessor<T>,
+): Translator<GlobalDictionary> {
   const dictionary = () => {
     let rawDictionary: RawGlobalDictionary;
     switch (currentLocale()) {

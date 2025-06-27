@@ -1,5 +1,5 @@
 import { Meta, MetaProvider, Title } from '@solidjs/meta';
-import { alpha, GlobalStyles, ThemeProvider, useMediaQuery } from '@suid/material';
+import { alpha, GlobalStyles, ThemeProvider } from '@suid/material';
 import { createEffect } from 'solid-js';
 import { GlobalLocaleConfigProvider } from './contexts/GlobalLocaleConfigContext';
 import { createCurrentLocale } from './hooks/createCurrentLocale';
@@ -7,6 +7,8 @@ import createGlobalTranslator from './hooks/createGlobalTranslator';
 import { makeDisableDefaultContextMenuListener } from './hooks/makeDisableDefaultContextMenuListener';
 import { makeDisableDefaultDropListener } from './hooks/makeDisableDefaultDropListener';
 import { makeDisableDefaultF5Listener } from './hooks/makeDisableDefaultF5Listener';
+import { makeMeta } from './hooks/makeMeta';
+import { useDisplayStandaloneMode } from './hooks/useDisplayStandaloneMode';
 import PrinterPage from './pages/PrinterPage';
 import { createAppTheme } from './themes/appTheme';
 
@@ -17,7 +19,7 @@ export function App() {
     makeDisableDefaultF5Listener();
     makeDisableDefaultContextMenuListener();
   } else {
-    const standaloneMode = useMediaQuery('(display-mode: standalone)');
+    const standaloneMode = useDisplayStandaloneMode();
 
     createEffect(() => {
       if (standaloneMode()) {
@@ -26,15 +28,7 @@ export function App() {
       }
     });
     // Meta 组件不稳定，所以需要手动更新
-    createEffect(() => {
-      let themeColorMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-      if (!themeColorMeta) {
-        themeColorMeta = document.createElement('meta');
-        themeColorMeta.name = 'theme-color';
-        document.head.appendChild(themeColorMeta);
-      }
-      themeColorMeta.content = theme.palette.background.default;
-    });
+    makeMeta('theme-color', () => theme.palette.background.default);
   }
 
   const currentLocale = createCurrentLocale();

@@ -1,7 +1,7 @@
 import { createTheme } from '@suid/material';
 import { createPalette } from '@suid/material/styles/createPalette';
 import { createMemo } from 'solid-js';
-import { usePreferredDarkMode } from '@/hooks/mediaQuery';
+import { usePreferredDarkMode } from '@/hooks/usePreferredDarkMode';
 
 interface AppThemeOptions {
   isDarkMode?: boolean;
