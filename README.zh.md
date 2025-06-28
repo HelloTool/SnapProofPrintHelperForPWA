@@ -6,7 +6,7 @@
 
 **仓库**：
 [![Gitee 仓库](https://img.shields.io/badge/Gitee-仓库-C71D23?logo=gitee)][RepositoryOnGitee]
-[![GitHub 仓库](https://img.shields.io/badge/GitHub-仓库-0969da?logo=github)][RepositoryOnGitHub]
+[![GitHub 仓库](https://img.shields.io/badge/GitHub-仓库-0969da?logo=github)][RepositoryOnGithub]
 
 **平台**：
 [![Windows 10+（exe）](https://img.shields.io/badge/Windows_10+-exe-0078D4?logo=windows)][ReleaseOnGitee]
@@ -90,7 +90,7 @@ limitations under the License.
 请参见 [《开源声明》](./docs/legal/os_notices.md)
 
 [RepositoryOnGitee]: https://gitee.com/HelloTool/SnapProofPrintHelperForPWA
-[RepositoryOnGitHub]: https://github.com/HelloTool/SnapProofPrintHelperForPWA
+[RepositoryOnGithub]: https://github.com/HelloTool/SnapProofPrintHelperForPWA
 [ReleaseOnGitee]: https://gitee.com/HelloTool/SnapProofPrintHelperForPWA/releases
-[ReleaseOnGitHub]: https://github.com/HelloTool/SnapProofPrintHelperForPWA/releases
+[ReleaseOnGithub]: https://github.com/HelloTool/SnapProofPrintHelperForPWA/releases
 [PwaApp]: https://hellotool.github.io/SnapProofPrintHelperForPWA/

@@ -45,3 +45,8 @@
 使用 [Material Design 2](https://m2.material.io/)。
 
 颜色使用 Google 色板，该色板来自 Chromium 的 [`cr_shared_vars.css`](https://github.com/chromium/chromium/blob/d536e1807c5aeffae2d28e1efa75e46d4fef7e70/ui/webui/resources/cr_elements/cr_shared_vars.css)。
+
+[RepositoryOnGitee]: https://gitee.com/HelloTool/SnapProofPrintHelperForPWA
+[RepositoryOnGithub]: https://github.com/HelloTool/SnapProofPrintHelperForPWA
+[IssuesOnGitee]: https://gitee.com/HelloTool/SnapProofPrintHelperForPWA/issues
+[IssuesOnGithub]: https://github.com/HelloTool/SnapProofPrintHelperForPWA/issues
