@@ -2,7 +2,7 @@
 
 本项目欢迎任何形式的贡献！
 
-为了更好地理解开源贡献的流程，您可以参考《如何开源软件指南》中的“[为开源做贡献](https://opensource.guide/zh-hans/how-to-contribute/)”章节。此外，《开源指北》中的“[尝试参与开源](https://gitee.com/opensource-guide/guide/participating/roles.html)”章节也提供了详细的入门指导。
+为了更好地理解开源贡献的流程，您可以参考《如何开源软件指南》中的“[为开源做贡献](https://opensource.guide/zh-hans/how-to-contribute/)”章。此外，《开源指北》中的“[尝试参与开源](https://gitee.com/opensource-guide/guide/participating/roles.html)”章也提供了详细的入门指导。
 
 在提交贡献时，您需要遵守[贡献者公约](./CODE_OF_CONDUCT.zh.md)、各平台的规则以及当地法律法规。
 
@@ -35,6 +35,10 @@
 - 其他情况以 [Markdownlint](https://github.com/DavidAnson/markdownlint) 为准。
 
 详情请参考 `biome.json`。
+
+## 文档规范
+
+遵守[《中文技术文档写作风格指南》](https://zh-style-guide.readthedocs.io/zh-cn/latest/index.html)。
 
 ## GIT 提交规范
 

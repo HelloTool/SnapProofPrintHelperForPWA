@@ -9,8 +9,8 @@
 [![GitHub 仓库](https://img.shields.io/badge/GitHub-仓库-0969da?logo=github)][RepositoryOnGithub]
 
 **平台**：
-[![Windows 10+（exe）](https://img.shields.io/badge/Windows_10+-exe-0078D4?logo=windows)][ReleaseOnGitee]
-[![Web（PWA）](https://img.shields.io/badge/Web-PWA-0078D4?logo=windows)][PwaApp]
+[![Windows 10+ (exe)](https://img.shields.io/badge/Windows_10+-exe-0078D4?logo=windows)][ReleaseOnGitee]
+[![Web (PWA)](https://img.shields.io/badge/Web-PWA-0078D4?logo=windows)][PwaApp]
 
 **语言**：
 **中文** |
@@ -25,16 +25,19 @@ _该应用程序目前仅支持中文。_
 ## 特性
 
 - 批量添加图片
-- 添加裁切线，方便裁切
-- 支持浏览器在线访问，安装应用到本地，暂时不支持 PWA 离线使用
+- 添加网格，方便裁切
+- Web (PWA) 版支持浏览器在线访问，也可以安装到桌面使用
+- 支持离线使用，包括 Web（PWA）版和 Tauri 版
 
 ## 软件截图
 
 TODO
 
-## 下载
+## 下载与安装
 
-TODO
+您可以直接在浏览器中使用 Web (PWA) 版。如果您的浏览器支持 PWA 功能，您还可以将 PWA 版应用安装到桌面。
+
+您也可以下载 Web (PWA) 版，以便离线运行和固定版本。
 
 ## 使用方法
 
@@ -48,7 +51,7 @@ TODO
 
 ## 兼容性
 
-### Web（PWA）版兼容性
+### Web (PWA) 版兼容性
 
 本应用需要在支持打印功能的浏览器中打开，建议使用 Chrome v88 或者 Edge v88 更高版本浏览器打开本应用，**不能在微信、QQ 中打开**。
 
@@ -66,6 +69,10 @@ TODO
 | 操作系统 | 特性 | 详情                                | 解决方案            |
 | -------- | ---- | ----------------------------------- | ------------------- |
 | Windows  | 运行 | 需要 WebView2 v88.0.0.0 或 更高版本 | 安装或更新 WebView2 |
+
+## 开发与贡献
+
+请参阅[《开发指南》](./docs/dev/README.md)与[《贡献指南》](./docs/CONTRIBUTING.md)。
 
 ## 许可证
 
