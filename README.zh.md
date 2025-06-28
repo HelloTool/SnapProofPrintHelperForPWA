@@ -10,7 +10,7 @@
 
 **平台**：
 [![Windows 10+（exe）](https://img.shields.io/badge/Windows_10+-exe-0078D4?logo=windows)][ReleaseOnGitee]
-[![Web（PWA）](https://img.shields.io/badge/Web-PWA-0078D4?logo=windows)][ReleaseOnGitee]
+[![Web（PWA）](https://img.shields.io/badge/Web-PWA-0078D4?logo=windows)][PwaApp]
 
 **语言**：
 **中文** |
@@ -93,3 +93,4 @@ limitations under the License.
 [RepositoryOnGitHub]: https://github.com/HelloTool/SnapProofPrintHelperForPWA
 [ReleaseOnGitee]: https://gitee.com/HelloTool/SnapProofPrintHelperForPWA/releases
 [ReleaseOnGitHub]: https://github.com/HelloTool/SnapProofPrintHelperForPWA/releases
+[PwaApp]: https://hellotool.github.io/SnapProofPrintHelperForPWA/
