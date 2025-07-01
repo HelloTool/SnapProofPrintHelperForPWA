@@ -1,4 +1,4 @@
-import { createContext, type JSX, useContext } from 'solid-js';
+import { createContext, type JSX, onCleanup, useContext } from 'solid-js';
 import { createImagesActions, type ImagesActions } from '../actions/images';
 import { createImagesStore, type ImagesStore } from '../stores/images';
 import { useConfig } from './ConfigContext';
@@ -13,6 +13,10 @@ export function ImagesProvider(props: ImagesProviderProps) {
   const { state: config } = useConfig();
   const [state, setState] = createImagesStore(config);
   const actions = createImagesActions(setState, config);
+
+  onCleanup(() => {
+    actions.clearImages();
+  });
 
   return <ImagesContext.Provider value={{ state, actions }}>{props.children}</ImagesContext.Provider>;
 }
