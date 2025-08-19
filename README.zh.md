@@ -37,6 +37,8 @@ TODO
 
 您可以直接在浏览器中使用 Web (PWA) 版。如果您的浏览器支持 PWA 功能，您还可以将 PWA 版应用安装到桌面。
 
+[![添加到 Chromebook](https://chromeos.dev/badges/zh-CN/secondary.svg)][PwaApp]
+
 - [进入 Web (PWA) 版][PwaApp]
 
 您也可以下载 Tauri 版。
@@ -100,6 +102,10 @@ limitations under the License.
 ## 开源声明
 
 请参见 [《开源声明》](./docs/legal/os_notices.md)
+
+## 法律声明
+
+- Chromebook、ChromeOS 和 ChromeOS 徽标是 Google LLC 的商标
 
 [RepositoryOnGitee]: https://gitee.com/HelloTool/SnapProofPrintHelperForPWA
 [RepositoryOnGithub]: https://github.com/HelloTool/SnapProofPrintHelperForPWA
